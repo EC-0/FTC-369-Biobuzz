@@ -16,12 +16,12 @@ public class bucketElevator extends OpMode {
        - there might be a problem with the gamepad input registering multiple times in a second,
          so that might mess up the code
        */
-    double kP, kI, kD, elevatorPower;
+    double kP, kI, kD, kF, elevatorPower;
     int desiredDistance = 1000;
     String bucketStatus = "Ready";
     DcMotor Elevator;
     Servo Left, Right;
-    PID_Controller PID;
+    PIDF_Controller PID;
 
     @Override
     public void init() {
@@ -30,7 +30,7 @@ public class bucketElevator extends OpMode {
         Left = hardwareMap.get(Servo.class, "Servo1");
         Right = hardwareMap.get(Servo.class, "Servo2");
 
-        PID = new PID_Controller(kP, kI, kD);
+        PID = new PIDF_Controller(kP, kI, kD, kF);
 
         Elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
