@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 /* WARNING!!! THIS CODE WAS MADE VERY EARLY WITHOUT MUCH CONTEXT ON THE DETAILS OF THE ROBOT
    THE LOGIC AND THE WAY I HANDLED USING PIDF COULD BE VERY STUPID!! */
-@TeleOp (name = "Servos")
+@TeleOp (name = "Elevator")
 public class bucketElevator extends OpMode {
     /* NOTES TO REMEMBER FOR LATER:
-       - desiredDistance is the distance that the bucket has to go up
+       - add a constructor and remove the teleop to make this implementable into the final product in the future
        - desiredDistance is probably not 1000, so uh change that eventually
-       - calibrate the PIDF values
+       - calibrate the PID values
        - there might be a problem with the gamepad input registering multiple times in a second,
          so that might mess up the code
        */
