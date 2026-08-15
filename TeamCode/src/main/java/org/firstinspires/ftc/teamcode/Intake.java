@@ -6,19 +6,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake extends OpMode {
 
-    DcMotor motor;
+    DcMotor intake;
     @Override
     public void init() {
-        motor = hardwareMap.get(DcMotor.class, "motor");
+        intake = hardwareMap.get(DcMotor.class, "intake");
     }
 
     @Override
     public void loop() {
         if(gamepad1.a){
-            motor.setPower(1.0);
+            intake.setPower(1.0);
         }
         else{
-            motor.setPower(0.0);
+            intake.setPower(0.0);
         }
     }
 }
