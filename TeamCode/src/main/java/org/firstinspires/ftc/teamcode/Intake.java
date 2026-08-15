@@ -9,7 +9,7 @@ public class Intake extends OpMode {
     DcMotor intake;
     @Override
     public void init() {
-        intake = hardwareMap.get(DcMotor.class, "motor");
+        intake = hardwareMap.get(DcMotor.class, "intake");
     }
 
     @Override
