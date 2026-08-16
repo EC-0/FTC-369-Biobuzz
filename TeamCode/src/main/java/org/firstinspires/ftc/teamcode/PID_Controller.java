@@ -5,7 +5,7 @@ public class PID_Controller {
 
     /* Not currently sure if I even need Feedforward for the linear slide elevator
        check in with Russell or Ethan later. */
-    private double kP, kI, kD;
+    private final double kP, kI, kD;
     private double integral, derivative;
     private double lastError, target, error, output;
     private ElapsedTime timer = new ElapsedTime();

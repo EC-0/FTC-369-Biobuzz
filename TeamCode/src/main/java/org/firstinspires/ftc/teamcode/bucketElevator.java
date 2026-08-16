@@ -17,7 +17,10 @@ public class bucketElevator extends OpMode {
          so that might mess up the code
        */
     double kP, kI, kD, elevatorPower;
-    int desiredDistance = 1000;
+    int desiredHigherDistance = 1000;
+    int desiredLowerDistance = 500;
+    int targetPosition = 0;
+    int tolerance = 5;
     String bucketStatus = "Ready";
     DcMotor Elevator;
     Servo Left, Right;
@@ -46,42 +49,36 @@ public class bucketElevator extends OpMode {
     @Override
     public void loop() {
 
-        if (gamepad1.a && bucketStatus.equals("Ready")) {
-            bucketStatus = "Raising";
-            PID.setTarget(desiredDistance);
+        if (gamepad1.a) {
+            Left.setPosition(0);
+            Right.setPosition(0);
+
+            PID.setTarget(desiredLowerDistance);
+            targetPosition = desiredLowerDistance;
         }
-        else if (gamepad1.a && bucketStatus.equals("Dumping")) {
-            bucketStatus = "Lowering";
+        else if (gamepad1.b) {
+            Left.setPosition(0);
+            Right.setPosition(0);
+
+            PID.setTarget(desiredHigherDistance);
+            targetPosition = desiredHigherDistance;
+        }
+        else if (gamepad1.x) {
+            Left.setPosition(0);
+            Right.setPosition(0);
+
+            PID.setTarget(0);
+            targetPosition = 0;
         }
 
-        if (bucketStatus.equals("Raising")) {
-
-            if (Elevator.getCurrentPosition() >= desiredDistance) {
-                Left.setPosition(0.9);
-                Right.setPosition(0.9);
-                bucketStatus = "Dumping";
-            }
-        }
-
-        if (bucketStatus.equals("Lowering")) {
-            if (Left.getPosition() != 0.0 && Right.getPosition() != 0.0) {
-                Left.setPosition(0.0);
-                Right.setPosition(0.0);
-            }
-
-            else if (Left.getPosition() == 0.0 && Right.getPosition() == 0.0) {
-                PID.setTarget(0);
-            }
-
-            if (Elevator.getCurrentPosition() <= 1) {
-                bucketStatus = "Ready";
+        if (Elevator.getCurrentPosition() > targetPosition - tolerance && Elevator.getCurrentPosition() < targetPosition + tolerance) {
+            if (targetPosition != 0) {
+                Left.setPosition(0.8);
+                Right.setPosition(0.8);
             }
         }
 
         elevatorPower = PID.calculate(Elevator.getCurrentPosition());
         Elevator.setPower(elevatorPower);
-
-        telemetry.addData("Current Bucket Status: ", bucketStatus);
-        telemetry.update();
     }
 }
