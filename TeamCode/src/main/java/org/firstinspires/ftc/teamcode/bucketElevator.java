@@ -4,18 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
-/* WARNING!!! THIS CODE WAS MADE VERY EARLY WITHOUT MUCH CONTEXT ON THE DETAILS OF THE ROBOT
-   THE LOGIC AND THE WAY I HANDLED USING PIDF COULD BE VERY STUPID!! */
 @TeleOp (name = "Elevator")
 public class bucketElevator extends OpMode {
-    /* NOTES TO REMEMBER FOR LATER:
-       - add a constructor and remove the teleop to make this implementable into the final product in the future
-       - desiredDistance is probably not 1000, so uh change that eventually
-       - calibrate the PID values
-       - there might be a problem with the gamepad input registering multiple times in a second,
-         so that might mess up the code
-       */
     double kP, kI, kD, elevatorPower;
     int desiredHigherDistance = 1000;
     int desiredLowerDistance = 500;
@@ -79,6 +69,8 @@ public class bucketElevator extends OpMode {
         }
 
         elevatorPower = PID.calculate(Elevator.getCurrentPosition());
-        Elevator.setPower(elevatorPower);
+        if (Left.getPosition() == 0 && Right.getPosition() == 0) {
+            Elevator.setPower(elevatorPower);
+        }
     }
 }
