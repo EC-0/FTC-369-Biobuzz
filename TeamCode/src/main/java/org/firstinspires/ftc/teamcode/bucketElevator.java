@@ -4,12 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import java.lang.annotation.Target;
+
 @TeleOp (name = "Elevator")
 public class bucketElevator extends OpMode {
     double kP, kI, kD, elevatorPower;
-    int desiredHigherDistance = 1000;
-    int targetPosition = 0;
-    int tolerance = 5;
+    int desiredDistance = 1000;
+    int tolerance = 5, targetPosition = 0;
+    boolean tilted = false;
     DcMotor Elevator;
     Servo Left, Right;
     PID_Controller PID;
@@ -37,31 +40,36 @@ public class bucketElevator extends OpMode {
     @Override
     public void loop() {
 
+        // Detecting button inputs
         if (gamepad1.a) {
+            targetPosition = desiredDistance;
+            PID.setTarget(targetPosition);
+            Left.setPosition(0.0);
+            Right.setPosition(0.0);
+            tilted = false;
+        }
+        else if (gamepad1.y) {
+            targetPosition = 0;
+            Left.setPosition(0.0);
+            Right.setPosition(0.0);
+            tilted = false;
+        }
+
+        // Tilting if reached top
+        if (targetPosition == desiredDistance && Elevator.getCurrentPosition() > (desiredDistance - tolerance)) {
             Left.setPosition(0.8);
             Right.setPosition(0.8);
-
-            PID.setTarget(desiredHigherDistance);
-            targetPosition = desiredHigherDistance;
+            tilted = true;
         }
-        else if (gamepad1.x) {
-            Left.setPosition(0);
-            Right.setPosition(0);
 
+        /* Waiting for the bucket to untilt and for the servos to set back to 0 before changing the PID
+           target to 0 */
+        if (targetPosition == 0 && !tilted && Left.getPosition() == 0.0 && Right.getPosition() == 0.0) {
             PID.setTarget(0);
-            targetPosition = 0;
         }
 
-        if (Elevator.getCurrentPosition() > targetPosition - tolerance && Elevator.getCurrentPosition() < targetPosition + tolerance) {
-            if (targetPosition != 0) {
-                Left.setPosition(0.8);
-                Right.setPosition(0.8);
-            }
-        }
-
+        //Applying the power
         elevatorPower = PID.calculate(Elevator.getCurrentPosition());
-        if (Left.getPosition() == 0 && Right.getPosition() == 0) {
-            Elevator.setPower(elevatorPower);
-        }
+        Elevator.setPower(elevatorPower);
     }
 }
