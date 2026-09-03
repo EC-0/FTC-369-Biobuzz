@@ -10,7 +10,6 @@ public class bucketElevator extends OpMode {
     int desiredHigherDistance = 1000;
     int targetPosition = 0;
     int tolerance = 5;
-    String bucketStatus = "Ready";
     DcMotor Elevator;
     Servo Left, Right;
     PID_Controller PID;
