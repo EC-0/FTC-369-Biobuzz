@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class bucketElevator extends OpMode {
     double kP, kI, kD, elevatorPower;
     int desiredHigherDistance = 1000;
-    int desiredLowerDistance = 500;
     int targetPosition = 0;
     int tolerance = 5;
     String bucketStatus = "Ready";
@@ -40,15 +39,8 @@ public class bucketElevator extends OpMode {
     public void loop() {
 
         if (gamepad1.a) {
-            Left.setPosition(0);
-            Right.setPosition(0);
-
-            PID.setTarget(desiredLowerDistance);
-            targetPosition = desiredLowerDistance;
-        }
-        else if (gamepad1.b) {
-            Left.setPosition(0);
-            Right.setPosition(0);
+            Left.setPosition(0.8);
+            Right.setPosition(0.8);
 
             PID.setTarget(desiredHigherDistance);
             targetPosition = desiredHigherDistance;
