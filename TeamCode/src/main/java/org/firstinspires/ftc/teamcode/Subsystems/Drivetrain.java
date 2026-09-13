@@ -23,12 +23,18 @@ public class Drivetrain{
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         imu = hardwareMap.get(IMU.class, "imu");
+
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP
         );
+        imu.initialize(new IMU.Parameters(revOrientation));
     }
-
     public void drive(){
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x;
@@ -39,13 +45,23 @@ public class Drivetrain{
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotY) + Math.abs(theta), 1.0);
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(theta), 1.0);
 
-        frontLeft.setPower((rotY + rotX + theta) / denominator);
-        backLeft.setPower((rotY - rotX + theta) / denominator);
-        frontRight.setPower((rotY - rotX - theta) / denominator);
-        backRight.setPower((rotY + rotX - theta) / denominator);
+        double frontLeftPower = (rotY + rotX + theta) / denominator;
+        double frontRightPower = (rotY - rotX - theta) / denominator;
+        double backLeftPower = (rotY - rotX + theta) / denominator;
+        double backRightPower = (rotY + rotX - theta) / denominator;
+
+        frontLeft.setPower(frontLeftPower);
+        frontRight.setPower(frontRightPower);
+        backLeft.setPower(backLeftPower);
+        backRight.setPower(backRightPower);
     }
+
+    public void resetHeading(){
+        imu.resetYaw();
+    }
+
 
 
 
