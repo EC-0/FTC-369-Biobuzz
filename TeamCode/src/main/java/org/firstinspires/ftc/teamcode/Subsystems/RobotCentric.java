@@ -27,23 +27,14 @@ public class RobotCentric extends OpMode {
 
     @Override
     public void loop() {
-        if(gamepad1.a){
-            frontLeft.setPower(0.8);
-            frontRight.setPower(0.8);
-            backLeft.setPower(0.8);
-            backRight.setPower(0.8);
-        }
-        else if(gamepad1.b){
-            frontLeft.setPower(-0.8);
-            frontRight.setPower(-0.8);
-            backLeft.setPower(-0.8);
-            backRight.setPower(-0.8);
-        }
-        else{
-            frontLeft.setPower(0);
-            frontRight.setPower(0);
-            backLeft.setPower(0);
-            backRight.setPower(0);
-        }
+        double y = -gamepad1.left_stick_y; // Remember, Y stick is reversed!
+        double x = gamepad1.left_stick_x;
+        double rx = gamepad1.right_stick_x;
+
+        frontLeft.setPower(y + x + rx);
+        backLeft.setPower(y - x + rx);
+        frontRight.setPower(y - x - rx);
+        backRight.setPower(y + x - rx);
+
     }
 }
