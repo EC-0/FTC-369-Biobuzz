@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,7 +15,7 @@ public class Drivetrain{
     DcMotor backRight;
     DcMotor backLeft;
     IMU imu;
-
+    Gamepad gamepad = new Gamepad();
     public Drivetrain(HardwareMap hardwareMap) {
         frontRight = hardwareMap.get(DcMotor.class,"frontRight");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -30,15 +29,15 @@ public class Drivetrain{
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
         );
         imu.initialize(new IMU.Parameters(revOrientation));
     }
     public void drive(){
-        double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x;
-        double theta = gamepad1.right_stick_x;
+        double y = -gamepad.left_stick_y;
+        double x = gamepad.left_stick_x;
+        double theta = gamepad.right_stick_x;
 
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
@@ -61,8 +60,4 @@ public class Drivetrain{
     public void resetHeading(){
         imu.resetYaw();
     }
-
-
-
-
 }
