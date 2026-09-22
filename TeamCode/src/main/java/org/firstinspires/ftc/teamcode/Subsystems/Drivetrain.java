@@ -1,21 +1,17 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-
 public class Drivetrain{
-    DcMotor frontRight;
-    DcMotor frontLeft;
-    DcMotor backRight;
-    DcMotor backLeft;
+    DcMotor frontRight, frontLeft, backRight, backLeft;
+    double theta;
     IMU imu;
-    Gamepad gamepad = new Gamepad();
     public Drivetrain(HardwareMap hardwareMap) {
         frontRight = hardwareMap.get(DcMotor.class,"frontRight");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -28,16 +24,29 @@ public class Drivetrain{
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
         RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
         );
         imu.initialize(new IMU.Parameters(revOrientation));
     }
-    public void drive(){
-        double y = -gamepad.left_stick_y;
-        double x = gamepad.left_stick_x;
-        double theta = gamepad.right_stick_x;
+    public void drive(double y, double x, boolean left, boolean right) {
+
+        if (left && right) {
+            theta = 0.0;
+        }
+        else if (left)   {
+            theta = -1.0;
+        }
+        else if (right) {
+            theta = 1.0;
+        }
+        else {
+            theta = 0.0;
+        }
 
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
