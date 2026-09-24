@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -31,20 +33,30 @@ public class Outtake {
 
     public double verticalTranslationFar = 0;
 
+    double flyPower = 0;
+
     public Outtake(HardwareMap hardwareMap){
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
 
-        fly1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fly2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fly1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        fly2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        fly1.setPower(setMotorManual());
+        fly2.setPower(setMotorManual());
 
-        lastLoopTimeNs = System.nanoTime();
+
+    }
+
+    public double setMotorManual(){
+
+        if(gamepad1.a){
+            flyPower += 25;
+        }
+        if(gamepad1.x){
+            flyPower += 25;
+        }
+        return flyPower;
     }
 
     public void runOuttake() {
-        // dt in seconds (subsystem-safe; no OpMode needed)
         long nowNs = System.nanoTime();
         double dt = (nowNs - lastLoopTimeNs) / 1e9;
         lastLoopTimeNs = nowNs;
