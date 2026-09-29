@@ -17,12 +17,17 @@ public class Turret extends OpMode {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         intake = hardwareMap.get(DcMotor.class, "intake");
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
         fly2.setDirection(DcMotorSimple.Direction.REVERSE);
         flyPower = 0;
     }
 
     public double setMotorManual(){
-        intake.setPower(0.8);
+        if(gamepad1.b){
+            intake.setPower(0.8);
+        } else {
+            intake.setPower(0);
+        }
         if(gamepad1.a){
             flyPower += 25;
         }
@@ -34,6 +39,8 @@ public class Turret extends OpMode {
     @Override
     public void loop() {
         fly1.setPower(setMotorManual());
+        telemetry.addData("fly1", fly1.getVelocity());
         fly2.setPower(setMotorManual());
+        telemetry.addData("fly2", fly2.getVelocity());
     }
 }
