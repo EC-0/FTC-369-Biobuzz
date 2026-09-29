@@ -23,5 +23,5 @@ public interface Localizer {
      */
     PoseVelocity2d update();
 
-    double printYawScalar();
+    //double printYawScalar();
 }
