@@ -37,9 +37,9 @@ public class Turret extends OpMode {
             flyPower -= 25;
         }
         telemetry.addData("flyPower", flyPower);
-        fly1.setPower(flyPower);
+        fly1.setVelocity(flyPower);
         telemetry.addData("fly1", fly1.getVelocity());
-        fly2.setPower(flyPower);
+        fly2.setVelocity(flyPower);
         telemetry.addData("fly2", fly2.getVelocity());
     }
 }
