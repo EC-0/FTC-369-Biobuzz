@@ -55,6 +55,7 @@ public class Limelight {
 
         //calculate distance
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
+        telemetry.addData("distance: ", distanceFromLimelightToGoalInches);
     }
 
     private LLResult getResult(){
@@ -96,7 +97,7 @@ public class Limelight {
             double x = result.getBotpose().getPosition().x;
             double y = result.getBotpose().getPosition().y;
             double z = result.getBotpose().getPosition().z;
-            telemetry.addData("Robot Pose", "X: ", "Y: ", "Z: ", x,y,z);
+            telemetry.addData("Robot Pose", "X: "+ x + "Y: " + y +  "Z: " + z);
         }
 
         long staleness = result.getStaleness();
