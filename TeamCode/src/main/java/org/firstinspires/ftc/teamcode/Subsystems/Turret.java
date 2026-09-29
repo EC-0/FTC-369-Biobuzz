@@ -22,7 +22,9 @@ public class Turret extends OpMode {
         flyPower = 0;
     }
 
-    public double setMotorManual(){
+
+    @Override
+    public void loop() {
         if(gamepad1.b){
             intake.setPower(0.8);
         } else {
@@ -34,13 +36,10 @@ public class Turret extends OpMode {
         if(gamepad1.xWasPressed()){
             flyPower -= 25;
         }
-        return flyPower;
-    }
-    @Override
-    public void loop() {
-        fly1.setPower(setMotorManual());
+
+        fly1.setPower(flyPower);
         telemetry.addData("fly1", fly1.getVelocity());
-        fly2.setPower(setMotorManual());
+        fly2.setPower(flyPower);
         telemetry.addData("fly2", fly2.getVelocity());
     }
 }
