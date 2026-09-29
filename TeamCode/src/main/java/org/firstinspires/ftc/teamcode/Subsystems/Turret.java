@@ -36,7 +36,7 @@ public class Turret extends OpMode {
         if(gamepad1.xWasPressed()){
             flyPower -= 25;
         }
-
+        telemetry.addData("flyPower", flyPower);
         fly1.setPower(flyPower);
         telemetry.addData("fly1", fly1.getVelocity());
         fly2.setPower(flyPower);
