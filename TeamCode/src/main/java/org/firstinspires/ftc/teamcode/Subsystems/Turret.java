@@ -28,10 +28,10 @@ public class Turret extends OpMode {
         } else {
             intake.setPower(0);
         }
-        if(gamepad1.a){
+        if(gamepad1.aWasPressed()){
             flyPower += 25;
         }
-        if(gamepad1.x){
+        if(gamepad1.xWasPressed()){
             flyPower -= 25;
         }
         return flyPower;
