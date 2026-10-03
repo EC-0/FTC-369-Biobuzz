@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-public class Drivetrain{
+public class Drivetrain {
     DcMotor frontRight, frontLeft, backRight, backLeft;
     double theta;
     IMU imu;
@@ -33,20 +33,9 @@ public class Drivetrain{
         );
         imu.initialize(new IMU.Parameters(revOrientation));
     }
-    public void drive(double y, double x, boolean left, boolean right) {
+    public void drive(double y, double x, double left, double right) {
 
-        if (left && right) {
-            theta = 0.0;
-        }
-        else if (left)   {
-            theta = -1.0;
-        }
-        else if (right) {
-            theta = 1.0;
-        }
-        else {
-            theta = 0.0;
-        }
+        theta = -left + right;
 
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
