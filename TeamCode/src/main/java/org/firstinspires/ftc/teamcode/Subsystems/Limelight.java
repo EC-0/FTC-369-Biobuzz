@@ -41,10 +41,10 @@ public class Limelight {
         limelight.pipelineSwitch(PIPELINE);
     }
 
-    public void distanceFromTag(){
+    public double distanceFromTag(){
         LLResult result = getResult();
         if(result==null){
-            return;
+            return 100;
         }
         double tx = result.getTx();
         double ty = result.getTy();
@@ -56,6 +56,7 @@ public class Limelight {
         //calculate distance
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
         telemetry.addData("distance: ", distanceFromLimelightToGoalInches);
+        return distanceFromLimelightToGoalInches;
     }
 
     private LLResult getResult(){
