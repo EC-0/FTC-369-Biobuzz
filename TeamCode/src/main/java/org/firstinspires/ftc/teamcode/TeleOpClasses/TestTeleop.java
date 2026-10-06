@@ -5,10 +5,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 @TeleOp (name = "Test TeleOp")
 public class TestTeleop extends OpMode {
+    Limelight limelight;
     Drivetrain drivetrain;
     Intake intake;
     Turret turret;
@@ -18,6 +20,7 @@ public class TestTeleop extends OpMode {
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
+        limelight = new Limelight(hardwareMap, telemetry);
     }
 
     @Override
@@ -30,6 +33,12 @@ public class TestTeleop extends OpMode {
         }
         else if(gamepad1.dpadDownWasPressed()){
 
+        }
+        if(gamepad1.aWasPressed()){
+            turret.manualFlyMode();
+        }
+        else if(gamepad1.bWasPressed()){
+            turret.regression(limelight.distanceFromTag());
         }
     }
 }

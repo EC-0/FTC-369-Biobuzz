@@ -20,8 +20,17 @@ public class Turret{
         flyPower += increment;
     }
     public void manualFlyMode() {
-        fly1.setPower(flyPower);
-        fly2.setPower(flyPower);
+        fly1.setVelocity(flyPower);
+        fly2.setVelocity(flyPower);
     }
+
+
+    //Regression method depending on distance to hive
+    public void regression(double distanceToHive){
+        double targetVelocity = distanceToHive; //regression variable
+        fly1.setVelocity(targetVelocity);
+        fly2.setVelocity(targetVelocity);
+    }
+
 
 }
