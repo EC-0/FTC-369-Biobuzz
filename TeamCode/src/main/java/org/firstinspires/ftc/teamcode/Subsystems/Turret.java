@@ -2,44 +2,26 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@TeleOp(name = "turret")
-public class Turret extends OpMode {
-    DcMotor intake;
+public class Turret{
     DcMotorEx fly1;
     DcMotorEx fly2;
     double flyPower;
-    @Override
-    public void init() {
+    boolean useRegression;
+    public Turret(HardwareMap hardwareMap) {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
-        intake = hardwareMap.get(DcMotor.class, "intake");
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
-        fly2.setDirection(DcMotorSimple.Direction.REVERSE);
         flyPower = 0;
     }
 
-
-    @Override
-    public void loop() {
-        if(gamepad1.b){
-            intake.setPower(0.8);
-        } else {
-            intake.setPower(0);
-        }
-        if(gamepad1.aWasPressed()){
-            flyPower += 100;
-        }
-        if(gamepad1.xWasPressed()){
-            flyPower -= 100;
-        }
-        telemetry.addData("flyPower", flyPower);
-        fly1.setVelocity(flyPower);
-        telemetry.addData("fly1", fly1.getVelocity());
-        fly2.setVelocity(flyPower);
-        telemetry.addData("fly2", fly2.getVelocity());
+    public void setMotorManual(double increment){
+        flyPower += increment;
     }
+    public void manualFlyMode() {
+        fly1.setPower(flyPower);
+        fly2.setPower(flyPower);
+    }
+
 }
