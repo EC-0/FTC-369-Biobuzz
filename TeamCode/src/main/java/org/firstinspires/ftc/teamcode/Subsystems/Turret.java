@@ -3,31 +3,25 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@TeleOp(name = "turret")
-public class Turret extends OpMode {
+public class Turret{
     DcMotorEx fly1;
     DcMotorEx fly2;
     double flyPower;
-    @Override
-    public void init() {
+    boolean useRegression;
+    public Turret(HardwareMap hardwareMap) {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         flyPower = 0;
     }
 
-    public double setMotorManual(){
-        if(gamepad1.a){
-            flyPower += 25;
-        }
-        if(gamepad1.x){
-            flyPower -= 25;
-        }
-        return flyPower;
+    public void setMotorManual(double increment){
+        flyPower += increment;
     }
-    @Override
-    public void loop() {
-        fly1.setPower(setMotorManual());
-        fly2.setPower(setMotorManual());
+    public void manualFlyMode() {
+        fly1.setPower(flyPower);
+        fly2.setPower(flyPower);
     }
+
 }

@@ -5,16 +5,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 @TeleOp (name = "Test TeleOp")
 public class TestTeleop extends OpMode {
     Drivetrain drivetrain;
     Intake intake;
+    Turret turret;
 
     @Override
     public void init() {
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
+        turret = new Turret(hardwareMap);
     }
 
     @Override
@@ -22,5 +25,11 @@ public class TestTeleop extends OpMode {
         drivetrain.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.left_trigger,
                 gamepad1.right_trigger);
         intake.runIntake();
+        if(gamepad1.dpadUpWasPressed()){
+
+        }
+        else if(gamepad1.dpadDownWasPressed()){
+
+        }
     }
 }
