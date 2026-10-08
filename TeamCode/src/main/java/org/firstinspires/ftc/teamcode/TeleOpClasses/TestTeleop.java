@@ -36,14 +36,10 @@ public class TestTeleop extends OpMode {
                 gamepad1.right_trigger);
 
         if (gamepad1.a) {
-            /*if (intake.getPower() > 0.0) {
-                intake.setPower(0.8);
-            }
-            else {
-                intake.setPower(0.0);
-            }
-            */
              intake.intakePower(0.8);
+        }
+        else{
+            intake.intakePower(0);
         }
         if(gamepad1.bWasPressed()){
             turret.setMotorManual(1700);
