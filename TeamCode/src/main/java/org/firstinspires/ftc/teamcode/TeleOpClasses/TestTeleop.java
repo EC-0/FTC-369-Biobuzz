@@ -20,7 +20,6 @@ public class TestTeleop extends OpMode {
     Intake intake;
     Turret turret;
 
-    double flyPower = 0;
     @Override
     public void init() {
 
@@ -45,15 +44,14 @@ public class TestTeleop extends OpMode {
             intake.intakePower(0);
         }
         if(gamepad1.bWasPressed()){
-            flyPower += 100;
+            turret.flyPower += 100;
         }
         if(gamepad1.xWasPressed()){
-            flyPower -=100;
+            turret.flyPower -=100;
         }
-        if(gamepad1.yWasPressed()){
-            turret.fly1.setVelocity(flyPower);
-            turret.fly2.setVelocity(flyPower);
-        }
+        turret.setTurretPower(turret.flyPower);
+
+
 
 
 

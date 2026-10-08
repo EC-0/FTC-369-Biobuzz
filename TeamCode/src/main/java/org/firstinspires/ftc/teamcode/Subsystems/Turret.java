@@ -10,12 +10,21 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Turret{
     public DcMotorEx fly1;
     public DcMotorEx fly2;
+    public double flyPower;
+
     boolean useRegression;
     public Turret(HardwareMap hardwareMap) {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
+        flyPower = 0;
 
     }
+    public void setTurretPower(double power){
+        fly1.setVelocity(flyPower);
+        fly2.setVelocity(flyPower);
+    }
+
+
 
 
 
