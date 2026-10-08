@@ -19,6 +19,7 @@ public class Turret{
     public void setMotorManual(double increment){
         flyPower += increment;
     }
+
     public void manualFlyMode() {
         fly1.setVelocity(flyPower);
         fly2.setVelocity(flyPower);
