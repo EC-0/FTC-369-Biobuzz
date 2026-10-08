@@ -49,7 +49,10 @@ public class TestTeleop extends OpMode {
         if(gamepad1.xWasPressed()){
             turret.flyPower -=100;
         }
-        turret.setTurretPower(turret.flyPower);
+
+        turret.fly1.setVelocity(turret.setTurretPower(turret.flyPower));
+        turret.fly2.setVelocity(turret.setTurretPower(turret.flyPower));
+
 
 
 

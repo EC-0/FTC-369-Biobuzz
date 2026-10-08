@@ -19,9 +19,8 @@ public class Turret{
         flyPower = 0;
 
     }
-    public void setTurretPower(double power){
-        fly1.setVelocity(flyPower);
-        fly2.setVelocity(flyPower);
+    public double setTurretPower(double power){
+        return power;
     }
 
 
