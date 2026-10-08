@@ -20,6 +20,7 @@ public class TestTeleop extends OpMode {
     Intake intake;
     Turret turret;
 
+    double flyPower = 0;
     @Override
     public void init() {
 
@@ -28,6 +29,7 @@ public class TestTeleop extends OpMode {
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap, telemetry);
         limelight.pipelineSwitch(0);
+
 
     }
 
@@ -43,15 +45,25 @@ public class TestTeleop extends OpMode {
             intake.intakePower(0);
         }
         if(gamepad1.bWasPressed()){
-            turret.setMotorManual(1700);
-            turret.manualFlyMode();
+            flyPower += 100;
         }
+        if(gamepad1.xWasPressed()){
+            flyPower -=100;
+        }
+        if(gamepad1.yWasPressed()){
+            turret.fly1.setVelocity(flyPower);
+            turret.fly2.setVelocity(flyPower);
+        }
+
+
 
         /*
         else if(gamepad1.bWasPressed()){
             turret.regression(limelight.distanceFromTag());
         }
         */
+
+
 
     }
 }
