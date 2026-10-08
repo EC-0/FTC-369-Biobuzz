@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gam
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Turret{
@@ -17,6 +18,7 @@ public class Turret{
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         flyPower = 0;
+        fly1.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
     public double setTurretPower(double power){
