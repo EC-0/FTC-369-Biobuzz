@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -18,6 +19,7 @@ public class Intake {
 
     public Intake(HardwareMap hardwareMap) {
         intake = hardwareMap.get(DcMotor.class , "intake");
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     public void intakePower(double power){
         intake.setPower(power);
