@@ -28,17 +28,12 @@ public class TestTeleop extends OpMode {
         drivetrain.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.left_trigger,
                 gamepad1.right_trigger);
         intake.runIntake();
-        if(gamepad1.dpadUpWasPressed()){
-
-        }
-        else if(gamepad1.dpadDownWasPressed()){
-
-        }
-        if(gamepad1.aWasPressed()){
-            turret.manualFlyMode();
-        }
+        turret.manualFlyMode();
+        /*
         else if(gamepad1.bWasPressed()){
             turret.regression(limelight.distanceFromTag());
         }
+        */
+
     }
 }
