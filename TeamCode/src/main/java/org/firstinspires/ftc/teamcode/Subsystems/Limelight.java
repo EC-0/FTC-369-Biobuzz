@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class Limelight {
     double goalHeightInches = 65.6;
 
     private Telemetry telemetry;
+
+    LLResult llResult;
 
     public Limelight(HardwareMap hardwareMap, Telemetry telemetry){
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
@@ -109,9 +112,13 @@ public class Limelight {
 
 
 
+
+
     public void stop(){
         if(limelight != null){
             limelight.stop();
         }
     }
+
+
 }
