@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 
-
 @TeleOp (name = "Test TeleOp")
 public class TestTeleop extends OpMode {
     Limelight limelight;
@@ -53,6 +52,8 @@ public class TestTeleop extends OpMode {
             telemetry.addData("flyPower", turret.flyPower);
         }
         telemetry.addData("Bot pose", localizer.getBotPose());
+
+        telemetry.update();
         /*
         else if(gamepad1.bWasPressed()){
             turret.regression(limelight.distanceFromTag());
