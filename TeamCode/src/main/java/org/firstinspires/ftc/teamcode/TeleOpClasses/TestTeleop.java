@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.TeleOpClasses;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Rotation2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -20,6 +22,7 @@ public class TestTeleop extends OpMode {
     Intake intake;
     Turret turret;
     RobotLocalizer localizer;
+    private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(10, -10), Rotation2d.exp(0));
 
     @Override
     public void init() {
@@ -36,6 +39,15 @@ public class TestTeleop extends OpMode {
     public void loop() {
         drivetrain.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.left_trigger,
                 gamepad1.right_trigger);
+
+        Pose2d currentRobotPose = localizer.getBotPose();
+        if(currentRobotPose != null){
+            turret.turretTrackPosition(GOAL_TARGET, currentRobotPose);
+            telemetry.addData("current robot positionX", currentRobotPose.position.x);
+            telemetry.addData("current robot positionY", currentRobotPose.position.y);
+            telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
+        }
+
 
         if (gamepad1.a) {
              intake.intakePower(0.8);
