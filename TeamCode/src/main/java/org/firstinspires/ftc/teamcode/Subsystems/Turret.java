@@ -28,9 +28,9 @@ public class Turret{
     private double offsetX = 0.0;
     private double offsetY = 0.0;
 
-    private double totalTurnTicks = 853.0;
-    private double totalDegrees = 320.0;
-    private double ticksPerDegree = totalTurnTicks / totalDegrees;
+    private final double totalTurnTicks = 853.0;
+    private final double totalDegrees = 320.0;
+    private final double ticksPerDegree = totalTurnTicks / totalDegrees;
 
 
     boolean useRegression;
@@ -47,6 +47,7 @@ public class Turret{
 
     }
     public double setTurretPower(double power){
+
         return power;
     }
 
