@@ -51,8 +51,10 @@ public class TestTeleop extends OpMode {
             turret.flyPower -=100;
             telemetry.addData("flyPower", turret.flyPower);
         }
-        telemetry.addData("Bot pose", localizer.getBotPose());
+        turret.fly1.setVelocity(turret.setTurretPower(turret.flyPower));
+        turret.fly2.setVelocity(turret.setTurretPower(turret.flyPower));
 
+        telemetry.addData("Bot pose", localizer.getBotPose());
         telemetry.update();
         /*
         else if(gamepad1.bWasPressed()){
