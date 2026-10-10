@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.TeleOpClasses;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -10,15 +11,16 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
+import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 
 
 @TeleOp (name = "Test TeleOp")
 public class TestTeleop extends OpMode {
-
     Limelight limelight;
     Drivetrain drivetrain;
     Intake intake;
     Turret turret;
+    RobotLocalizer localizer;
 
     @Override
     public void init() {
@@ -28,8 +30,7 @@ public class TestTeleop extends OpMode {
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap, telemetry);
         limelight.pipelineSwitch(0);
-
-
+        localizer.setBotPosition(new Pose2d(-72, -72, Math.toRadians(0)));
     }
 
     @Override
@@ -51,16 +52,7 @@ public class TestTeleop extends OpMode {
             turret.flyPower -=100;
             telemetry.addData("flyPower", turret.flyPower);
         }
-
-        turret.fly1.setVelocity(turret.setTurretPower(turret.flyPower));
-        turret.fly2.setVelocity(turret.setTurretPower(turret.flyPower));
-
-
-
-
-
-
-
+        telemetry.addData("Bot pose", localizer.getBotPose());
         /*
         else if(gamepad1.bWasPressed()){
             turret.regression(limelight.distanceFromTag());
