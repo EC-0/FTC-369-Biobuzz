@@ -41,11 +41,13 @@ public class TestTeleop extends OpMode {
                 gamepad1.right_trigger);
 
         Pose2d currentRobotPose = localizer.getBotPose();
-        if(currentRobotPose != null){
-            turret.turretTrackPosition(GOAL_TARGET, currentRobotPose);
-            telemetry.addData("current robot positionX", currentRobotPose.position.x);
-            telemetry.addData("current robot positionY", currentRobotPose.position.y);
-            telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
+        if(gamepad1.right_bumper) {
+            if (currentRobotPose != null) {
+                turret.turretTrackPosition(GOAL_TARGET, currentRobotPose);
+                telemetry.addData("current robot positionX", currentRobotPose.position.x);
+                telemetry.addData("current robot positionY", currentRobotPose.position.y);
+                telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
+            }
         }
 
 
@@ -57,12 +59,11 @@ public class TestTeleop extends OpMode {
         }
         if(gamepad1.bWasPressed()){
             turret.flyPower += 100;
-            telemetry.addData("flyPower", turret.flyPower);
         }
         if(gamepad1.xWasPressed()){
             turret.flyPower -=100;
-            telemetry.addData("flyPower", turret.flyPower);
         }
+        telemetry.addData("flyPower", turret.flyPower);
         turret.fly1.setVelocity(turret.setTurretPower(turret.flyPower));
         turret.fly2.setVelocity(turret.setTurretPower(turret.flyPower));
 
