@@ -45,8 +45,12 @@ public class TestTeleop extends OpMode {
             intake.intakePower(0);
         }
         if(gamepad1.bWasPressed()){
-            turret.setMotorManual(1700);
-            turret.manualFlyMode();
+            turret.flyPower += 100;
+            telemetry.addData("flyPower", turret.flyPower);
+        }
+        if(gamepad1.xWasPressed()){
+            turret.flyPower -=100;
+            telemetry.addData("flyPower", turret.flyPower);
         }
         telemetry.addData("Bot pose", localizer.getBotPose());
         /*
@@ -54,6 +58,8 @@ public class TestTeleop extends OpMode {
             turret.regression(limelight.distanceFromTag());
         }
         */
+
+
 
     }
 }
