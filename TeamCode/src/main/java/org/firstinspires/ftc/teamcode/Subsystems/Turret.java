@@ -39,6 +39,7 @@ public class Turret{
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         flyPower = 0;
         fly1.setDirection(DcMotorSimple.Direction.REVERSE);
+        fly1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -46,9 +47,9 @@ public class Turret{
         turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
-    public double setTurretPower(double power){
-
-        return power;
+    public void setTurretPower(double velocity){
+        fly1.setVelocity(velocity);
+        fly2.setVelocity(velocity);
     }
 
     public void turretTrackPosition(Pose2d target, Pose2d robotPose){
