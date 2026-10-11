@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class Limelight {
 
     private Telemetry telemetry;
 
+    LLResult llResult;
+
     public Limelight(HardwareMap hardwareMap, Telemetry telemetry){
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(100);
@@ -41,10 +44,10 @@ public class Limelight {
         limelight.pipelineSwitch(PIPELINE);
     }
 
-    public void distanceFromTag(){
+    public double distanceFromTag(){
         LLResult result = getResult();
         if(result==null){
-            return;
+            return 100;
         }
         double tx = result.getTx();
         double ty = result.getTy();
@@ -56,6 +59,7 @@ public class Limelight {
         //calculate distance
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
         telemetry.addData("distance: ", distanceFromLimelightToGoalInches);
+        return distanceFromLimelightToGoalInches;
     }
 
     private LLResult getResult(){
@@ -106,9 +110,15 @@ public class Limelight {
 
 
 
+
+
+
+
     public void stop(){
         if(limelight != null){
             limelight.stop();
         }
     }
+
+
 }
