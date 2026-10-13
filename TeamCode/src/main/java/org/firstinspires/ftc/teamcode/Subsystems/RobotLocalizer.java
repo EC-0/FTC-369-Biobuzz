@@ -20,6 +20,10 @@ public class RobotLocalizer {
     public Pose2d getBotPose(){
         return drive.localizer.getPose();
     }
+    public double getDistanceToGoal(){
+        Pose2d currentPose = getBotPose();
+        return Math.hypot((10 - currentPose.position.x), (-10 - currentPose.position.y));
+    }
     public void setBotPosition(Pose2d pose){
         drive.localizer.setPose(pose);
     }

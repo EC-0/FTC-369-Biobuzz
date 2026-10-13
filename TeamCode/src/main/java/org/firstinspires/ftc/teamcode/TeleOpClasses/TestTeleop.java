@@ -74,6 +74,7 @@ public class TestTeleop extends OpMode {
 
         telemetry.addData("flyPower", turret.flyPower);
         telemetry.addData("Bot pose", currentRobotPose);
+        telemetry.addData("distance", localizer.getDistanceToGoal());
         telemetry.update();
         /*
         else if(gamepad1.bWasPressed()){

@@ -38,7 +38,7 @@ public class Turret{
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         flyPower = 0;
-        fly1.setDirection(DcMotorSimple.Direction.REVERSE);
+        fly2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
