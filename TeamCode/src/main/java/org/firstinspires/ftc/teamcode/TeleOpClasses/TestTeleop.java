@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 
 @TeleOp (name = "Test TeleOp")
 public class TestTeleop extends OpMode {
+    MecanumDrive drive;
     Limelight limelight;
     Drivetrain drivetrain;
     Intake intake;
@@ -26,17 +28,17 @@ public class TestTeleop extends OpMode {
 
     @Override
     public void init() {
-
+        drive = new MecanumDrive(hardwareMap, new Pose2d(-72, -72, Math.toRadians(0)));
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap, telemetry);
         limelight.pipelineSwitch(0);
-        localizer.setBotPosition(new Pose2d(-72, -72, Math.toRadians(0)));
     }
 
     @Override
     public void loop() {
+        drive.updatePoseEstimate();
         drivetrain.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.left_trigger,
                 gamepad1.right_trigger);
 
