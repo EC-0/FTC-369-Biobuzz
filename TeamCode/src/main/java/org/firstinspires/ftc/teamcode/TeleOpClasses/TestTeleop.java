@@ -33,6 +33,7 @@ public class TestTeleop extends OpMode {
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap, telemetry);
+        localizer = new RobotLocalizer(hardwareMap, new Pose2d(-72, -72, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
         limelight.pipelineSwitch(0);
     }
 
