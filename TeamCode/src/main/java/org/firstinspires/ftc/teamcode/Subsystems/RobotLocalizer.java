@@ -22,7 +22,7 @@ public class RobotLocalizer {
     }
     public double getDistanceToGoal(){
         Pose2d currentPose = getBotPose();
-        return Math.hypot((10 - currentPose.position.x), (-10 - currentPose.position.y));
+        return Math.hypot((Math.abs(10 - currentPose.position.x)), (Math.abs(-10 - currentPose.position.y)));
     }
     public void setBotPosition(Pose2d pose){
         drive.localizer.setPose(pose);

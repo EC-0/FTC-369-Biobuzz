@@ -24,7 +24,7 @@ public class Turret{
 
     private double m_robotRelativeAngle;
     private double m_fieldRelativeAngle;
-    public double flyPower;
+    private double flyPower;
     private double offsetX = 0.0;
     private double offsetY = 0.0;
 
@@ -47,9 +47,28 @@ public class Turret{
         turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
-    public void setTurretPower(double velocity){
-        fly1.setVelocity(velocity);
-        fly2.setVelocity(velocity);
+
+    public void setShooterMode(){
+        useRegression=!useRegression;
+    }
+
+    public void setTurretPower(double distance){
+        if(useRegression)
+            regression(distance);
+        else {
+            fly1.setVelocity(flyPower);
+            fly2.setVelocity(flyPower);
+        }
+    }
+
+    public void setTurretPower(double distance, double increment){
+        if(useRegression)
+            regression(distance);
+        else {
+            flyPower += increment;
+            fly1.setVelocity(flyPower);
+            fly2.setVelocity(flyPower);
+        }
     }
 
     public void turretTrackPosition(Pose2d target, Pose2d robotPose){
@@ -85,16 +104,16 @@ public class Turret{
         turret.setPower(0.8);
     }
 
-
-
-
     public void regression(double distanceToHive){
         double targetVelocity = distanceToHive; //regression variable
         fly1.setVelocity(targetVelocity);
         fly2.setVelocity(targetVelocity);
     }
 
-
-
-
+    public double getFlyPower() {
+        return flyPower;
+    }
+    public String getShooterMode(){
+        return useRegression? "Auto" :  "Manual";
+    }
 }
