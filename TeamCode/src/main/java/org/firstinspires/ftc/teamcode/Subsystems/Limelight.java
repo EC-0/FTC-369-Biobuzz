@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Limelight {
     private Limelight3A limelight;
-    private static int PIPELINE = 0;
+    private static int PIPELINE = 1;
     // how many degrees back is your limelight rotated from perfectly vertical?
     double limelightMountAngleDegrees = 49.021;
 
