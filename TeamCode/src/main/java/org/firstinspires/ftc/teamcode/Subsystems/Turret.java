@@ -22,6 +22,8 @@ public class Turret{
     public DcMotorEx fly2;
     public DcMotorEx turret;
 
+    PIDF_Controller pid;
+
     private double m_robotRelativeAngle;
     private double m_fieldRelativeAngle;
     private double flyPower;
@@ -45,6 +47,8 @@ public class Turret{
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setTargetPosition(0);
         turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        pid = new PIDF_Controller(1, 0, 0, 0); //NEED TO TUNE PID VALUES
 
     }
 
@@ -105,10 +109,10 @@ public class Turret{
     }
 
     public void regression(double distanceToHive){
-        double targetVelocity = distanceToHive; //regression variable
-        fly1.setVelocity(targetVelocity);
-        fly2.setVelocity(targetVelocity);
-    }
+        double targetVelocity = 10.31616*distanceToHive+945.07026; //regression variable
+        pid.setTarget(targetVelocity);
+        fly1.setVelocity(pid.calculate(fly1.getVelocity()));
+        fly2.setVelocity(pid.calculate(fly2.getVelocity()));    }
 
     public double getFlyPower() {
         return flyPower;
