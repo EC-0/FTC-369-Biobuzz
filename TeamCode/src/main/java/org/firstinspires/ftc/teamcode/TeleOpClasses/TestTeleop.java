@@ -84,9 +84,13 @@ public class TestTeleop extends OpMode {
         telemetry.addData("flyPower", turret.getFlyPower());
         telemetry.addData("Bot pose", currentRobotPose);
         telemetry.addData("distance", botDistanceToGoal);
+        telemetry.addData("Distance from April Tag", limelight.distanceFromTag());
 
         telemetry.addData("Shooter Mode", turret.getShooterMode());
         telemetry.update();
+
+        limelight.distanceFromTag();
+
         /*
         else if(gamepad1.bWasPressed()){
             turret.regression(limelight.distanceFromTag());
