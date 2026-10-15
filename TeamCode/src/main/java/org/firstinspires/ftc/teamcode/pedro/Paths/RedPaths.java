@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.internal.usb.exception.RobotUsbTooManySequentialErrorsException;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import com.pedropathing.api.PoseFactory;
@@ -69,7 +70,7 @@ public class RedPaths {
         return line(new Pose(1,1), new Pose(2,2));
     }
 
-    public static Command redAutoUpRoutine(Follower follower) {
+    public static Command redAutoUpRoutine(Follower follower, Intake intake) {
         return sequential(
                 // shoot
                 // wait a couple seconds
@@ -78,7 +79,6 @@ public class RedPaths {
                         sequential(
                                 follow(follower, RedPaths.goToGarden()),
                                 // shoot
-                                // wait 3 seconds
                                 conditional(
                                         () -> detectRedUpTags,
                                         sequential(

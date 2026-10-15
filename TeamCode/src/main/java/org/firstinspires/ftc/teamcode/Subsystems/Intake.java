@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import static com.pedropathing.ivy.commands.Commands.infinite;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import android.annotation.SuppressLint;
 
+import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,5 +26,7 @@ public class Intake {
     public void intakePower(double power){
         intake.setPower(power);
     }
-
+    public Command autoIntake(double power) {
+        return infinite(() -> intake.setPower(power));
+    }
 }
