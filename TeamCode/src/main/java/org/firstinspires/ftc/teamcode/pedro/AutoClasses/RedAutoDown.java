@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedro.AutoClasses;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.pedro.Paths.RedPaths;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
@@ -12,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 public class RedAutoDown extends OpMode {
     private Follower follower;
+    private Intake intake;
     RedPaths pather = new RedPaths();
 
     @Override
@@ -23,7 +25,7 @@ public class RedAutoDown extends OpMode {
 
     @Override
     public void start() {
-        schedule(RedPaths.redAutoDownRoutine(follower));
+        schedule(RedPaths.redAutoDownRoutine(follower, intake));
     }
 
     @Override
