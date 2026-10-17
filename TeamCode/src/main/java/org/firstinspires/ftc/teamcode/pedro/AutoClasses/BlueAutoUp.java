@@ -1,0 +1,35 @@
+package org.firstinspires.ftc.teamcode.pedro.AutoClasses;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.pedro.Paths.BluePaths;
+import org.firstinspires.ftc.teamcode.pedro.Constants;
+
+import static com.pedropathing.ivy.Scheduler.execute;
+import static com.pedropathing.ivy.Scheduler.schedule;
+
+import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.Scheduler;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+public class BlueAutoUp extends OpMode {
+    private Follower follower;
+    private Intake intake;
+    BluePaths pather = new BluePaths();
+
+    @Override
+    public void init() {
+        Scheduler.reset();
+        follower = Constants.create(hardwareMap);
+        follower.setPose(pather.start);
+    }
+
+    @Override
+    public void start() {
+        schedule(BluePaths.blueAutoUpRoutine(follower, intake));
+    }
+
+    @Override
+    public void loop() {
+        execute();
+    }
+}

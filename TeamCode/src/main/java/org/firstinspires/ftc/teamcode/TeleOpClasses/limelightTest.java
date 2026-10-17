@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 
-@TeleOp(name = "limelight test                          ")
+@TeleOp(name = "limelight test")
 public class limelightTest extends OpMode {
 
     private Limelight limelight;
