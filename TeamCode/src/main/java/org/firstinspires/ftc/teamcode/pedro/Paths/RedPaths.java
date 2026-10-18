@@ -20,6 +20,7 @@ import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import static com.pedropathing.ivy.commands.Commands.*;
+import static com.pedropathing.ivy.commands.Commands.instant;
 public class RedPaths {
     public static boolean detectRedUpTags = true;
     public static boolean detectRedDownTags = true;
@@ -77,26 +78,26 @@ public class RedPaths {
                 conditional(
                         () -> detectRedUpTags,
                         sequential(
-                                intake.autoIntake(0.8),
+                                instant(() -> intake.autoIntake(0.8)),
                                 follow(follower, RedPaths.goToGarden()),
-                                intake.autoIntake(0.0),
+                                instant(() -> intake.autoIntake(0.0)),
                                 // shoot
                                 conditional(
                                         () -> detectRedUpTags,
                                         sequential(
-                                                intake.autoIntake(0.8),
+                                                instant(() -> intake.autoIntake(0.8)),
                                                 follow(follower, RedPaths.gardenToFlower()),
                                                 waitMs(5000),
-                                                intake.autoIntake(0.8),
+                                                instant(() -> intake.autoIntake(0.0)),
                                                 follow(follower, RedPaths.flowerToStart()),
                                                 // shoot
                                                 follow(follower, RedPaths.startToPark())
                                         ),
                                         sequential(
-                                                intake.autoIntake(0.8),
                                                 follow(follower, RedPaths.gardenToFlower()),
+                                                instant(() -> intake.autoIntake(0.8)),
                                                 waitMs(5000),
-                                                intake.autoIntake(0.8),
+                                                instant(() -> intake.autoIntake(0.0)),
                                                 follow(follower, RedPaths.flowerToShoot()),
                                                 waitMs(5000),
                                                 conditional(
@@ -111,9 +112,9 @@ public class RedPaths {
                                 )
                         ),
                         sequential(
-                                intake.autoIntake(0.8),
+                                instant(() -> intake.autoIntake(0.8)),
                                 follow(follower, RedPaths.goToGarden()),
-                                intake.autoIntake(0.0),
+                                instant(() -> intake.autoIntake(0.0)),
                                 follow(follower, RedPaths.gardenToShoot()),
                                 conditional(
                                         () -> detectRedDownTags,
@@ -123,10 +124,10 @@ public class RedPaths {
                                                 conditional(
                                                         () -> detectRedDownTags,
                                                         sequential(
-                                                                intake.autoIntake(0.8),
                                                                 follow(follower, RedPaths.shootToFlower()),
+                                                                instant(() -> intake.autoIntake(0.8)),
                                                                 waitMs(5000),
-                                                                intake.autoIntake(0.0),
+                                                                instant(() -> intake.autoIntake(0.0)),
                                                                 follow(follower, RedPaths.flowerToShoot()),
                                                                 // shoot
                                                                 follow(follower, RedPaths.shootToPark())
@@ -179,9 +180,9 @@ public class RedPaths {
                                                                 conditional(
                                                                         () -> detectRedDownTags,
                                                                         sequential(
-                                                                                intake.autoIntake(0.8),
+                                                                                instant(() -> intake.autoIntake(0.8)),
                                                                                 waitMs(5000),
-                                                                                intake.autoIntake(0.0),
+                                                                                instant(() -> intake.autoIntake(0.0)),
                                                                                 // shoot
                                                                                 follow(follower, RedPaths.flowerToPark2())
                                                                         ),
@@ -206,9 +207,9 @@ public class RedPaths {
                                                         sequential(
                                                                 follow(follower, RedPaths.shootToFlower2()),
                                                                 // shoot
-                                                                intake.autoIntake(0.8),
+                                                                instant(() -> intake.autoIntake(0.8)),
                                                                 waitMs(5000),
-                                                                intake.autoIntake(0.8),
+                                                                instant(() -> intake.autoIntake(0.0)),
                                                                 // shoot
                                                                 follow(follower, RedPaths.flowerToPark2())
                                                         )
@@ -218,9 +219,9 @@ public class RedPaths {
                                         sequential(
                                                 follow(follower, RedPaths.shootToFlower2()),
                                                 // shoot
-                                                intake.autoIntake(0.8),
+                                                instant(() -> intake.autoIntake(0.8)),
                                                 waitMs(5000),
-                                                intake.autoIntake(0.0),
+                                                instant(() -> intake.autoIntake(0.0)),
                                                 // shoot
                                                 follow(follower, RedPaths.flowerToPark2())
                                         )
@@ -228,9 +229,9 @@ public class RedPaths {
                         ),
                         sequential(
                                 // shoot
-                                intake.autoIntake(0.8),
+                                instant(() -> intake.autoIntake(0.8)),
                                 waitMs(5000),
-                                intake.autoIntake(0.0),
+                                instant(() -> intake.autoIntake(0.0)),
                                 // shoot
                                 follow(follower, RedPaths.flowerToPark2())
                         )

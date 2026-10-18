@@ -77,26 +77,26 @@ public class BluePaths {
                 conditional(
                         () -> detectBlueUpTags,
                         sequential(
-                                intake.autoIntake(0.8),
+                                instant(() -> intake.autoIntake(0.8)),
                                 follow(follower, BluePaths.goToGarden()),
-                                intake.autoIntake(0.0),
+                                instant(() -> intake.autoIntake(0.0)),
                                 // shoot
                                 conditional(
                                         () -> detectBlueUpTags,
                                         sequential(
-                                                intake.autoIntake(0.8),
                                                 follow(follower, BluePaths.gardenToFlower()),
+                                                instant(() -> intake.autoIntake(0.8)),
                                                 waitMs(5000),
-                                                intake.autoIntake(0.8),
+                                                instant(() -> intake.autoIntake(0.0)),
                                                 follow(follower, BluePaths.flowerToStart()),
                                                 // shoot
                                                 follow(follower, BluePaths.startToPark())
                                         ),
                                         sequential(
-                                                intake.autoIntake(0.8),
                                                 follow(follower, BluePaths.gardenToFlower()),
+                                                instant(() -> intake.autoIntake(0.8)),
                                                 waitMs(5000),
-                                                intake.autoIntake(0.8),
+                                                instant(() -> intake.autoIntake(0.0)),
                                                 follow(follower, BluePaths.flowerToShoot()),
                                                 waitMs(5000),
                                                 conditional(
@@ -111,9 +111,9 @@ public class BluePaths {
                                 )
                         ),
                         sequential(
-                                intake.autoIntake(0.8),
+                                instant(() -> intake.autoIntake(0.8)),
                                 follow(follower, BluePaths.goToGarden()),
-                                intake.autoIntake(0.0),
+                                instant(() -> intake.autoIntake(0.0)),
                                 follow(follower, BluePaths.gardenToShoot()),
                                 conditional(
                                         () -> detectBlueDownTags,
@@ -123,10 +123,10 @@ public class BluePaths {
                                                 conditional(
                                                         () -> detectBlueDownTags,
                                                         sequential(
-                                                                intake.autoIntake(0.8),
                                                                 follow(follower, BluePaths.shootToFlower()),
+                                                                instant(() -> intake.autoIntake(0.8)),
                                                                 waitMs(5000),
-                                                                intake.autoIntake(0.0),
+                                                                instant(() -> intake.autoIntake(0.0)),
                                                                 follow(follower, BluePaths.flowerToShoot()),
                                                                 // shoot
                                                                 follow(follower, BluePaths.shootToPark())
@@ -179,9 +179,9 @@ public class BluePaths {
                                                                 conditional(
                                                                         () -> detectBlueDownTags,
                                                                         sequential(
-                                                                                intake.autoIntake(0.8),
+                                                                                instant(() -> intake.autoIntake(0.8)),
                                                                                 waitMs(5000),
-                                                                                intake.autoIntake(0.0),
+                                                                                instant(() -> intake.autoIntake(0.0)),
                                                                                 // shoot
                                                                                 follow(follower, BluePaths.flowerToPark2())
                                                                         ),
@@ -206,9 +206,9 @@ public class BluePaths {
                                                         sequential(
                                                                 follow(follower, BluePaths.shootToFlower2()),
                                                                 // shoot
-                                                                intake.autoIntake(0.8),
+                                                                instant(() -> intake.autoIntake(0.8)),
                                                                 waitMs(5000),
-                                                                intake.autoIntake(0.8),
+                                                                instant(() -> intake.autoIntake(0.0)),
                                                                 // shoot
                                                                 follow(follower, BluePaths.flowerToPark2())
                                                         )
@@ -218,9 +218,9 @@ public class BluePaths {
                                         sequential(
                                                 follow(follower, BluePaths.shootToFlower2()),
                                                 // shoot
-                                                intake.autoIntake(0.8),
+                                                instant(() -> intake.autoIntake(0.8)),
                                                 waitMs(5000),
-                                                intake.autoIntake(0.0),
+                                                instant(() -> intake.autoIntake(0.0)),
                                                 // shoot
                                                 follow(follower, BluePaths.flowerToPark2())
                                         )
@@ -228,9 +228,9 @@ public class BluePaths {
                         ),
                         sequential(
                                 // shoot
-                                intake.autoIntake(0.8),
+                                instant(() -> intake.autoIntake(0.8)),
                                 waitMs(5000),
-                                intake.autoIntake(0.0),
+                                instant(() -> intake.autoIntake(0.0)),
                                 // shoot
                                 follow(follower, BluePaths.flowerToPark2())
                         )
