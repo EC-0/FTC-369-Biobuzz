@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -75,13 +74,15 @@ public class Turret {
         double dX = target.position.x - turretFieldPosition.x;
         double dY = target.position.y - turretFieldPosition.y;
 
-        double fieldAngleDegrees = Math.toDegrees(Math.atan2(dY, dX));
-        double robotHeadingDegrees = Math.toDegrees(robotPose.heading.toDouble());
+        double fieldAngleRadians = Math.atan2(dY, dX);
+        double robotHeadingRadians = robotPose.heading.toDouble();
 
-        double robotRelativeAngleDegrees = fieldAngleDegrees - robotHeadingDegrees;
+        double robotRelativeAngleRadians = fieldAngleRadians - robotHeadingRadians;
 
-        m_fieldRelativeAngle = normalize180(fieldAngleDegrees);
-        m_robotRelativeAngle = normalize180(robotRelativeAngleDegrees);
+        robotRelativeAngleRadians = normalizeRadians(robotRelativeAngleRadians);
+
+        m_fieldRelativeAngle = Math.toDegrees(fieldAngleRadians);
+        m_robotRelativeAngle = Math.toDegrees(robotRelativeAngleRadians);
 
         this.setPivotPosition(m_robotRelativeAngle);
     }
@@ -97,11 +98,10 @@ public class Turret {
         turret.setPower(0.6);
     }
 
-    private double normalize180(double deg) {
-        deg = deg % 360;
-        if (deg > 180) deg -= 360;
-        if (deg <= -180) deg += 360;
-        return deg;
+    private double normalizeRadians(double radians) {
+        while (radians > Math.PI) radians -= 2 * Math.PI;
+        while (radians <= -Math.PI) radians += 2 * Math.PI;
+        return radians;
     }
 
     public void regression(double distanceToHive) {
