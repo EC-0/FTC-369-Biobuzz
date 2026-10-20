@@ -36,7 +36,6 @@ public class Limelight {
 
         telemetry.addLine("limelight initialized");
         telemetry.addData("pipeline", PIPELINE);
-        telemetry.update();
         this.telemetry = telemetry;
     }
 
@@ -69,7 +68,6 @@ public class Limelight {
         }
         else{
             telemetry.addLine("No limelight result");
-            telemetry.update();
             return null;
         }
     }
