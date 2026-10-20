@@ -41,8 +41,7 @@ public class Turret {
         // 2. Initialize Turret Pivot Motor with Safe Mode Sequence
         turret = hardwareMap.get(DcMotorEx.class, "turret");
 
-        // ALERT: If your turret instantly jumps to a hardstop on startup,
-        // try changing REVERSE to FORWARD below, or vice versa!
+
         turret.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Clean mode switching sequence to prevent instant lockup / jumps
