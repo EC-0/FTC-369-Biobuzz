@@ -63,7 +63,7 @@ public class TestTeleop extends OpMode {
             drivetrain.resetHeading();
         }
 
-        if (gamepad1.a) {
+        if (gamepad1.a) {  
             intake.intakePower(0.8);
         }
         else{

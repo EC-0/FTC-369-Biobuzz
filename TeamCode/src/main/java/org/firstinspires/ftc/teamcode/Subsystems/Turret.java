@@ -56,6 +56,7 @@ public class Turret {
         flyPower = 0;
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
+        turret.setDirection(DcMotorSimple.Direction.REVERSE);
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -116,6 +117,7 @@ public class Turret {
 
         currentPositionDegrees = normalize360(minDegrees + (-currentPositionTicks / ticksPerDegree));
         targetPositionTurretDegrees = clamp(normalize360(360 - botErrorDeg), safeMinDegrees, safeMaxDegrees);
+
         targetPositionTurretTicks = -(targetPositionTurretDegrees - minDegrees) * ticksPerDegree;
 
         if (!filterInitialized) {
@@ -132,9 +134,14 @@ public class Turret {
         outputPower = clamp(outputPower, -0.6, 0.6);
 
 
-        if (currentPositionTicks >= maxSafeTicks && outputPower > 0) {
+        double physicalMaxLimitTicks = -maxSafeTicks; // e.g., -840.0
+        double physicalMinLimitTicks = -minSafeTicks; // e.g., -15.0
+
+
+        if (currentPositionTicks <= physicalMaxLimitTicks && outputPower < 0) {
             outputPower = 0;
-        } else if (currentPositionTicks <= minSafeTicks && outputPower < 0) {
+        }
+        else if (currentPositionTicks >= physicalMinLimitTicks && outputPower > 0) {
             outputPower = 0;
         }
 
