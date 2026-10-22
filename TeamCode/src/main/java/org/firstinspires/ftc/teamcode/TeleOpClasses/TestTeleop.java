@@ -51,11 +51,6 @@ public class TestTeleop extends OpMode {
                 turret.update(Math.toDegrees(currentRobotPose.heading.log()));
             }
         }
-        telemetry.addData("current robot positionX", currentRobotPose.position.x);
-        telemetry.addData("current robot positionY", currentRobotPose.position.y);
-        telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
-        telemetry.addData("Curr ticks", turret.getCurrentTicks());
-        telemetry.addData("Target ticks", turret.getTargetTicks());
 
         if(gamepad1.leftBumperWasPressed()){
             turret.setShooterMode();
@@ -80,6 +75,12 @@ public class TestTeleop extends OpMode {
         }
         turret.setTurretPower(botDistanceToGoal);
 
+
+        telemetry.addData("current robot positionX", currentRobotPose.position.x);
+        telemetry.addData("current robot positionY", currentRobotPose.position.y);
+        telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
+        telemetry.addData("Curr ticks", turret.getCurrentTicks());
+        telemetry.addData("Target ticks", turret.getTargetTicks());
         telemetry.addData("Bot pose", currentRobotPose);
         telemetry.addData("distance", botDistanceToGoal);
         telemetry.addData("Distance from April Tag", limelight.distanceFromTag());
