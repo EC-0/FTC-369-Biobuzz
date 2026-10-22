@@ -22,8 +22,6 @@ public class Turret {
     DcMotorEx fly2;
     DcMotorEx turret;
     PIDF_Controller pid;
-
-    // Custom PID for the turret positioning loop since motor is in RUN_WITHOUT_ENCODER
     PIDF_Controller turretPid;
 
     double flyPower;
@@ -56,16 +54,13 @@ public class Turret {
         flyPower = 0;
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
-        turret.setDirection(DcMotorSimple.Direction.REVERSE);
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         inDeadZone = true;
 
         pid = new PIDF_Controller(1, 0, 0, 0);
-
-        // Initialize the tracking loop PID controller. Tune these coefficients.
-        turretPid = new PIDF_Controller(0.005, 0, 0, 0);
+        turretPid = new PIDF_Controller(0.04, 0.001, 0.002, 0);
     }
 
     public void setShooterMode() {
@@ -115,10 +110,9 @@ public class Turret {
     public void update(double botErrorDeg) {
         currentPositionTicks = turret.getCurrentPosition();
 
-        currentPositionDegrees = normalize360(minDegrees + (-currentPositionTicks / ticksPerDegree));
+        currentPositionDegrees = normalize360(minDegrees + (currentPositionTicks / ticksPerDegree));
         targetPositionTurretDegrees = clamp(normalize360(360 - botErrorDeg), safeMinDegrees, safeMaxDegrees);
-
-        targetPositionTurretTicks = -(targetPositionTurretDegrees - minDegrees) * ticksPerDegree;
+        targetPositionTurretTicks = (targetPositionTurretDegrees - minDegrees) * ticksPerDegree;
 
         if (!filterInitialized) {
             filteredTargetTicks = targetPositionTurretTicks;
@@ -133,21 +127,14 @@ public class Turret {
         double outputPower = turretPid.calculate(currentPositionTicks);
         outputPower = clamp(outputPower, -0.6, 0.6);
 
-
-        double physicalMaxLimitTicks = -maxSafeTicks; // e.g., -840.0
-        double physicalMinLimitTicks = -minSafeTicks; // e.g., -15.0
-
-
-        if (currentPositionTicks <= physicalMaxLimitTicks && outputPower < 0) {
+        if (currentPositionTicks >= maxSafeTicks && outputPower > 0) {
             outputPower = 0;
-        }
-        else if (currentPositionTicks >= physicalMinLimitTicks && outputPower > 0) {
+        } else if (currentPositionTicks <= minSafeTicks && outputPower < 0) {
             outputPower = 0;
         }
 
         turret.setPower(outputPower);
     }
-
 
     private static double clamp(double value, double min, double max) {
         if (value < min) return min;
@@ -200,7 +187,6 @@ public class Turret {
     public double getFlyPower(){
         return flyPower;
     }
-
 
     public void addTelemetry(Telemetry telemetry) {
         telemetry.addData("curr ticks", currentPositionTicks);

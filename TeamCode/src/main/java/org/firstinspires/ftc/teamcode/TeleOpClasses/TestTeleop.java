@@ -46,14 +46,13 @@ public class TestTeleop extends OpMode {
         drivetrain.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.left_trigger,
                 gamepad1.right_trigger);
 
-        telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
 
         if(gamepad1.right_bumper) {
             if (currentRobotPose != null) {
                 turret.update(Math.toDegrees(currentRobotPose.heading.log()));
                 telemetry.addData("current robot positionX", currentRobotPose.position.x);
                 telemetry.addData("current robot positionY", currentRobotPose.position.y);
-                //telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
+                telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
 
             }
         }
