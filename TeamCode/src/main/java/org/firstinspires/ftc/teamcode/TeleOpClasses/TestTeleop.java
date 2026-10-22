@@ -49,13 +49,13 @@ public class TestTeleop extends OpMode {
         if(gamepad1.right_bumper) {
             if (currentRobotPose != null) {
                 turret.update(Math.toDegrees(currentRobotPose.heading.log()));
-                telemetry.addData("current robot positionX", currentRobotPose.position.x);
-                telemetry.addData("current robot positionY", currentRobotPose.position.y);
-                telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
-                telemetry.addData("Curr ticks", turret.getCurrentTicks());
-                telemetry.addData("Target ticks", turret.getTargetTicks());
             }
         }
+        telemetry.addData("current robot positionX", currentRobotPose.position.x);
+        telemetry.addData("current robot positionY", currentRobotPose.position.y);
+        telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
+        telemetry.addData("Curr ticks", turret.getCurrentTicks());
+        telemetry.addData("Target ticks", turret.getTargetTicks());
 
         if(gamepad1.leftBumperWasPressed()){
             turret.setShooterMode();
