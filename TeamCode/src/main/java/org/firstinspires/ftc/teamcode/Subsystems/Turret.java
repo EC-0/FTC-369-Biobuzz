@@ -56,7 +56,6 @@ public class Turret {
         flyPower = 0;
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
-        turret.setDirection(DcMotorSimple.Direction.REVERSE);
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -114,8 +113,8 @@ public class Turret {
 
     public void update(double botErrorDeg) {
         currentPositionTicks = turret.getCurrentPosition();
-        currentPositionDegrees = normalize360(minDegrees + (-currentPositionTicks / ticksPerDegree));
 
+        currentPositionDegrees = normalize360(minDegrees + (-currentPositionTicks / ticksPerDegree));
         targetPositionTurretDegrees = clamp(normalize360(360 - botErrorDeg), safeMinDegrees, safeMaxDegrees);
         targetPositionTurretTicks = -(targetPositionTurretDegrees - minDegrees) * ticksPerDegree;
 
@@ -130,10 +129,18 @@ public class Turret {
 
         turretPid.setTarget(filteredTargetTicks);
         double outputPower = turretPid.calculate(currentPositionTicks);
-
         outputPower = clamp(outputPower, -0.6, 0.6);
+
+
+        if (currentPositionTicks >= maxSafeTicks && outputPower > 0) {
+            outputPower = 0;
+        } else if (currentPositionTicks <= minSafeTicks && outputPower < 0) {
+            outputPower = 0;
+        }
+
         turret.setPower(outputPower);
     }
+
 
     private static double clamp(double value, double min, double max) {
         if (value < min) return min;
@@ -182,6 +189,11 @@ public class Turret {
     public double getCurrentTicks() {
         return turret.getCurrentPosition();
     }
+
+    public double getFlyPower(){
+        return flyPower;
+    }
+
 
     public void addTelemetry(Telemetry telemetry) {
         telemetry.addData("curr ticks", currentPositionTicks);
