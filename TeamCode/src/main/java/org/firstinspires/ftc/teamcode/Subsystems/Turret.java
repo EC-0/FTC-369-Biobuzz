@@ -1,53 +1,50 @@
+
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Rotation2d;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 public class Turret {
 
     DcMotorEx fly1;
     DcMotorEx fly2;
     DcMotorEx turret;
+
     PIDF_Controller pid;
     PIDF_Controller turretPid;
 
-    double flyPower;
-    boolean useRegression;
-    private double totalTurnTicks = 853.0;
-    private double totalDegrees = 320.0;
-    private double maxSafeTicks = 840.0;
-    private double minSafeTicks = 15.0;
-    private double ticksPerDegree = totalTurnTicks / totalDegrees;
+    private double flyPower;
+    private boolean useRegression;
+
+    private final double totalTurnTicks = 853.0;
+    private final double totalDegrees = 320.0;
+    private final double maxSafeTicks = 840.0;
+    private final double minSafeTicks = 15.0;
+    private final double ticksPerDegree = totalTurnTicks / totalDegrees;
+
     private double currentPositionTicks;
     private double currentPositionDegrees;
     private double targetPositionTurretTicks;
     private double targetPositionTurretDegrees;
-    private double minDegrees = 20;
-    private double maxDegrees = 340;
-    private double safeMinDegrees = 25;
-    private double safeMaxDegrees = 335;
-    private boolean inDeadZone;
+
+    private final double minDegrees = 20.0;
+    private final double safeMinDegrees = 25.0;
+    private final double safeMaxDegrees = 335.0;
+
     private double targetVelTicksPerSec = 0.0;
     private double lastTargetTicks = 0.0;
     private long lastTargetTimeNanos = 0;
+
     private double filteredTargetTicks = 0.0;
     private boolean filterInitialized = false;
+
     private static final double TARGET_ALPHA = 0.125;
 
     public Turret(HardwareMap hardwareMap) {
+
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         fly2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -55,10 +52,10 @@ public class Turret {
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
         turret.setDirection(DcMotorSimple.Direction.REVERSE);
+
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        inDeadZone = true;
 
         pid = new PIDF_Controller(1, 0, 0, 0);
         turretPid = new PIDF_Controller(0.04, 0.001, 0.002, 0);
@@ -69,18 +66,18 @@ public class Turret {
     }
 
     public void setTurretPower(double distance) {
-        if (useRegression)
+        if (useRegression) {
             regression(distance);
-        else {
+        } else {
             fly1.setVelocity(flyPower);
             fly2.setVelocity(flyPower);
         }
     }
 
     public void setTurretPower(double distance, double increment) {
-        if (useRegression)
+        if (useRegression) {
             regression(distance);
-        else {
+        } else {
             flyPower += increment;
             fly1.setVelocity(flyPower);
             fly2.setVelocity(flyPower);
@@ -94,32 +91,33 @@ public class Turret {
         fly2.setVelocity(pid.calculate(fly2.getVelocity()));
     }
 
-    public void setPowerRaw(double p) {
-        turret.setPower(p);
+    public void setPowerRaw(double power) {
+        turret.setPower(power);
     }
 
     public void resetPosition() {
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         lastTargetTimeNanos = 0;
         lastTargetTicks = 0.0;
         targetVelTicksPerSec = 0.0;
+
         filterInitialized = false;
         filteredTargetTicks = 0.0;
     }
-
     public void update(double botErrorDeg) {
         currentPositionTicks = turret.getCurrentPosition();
+        currentPositionDegrees = normalize360(minDegrees + currentPositionTicks / ticksPerDegree);
 
-        currentPositionDegrees = normalize360(minDegrees + (currentPositionTicks / ticksPerDegree));
-        targetPositionTurretDegrees = clamp(normalize360(360 - botErrorDeg), safeMinDegrees, safeMaxDegrees);
-        targetPositionTurretTicks = Math.abs((targetPositionTurretDegrees - minDegrees) * ticksPerDegree);
+        targetPositionTurretDegrees = clamp(normalize360(360.0 - botErrorDeg), safeMinDegrees, safeMaxDegrees);
+        targetPositionTurretTicks = (targetPositionTurretDegrees - minDegrees) * ticksPerDegree;
 
         if (!filterInitialized) {
             filteredTargetTicks = targetPositionTurretTicks;
             filterInitialized = true;
         } else {
-            filteredTargetTicks = filteredTargetTicks + TARGET_ALPHA * (targetPositionTurretTicks - filteredTargetTicks);
+            filteredTargetTicks += TARGET_ALPHA * (targetPositionTurretTicks - filteredTargetTicks);
         }
 
         updateTargetVelocity();
@@ -127,54 +125,57 @@ public class Turret {
         turretPid.setTarget(filteredTargetTicks);
         double outputPower = turretPid.calculate(currentPositionTicks);
         outputPower = clamp(outputPower, -0.6, 0.6);
-
         if (currentPositionTicks >= maxSafeTicks && outputPower > 0) {
             outputPower = 0;
-        } else if (currentPositionTicks <= minSafeTicks && outputPower < 0) {
+        }
+        if (currentPositionTicks <= minSafeTicks && outputPower < 0) {
             outputPower = 0;
         }
-
         turret.setPower(outputPower);
     }
 
     private static double clamp(double value, double min, double max) {
-        if (value < min) return min;
-        if (value > max) return max;
+        if (value < min) {
+            return min;
+        }
+        else if (value > max) {
+            return max;
+        }
         return value;
     }
 
-    private static double normalize360(double deg) {
-        deg = deg % 360;
-        if (deg < 0) deg += 360;
-        return deg;
-    }
-
-    public double getTargetVelocityTicksPerSec() {
-        return targetVelTicksPerSec;
+    private static double normalize360(double degrees) {
+        degrees %= 360.0;
+        if (degrees < 0) {
+            degrees += 360.0;
+        }
+        return degrees;
     }
 
     private void updateTargetVelocity() {
         long now = System.nanoTime();
-
         if (lastTargetTimeNanos == 0) {
             lastTargetTimeNanos = now;
             lastTargetTicks = filteredTargetTicks;
             targetVelTicksPerSec = 0.0;
             return;
         }
-
         double dt = (now - lastTargetTimeNanos) / 1e9;
         lastTargetTimeNanos = now;
-
-        if (dt <= 0 || dt > 0.1) dt = 0.02;
-
+        if (dt <= 0 || dt > 0.1) {
+            dt = 0.02;
+        }
         targetVelTicksPerSec = (filteredTargetTicks - lastTargetTicks) / dt;
         lastTargetTicks = filteredTargetTicks;
     }
 
     public boolean isOnTarget(double degTolerance) {
-        double tickDiff = Math.abs(turret.getCurrentPosition() - targetPositionTurretTicks);
+        double tickDiff = Math.abs(turret.getCurrentPosition() - filteredTargetTicks);
         return (tickDiff / ticksPerDegree) < degTolerance;
+    }
+
+    public double getTargetVelocityTicksPerSec() {
+        return targetVelTicksPerSec;
     }
 
     public double getTargetTicks() {
@@ -185,16 +186,16 @@ public class Turret {
         return turret.getCurrentPosition();
     }
 
-    public double getFlyPower(){
+    public double getFlyPower() {
         return flyPower;
     }
 
     public void addTelemetry(Telemetry telemetry) {
-        telemetry.addData("curr ticks", currentPositionTicks);
-        telemetry.addData("curr deg", currentPositionDegrees);
-        telemetry.addLine("---------------");
-        telemetry.addData("target ticks", targetPositionTurretTicks);
-        telemetry.addData("target deg", targetPositionTurretDegrees);
-        telemetry.addLine("---------------");
+        telemetry.addData("Turret Current Ticks", currentPositionTicks);
+        telemetry.addData("Turret Current Degrees", currentPositionDegrees);
+        telemetry.addData("Turret Target Ticks", targetPositionTurretTicks);
+        telemetry.addData("Turret Target Degrees", targetPositionTurretDegrees);
+        telemetry.addData("Filtered Target Ticks", filteredTargetTicks);
+        telemetry.addData("Target Velocity Ticks/Sec", targetVelTicksPerSec);
     }
 }
