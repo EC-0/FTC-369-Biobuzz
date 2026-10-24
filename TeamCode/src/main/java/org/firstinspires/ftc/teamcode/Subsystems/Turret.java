@@ -54,7 +54,7 @@ public class Turret {
         turret.setDirection(DcMotorSimple.Direction.REVERSE);
 
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         pid = new PIDF_Controller(1, 0, 0, 0);
@@ -97,7 +97,7 @@ public class Turret {
 
     public void resetPosition() {
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         lastTargetTimeNanos = 0;
         lastTargetTicks = 0.0;
@@ -181,6 +181,11 @@ public class Turret {
 
     public double getTargetTicks() {
         return filteredTargetTicks;
+    }
+
+    public void turretSetPower(double turretPower){
+        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        turret.setPower(turretPower);
     }
 
     public double getCurrentTicks() {
