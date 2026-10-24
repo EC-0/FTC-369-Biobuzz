@@ -52,9 +52,9 @@ public class TestTeleop extends OpMode {
             double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
             double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
             double targetFieldAngle = Math.atan2(dy, dx);
-            double robotHeading = Math.toDegrees(currentRobotPose.heading.log());
+            double robotHeading = currentRobotPose.heading.log();
             double targetRelativeAngle = targetFieldAngle - robotHeading;
-            double botErrorDeg = targetRelativeAngle;
+            double botErrorDeg = Math.toDegrees(targetRelativeAngle);
             botErrorDeg = ((botErrorDeg + 180) % 360 + 360) % 360 - 180;
             turret.update(botErrorDeg);
 
@@ -85,7 +85,6 @@ public class TestTeleop extends OpMode {
         if (gamepad1.xWasPressed()) {
             turret.setTurretPower(botDistanceToGoal, -100);
         }
-
         turret.setTurretPower(botDistanceToGoal);
         if (currentRobotPose != null) {
             telemetry.addData("Robot X", currentRobotPose.position.x);

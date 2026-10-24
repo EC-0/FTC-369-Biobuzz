@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.TeleOpClasses;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -16,6 +17,8 @@ public class TestTurretTeleop extends OpMode {
     public void init() {
         turret = hardwareMap.get(DcMotorEx.class, "turret");
         drivetrain = new Drivetrain(hardwareMap);
+        turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
