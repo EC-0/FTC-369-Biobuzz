@@ -112,8 +112,10 @@ public class Turret {
         currentPositionTicks = turret.getCurrentPosition();
         currentPositionDegrees = normalize360(minDegrees + currentPositionTicks / ticksPerDegree);
 
-        targetPositionTurretDegrees = clamp(normalize360(360.0 - botErrorDeg), safeMinDegrees, safeMaxDegrees);
-        //either Math.abs or - sign on (targetPositionTurretDegrees - minDegrees)
+        double desiredDegrees = normalize360(360.0 - botErrorDeg);
+        targetPositionTurretDegrees = clamp(desiredDegrees, safeMinDegrees, safeMaxDegrees
+        );
+
         targetPositionTurretTicks = (targetPositionTurretDegrees - minDegrees) * ticksPerDegree;
 
         if (!filterInitialized) {
@@ -124,7 +126,6 @@ public class Turret {
         }
 
         updateTargetVelocity();
-
         turretPid.setTarget(filteredTargetTicks);
         double outputPower = turretPid.calculate(currentPositionTicks);
         outputPower = clamp(outputPower, -0.6, 0.6);
