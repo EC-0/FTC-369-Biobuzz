@@ -85,9 +85,6 @@ public class TestTeleop extends OpMode {
         if (gamepad1.xWasPressed()) {
             turret.setTurretPower(botDistanceToGoal, -100);
         }
-        if(gamepad1.dpad_down){
-            turret.turretSetPower(0);
-        }
 
         turret.setTurretPower(botDistanceToGoal);
         if (currentRobotPose != null) {
