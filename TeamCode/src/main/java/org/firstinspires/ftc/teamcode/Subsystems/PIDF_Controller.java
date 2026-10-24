@@ -5,7 +5,7 @@ public class PIDF_Controller {
 
     private final double kP, kI, kD, kF, kV;
     private double integral, derivative;
-    private double lastError, target, error, output;
+    private double lastError = 0, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
     public PIDF_Controller (double kP, double kI, double kD, double kF, double kV) {
