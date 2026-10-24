@@ -55,7 +55,7 @@ public class TestTeleop extends OpMode {
             double robotHeading = currentRobotPose.heading.log();
             double targetRelativeAngle = targetFieldAngle - robotHeading;
             double botErrorDeg = Math.toDegrees(targetRelativeAngle);
-            botErrorDeg = ((botErrorDeg + 180) % 360 + 360) % 360 - 180;
+            botErrorDeg = ((botErrorDeg + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
             turret.update(botErrorDeg);
 
             telemetry.addData("Turret Lock", "ENABLED");
