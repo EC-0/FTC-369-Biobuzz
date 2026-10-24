@@ -111,6 +111,7 @@ public class Turret {
         currentPositionDegrees = normalize360(minDegrees + currentPositionTicks / ticksPerDegree);
 
         targetPositionTurretDegrees = clamp(normalize360(360.0 - botErrorDeg), safeMinDegrees, safeMaxDegrees);
+        //either Math.abs or - sign on (targetPositionTurretDegrees - minDegrees)
         targetPositionTurretTicks = (targetPositionTurretDegrees - minDegrees) * ticksPerDegree;
 
         if (!filterInitialized) {
