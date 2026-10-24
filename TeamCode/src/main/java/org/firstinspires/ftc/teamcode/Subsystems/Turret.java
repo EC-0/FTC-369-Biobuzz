@@ -43,6 +43,7 @@ public class Turret {
 
     private static final double TARGET_ALPHA = 0.125;
 
+
     public Turret(HardwareMap hardwareMap) {
 
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
@@ -57,9 +58,10 @@ public class Turret {
         turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        pid = new PIDF_Controller(1, 0, 0, 0);
-        turretPid = new PIDF_Controller(0.011, 0, 0.0004, .06);
+        pid = new PIDF_Controller(1, 0, 0, 0, 0);
+        turretPid = new PIDF_Controller(0.011, 0, 0.0004, .06, 0.0012);
     }
+
 
     public void setShooterMode() {
         useRegression = !useRegression;

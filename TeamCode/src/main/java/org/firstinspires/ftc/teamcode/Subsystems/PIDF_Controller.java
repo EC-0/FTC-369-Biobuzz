@@ -3,16 +3,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PIDF_Controller {
 
-    private final double kP, kI, kD, kF;
+    private final double kP, kI, kD, kF, kV;
     private double integral, derivative;
     private double lastError, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
-    public PIDF_Controller (double kP, double kI, double kD, double kF) {
+    public PIDF_Controller (double kP, double kI, double kD, double kF, double kV) {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
         this.kF = kF;
+        this.kV = kV;
         timer.reset();
     }
 
