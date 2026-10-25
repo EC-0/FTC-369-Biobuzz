@@ -186,11 +186,6 @@ public class Turret {
         return filteredTargetTicks;
     }
 
-    public void turretSetPower(double turretPower){
-        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        turret.setPower(turretPower);
-    }
-
     public double getCurrentTicks() {
         return turret.getCurrentPosition();
     }

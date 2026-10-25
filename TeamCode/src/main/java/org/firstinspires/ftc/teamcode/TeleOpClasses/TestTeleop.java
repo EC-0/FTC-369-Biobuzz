@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
@@ -53,9 +54,9 @@ public class TestTeleop extends OpMode {
             double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
             double targetFieldAngle = Math.atan2(dy, dx);
             double robotHeading = currentRobotPose.heading.log();
-            double targetRelativeAngle = targetFieldAngle - robotHeading;
-            double botErrorDeg = Math.toDegrees(targetRelativeAngle);
-            botErrorDeg = ((botErrorDeg + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
+            double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
+            double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
+//            botErrorDeg = ((botErrorDeg + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
             turret.update(botErrorDeg);
 
             telemetry.addData("Turret Lock", "ENABLED");
@@ -90,11 +91,8 @@ public class TestTeleop extends OpMode {
             telemetry.addData("Robot X", currentRobotPose.position.x);
             telemetry.addData("Robot Y", currentRobotPose.position.y);
             telemetry.addData("Robot Heading", Math.toDegrees(currentRobotPose.heading.log()));
-            telemetry.addData("Robot Pose", currentRobotPose);
         }
         telemetry.addData("Distance to Goal", botDistanceToGoal);
-        telemetry.addData("Turret Current Ticks", turret.getCurrentTicks());
-        telemetry.addData("Turret Target Ticks", turret.getTargetTicks());
         telemetry.addData("Distance from AprilTag", limelight.distanceFromTag());
         turret.addTelemetry(telemetry);
         telemetry.update();
