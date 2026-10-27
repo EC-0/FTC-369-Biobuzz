@@ -17,7 +17,7 @@ public class TestTurretPIDTeleop extends OpMode {
     @Override
     public void init() {
         turret = hardwareMap.get(DcMotorEx.class, "turret");
-        turretPID = new PIDF_Controller(1,0,0,0,0);
+        turretPID = new PIDF_Controller(.05,0,0.05,0,0);
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

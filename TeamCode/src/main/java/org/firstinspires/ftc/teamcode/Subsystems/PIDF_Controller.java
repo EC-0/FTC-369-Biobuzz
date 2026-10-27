@@ -5,7 +5,8 @@ public class PIDF_Controller {
 
     private final double kP, kI, kD, kF, kV;
     private double integral, derivative;
-    private double lastError = 0, target, error, output;
+    private double target, lastError = 0;
+//    private double lastError = 0, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
     public PIDF_Controller (double kP, double kI, double kD, double kF, double kV) {
@@ -24,12 +25,11 @@ public class PIDF_Controller {
     public double calculate(double current) {
         timer.reset();
 
-        error = target - current;
+        double  error = target - current;
         derivative = (error - lastError) / timer.seconds();
         integral += error * timer.seconds();
-        output = (kP * error) + (kI * integral) + (kD * derivative) + kF;
         lastError = error;
 
-        return output;
+        return (kP * error) + (kI * integral) + (kD * derivative) + kF;
     }
 }
