@@ -8,115 +8,74 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 import java.util.List;
 
 public class Limelight {
-    private Limelight3A limelight;
-    private static int PIPELINE = 1;
-    // how many degrees back is your limelight rotated from perfectly vertical?
-    double limelightMountAngleDegrees = 49.021;
+    Limelight3A limelighter;
+    double targetHeight = 65.6, cameraHeight = 13.0, cameraAngle = 49.021;
+    double deltaHeight = targetHeight - cameraHeight;
+    double pitchAngle;
+    Integer bestId = null;
+    Double lowestDistance = null;
+    public Limelight(HardwareMap hardwareMap) {
 
-    // distance from the center of the Limelight lens to the floor
-    double limelightLensHeightInches = 13.0;
+        limelighter = hardwareMap.get(Limelight3A.class, "limelight");
+        limelighter.pipelineSwitch(0);
+        limelighter.setPollRateHz(100);
+        limelighter.start();
 
-    // distance from the target to the floor
-    double goalHeightInches = 65.6;
-
-    private Telemetry telemetry;
-
-    LLResult llResult;
-
-    public Limelight(HardwareMap hardwareMap, Telemetry telemetry){
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.setPollRateHz(100);
-        limelight.pipelineSwitch(PIPELINE);
-        limelight.start();
-
-        telemetry.addLine("limelight initialized");
-        telemetry.addData("pipeline", PIPELINE);
-        this.telemetry = telemetry;
     }
 
-    public void pipelineSwitch(int PIPELINE) {
-        limelight.pipelineSwitch(PIPELINE);
-    }
+    public void getClosest() {
 
-    public double distanceFromTag(){
-        LLResult result = getResult();
-        if(result==null){
-            return 100;
-        }
-        double tx = result.getTx();
-        double ty = result.getTy();
-        double ta = result.getTa();
+        bestId = null;
+        lowestDistance = null;
 
-        double angleToGoalDegrees = limelightMountAngleDegrees + ty;
-        double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+        LLResult result = limelighter.getLatestResult();
+        if (result != null && result.isValid()) {
+            List<LLResultTypes.FiducialResult> tagList = result.getFiducialResults();
 
-        //calculate distance
-        double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
-        telemetry.addData("distance: ", distanceFromLimelightToGoalInches);
-        return distanceFromLimelightToGoalInches;
-    }
+            if (!tagList.isEmpty()) {
 
-    private LLResult getResult(){
-        LLResult result = limelight.getLatestResult();
-        if(result!=null && result.isValid()){
-            return result;
-        }
-        else{
-            telemetry.addLine("No limelight result");
-            return null;
+                for (LLResultTypes.FiducialResult tag : tagList) {
+                    if (lowestDistance != null) {
+
+                        pitchAngle = cameraAngle + tag.getTargetYDegrees();
+
+                        if ((returnDistance(deltaHeight, pitchAngle)) < lowestDistance && returnDistance(deltaHeight,pitchAngle) < 120) {
+                            bestId = tag.getFiducialId();
+                            lowestDistance = returnDistance(deltaHeight, pitchAngle);
+                        }
+                    }
+                    else {
+                        pitchAngle = cameraAngle + tag.getTargetYDegrees();
+
+                        bestId = tag.getFiducialId();
+                        lowestDistance = returnDistance(deltaHeight, pitchAngle);
+                    }
+                }
+            }
+            else {
+                lowestDistance = null;
+                bestId = null;
+            }
         }
     }
 
-    public void getBotPose() {
-        LLResult result = getResult();
-        if(result==null){
-            return;
-        }
-        double tx = result.getTx();
-        double ty = result.getTy();
-        double ta = result.getTa();
-
-        telemetry.addData("Result found", "yes");
-        telemetry.addData("TX: ", tx);
-        telemetry.addData("TY: ",ty);
-        telemetry.addData("TA: ", ta);
-
-
-        List<LLResultTypes.FiducialResult> fiducials = result.getFiducialResults();
-        telemetry.addData("April tags", fiducials.size());
-
-        for(LLResultTypes.FiducialResult fiducial : fiducials){
-            int id = fiducial.getFiducialId();
-            telemetry.addData("AprilTag", "ID: ", id);
-        }
-
-        if(result.getBotpose() != null){
-            double x = result.getBotpose().getPosition().x;
-            double y = result.getBotpose().getPosition().y;
-            double z = result.getBotpose().getPosition().z;
-            telemetry.addData("Robot Pose", "X: "+ x + "Y: " + y +  "Z: " + z);
-        }
-
-        long staleness = result.getStaleness();
-        telemetry.addData("Data age", staleness + "ms");
+    public Integer getTag() {
+        return bestId;
     }
 
-
-
-
-
-
-
-    public void stop(){
-        if(limelight != null){
-            limelight.stop();
-        }
+    public Double getDistance() {
+        return lowestDistance;
     }
 
+    public static double returnDistance(double dh, double angle) {
+        return dh / Math.tan(Math.toRadians(angle));
+    }
 
+    public void switchPipeline(int pipeline) {
+        limelighter.pipelineSwitch(pipeline);
+    }
 }

@@ -31,9 +31,9 @@ public class TestTeleop extends OpMode {
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
-        limelight = new Limelight(hardwareMap, telemetry);
+        limelight = new Limelight(hardwareMap);
         localizer = new RobotLocalizer(hardwareMap, new Pose2d(-72, -72, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
-        limelight.pipelineSwitch(0);
+        limelight.switchPipeline(0);
     }
 
     @Override
@@ -83,12 +83,12 @@ public class TestTeleop extends OpMode {
         telemetry.addData("current robot positionY", currentRobotPose.position.y);
         telemetry.addData("current robot positionTheta", Math.toDegrees(currentRobotPose.heading.log()));
         telemetry.addData("distance", botDistanceToGoal);
-        telemetry.addData("Distance from April Tag", limelight.distanceFromTag());
+        telemetry.addData("Distance from April Tag", limelight.getDistance());
 
         telemetry.addData("Shooter Mode", turret.getShooterMode());
         telemetry.update();
 
-        limelight.distanceFromTag();
+        limelight.getClosest();
 
         /*
         else if(gamepad1.bWasPressed()){
