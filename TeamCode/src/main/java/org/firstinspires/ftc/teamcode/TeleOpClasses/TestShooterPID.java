@@ -32,6 +32,4 @@ public class TestShooterPID extends OpMode {
         telemetry.addData("current velocity", fly2.getVelocity());
         telemetry.addData("target velocity", 700);
     }
-
-
 }

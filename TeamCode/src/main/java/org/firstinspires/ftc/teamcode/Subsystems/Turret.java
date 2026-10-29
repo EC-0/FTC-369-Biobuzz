@@ -87,7 +87,8 @@ public class Turret {
     }
 
     public void regression(double distanceToHive) {
-        double targetVelocity = 10.31616 * distanceToHive + 945.07026;
+        //double targetVelocity = 10.31616 * distanceToHive + 945.07026;
+        double targetVelocity = (0.544791 * Math.pow(distanceToHive,2)) - (59.41912*distanceToHive) + 3204.17206;
         pid.setTarget(targetVelocity);
         fly1.setVelocity(pid.calculate(fly1.getVelocity()));
         fly2.setVelocity(pid.calculate(fly2.getVelocity()));
