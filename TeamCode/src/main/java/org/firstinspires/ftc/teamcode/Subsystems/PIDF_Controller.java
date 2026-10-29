@@ -9,12 +9,11 @@ public class PIDF_Controller {
 //    private double lastError = 0, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
-    public PIDF_Controller (double kP, double kI, double kD, double kF, double kV) {
+    public PIDF_Controller (double kP, double kI, double kD, double kF) {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
         this.kF = kF;
-        this.kV = kV;
         timer.reset();
     }
 
