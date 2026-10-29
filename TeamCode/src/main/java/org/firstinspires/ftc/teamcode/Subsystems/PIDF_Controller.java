@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PIDF_Controller {
 
-    private final double kP, kI, kD, kF, kV;
+    private final double kP, kI, kD, kF;
     private double integral, derivative;
     private double target, lastTimeNano, lastError = 0;
 //    private double lastError = 0, target, error, output;
