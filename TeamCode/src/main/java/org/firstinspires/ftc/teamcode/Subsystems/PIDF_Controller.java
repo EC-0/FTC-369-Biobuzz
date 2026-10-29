@@ -36,7 +36,7 @@ public class PIDF_Controller {
         integral += error * dt;
         lastError = error;
 
-        lastTimeNano = timer.seconds();
+        lastTimeNano  = timer.seconds();
 
         return (kP * error) + (kI * integral) + (kD * derivative) + kF;
     }

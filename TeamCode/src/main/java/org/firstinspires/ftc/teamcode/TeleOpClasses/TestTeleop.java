@@ -92,6 +92,7 @@ public class TestTeleop extends OpMode {
             telemetry.addData("Robot Y", currentRobotPose.position.y);
             telemetry.addData("Robot Heading", Math.toDegrees(currentRobotPose.heading.log()));
         }
+        telemetry.addData("fly power", turret.getFlyPower());
         telemetry.addData("Distance to Goal", botDistanceToGoal);
         telemetry.addData("Distance from AprilTag", limelight.distanceFromTag());
         turret.addTelemetry(telemetry);
