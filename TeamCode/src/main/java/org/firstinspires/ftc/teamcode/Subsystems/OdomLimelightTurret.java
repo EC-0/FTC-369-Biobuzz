@@ -62,6 +62,10 @@ public class OdomLimelightTurret {
         this.turretMode = turretMode;
     }
 
+    public void setManualResetHeld(boolean held) {
+        this.manualResetHeld = held;
+    }
+
     public Mode getTurretMode(){
         return turretMode;
     }

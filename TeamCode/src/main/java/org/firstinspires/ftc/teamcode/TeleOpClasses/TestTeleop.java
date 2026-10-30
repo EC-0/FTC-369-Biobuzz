@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
+import org.firstinspires.ftc.teamcode.Subsystems.OdomLimelightTurret;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 
@@ -24,12 +25,14 @@ public class TestTeleop extends OpMode {
     Intake intake;
     Turret turret;
     RobotLocalizer localizer;
+    OdomLimelightTurret odomLimelightTurret;
 
     private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(10, -10), Rotation2d.exp(0)
     );
     private boolean turretLockEnabled = false;
     @Override
     public void init() {
+        odomLimelightTurret = new OdomLimelightTurret(hardwareMap, RobotLocalizer.allianceColor.BLUE);
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
@@ -86,9 +89,26 @@ public class TestTeleop extends OpMode {
         if (gamepad1.xWasPressed()) {
             turret.setTurretPower(botDistanceToGoal, -100);
         }
+
+        if(gamepad2.leftBumperWasPressed()){
+            odomLimelightTurret.setTurretMode(OdomLimelightTurret.Mode.LIMELIGHT_BASIC_MODE);
+        }
+        if(gamepad2.rightBumperWasPressed()){
+            odomLimelightTurret.setTurretMode(OdomLimelightTurret.Mode.LOCKED_TURRET_MODE);
+        }
+        if(gamepad2.xWasPressed()){
+            odomLimelightTurret.setTurretMode(OdomLimelightTurret.Mode.MANUAL_RESET_MODE);
+        }
+        if (gamepad2.x){
+            odomLimelightTurret.setManualResetHeld(true);
+        }
+        if (gamepad2.xWasReleased()){
+            odomLimelightTurret.setManualResetHeld(false);
+        }
         turret.setTurretPower(botDistanceToGoal);
 
         telemetry.addData("flyPower", turret.getFlyPower());
+
         if (currentRobotPose != null) {
             telemetry.addData("Robot X", currentRobotPose.position.x);
             telemetry.addData("Robot Y", currentRobotPose.position.y);

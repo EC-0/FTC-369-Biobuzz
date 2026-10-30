@@ -67,6 +67,7 @@ public class Turret {
         useRegression = !useRegression;
     }
 
+
     public void setTurretPower(double distance) {
         if (useRegression) {
             regression(distance);
@@ -211,6 +212,8 @@ public class Turret {
     public String getShooterMode(){
         return useRegression ? "Auto" : "Manual";
     }
+
+
 
     public void addTelemetry(Telemetry telemetry) {
         telemetry.addData("Turret Current Ticks", currentPositionTicks);
