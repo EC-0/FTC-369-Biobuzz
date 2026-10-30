@@ -97,6 +97,8 @@ public class TestTeleop extends OpMode {
         telemetry.addData("distance from goal", botDistanceToGoal);
         telemetry.addData("Distance from April Tag", limelight.getDistance());
 
+        telemetry.addData("LIMELIGHT", limelight.getTag());
+
         telemetry.addData("Shooter Mode", turret.getShooterMode());
         telemetry.update();
 
