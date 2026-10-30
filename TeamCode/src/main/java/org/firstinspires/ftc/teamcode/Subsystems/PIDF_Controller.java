@@ -9,6 +9,7 @@ public class PIDF_Controller {
 //    private double lastError = 0, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
+    private double targetVel = 0.0;
     public PIDF_Controller (double kP, double kI, double kD, double kF) {
         this.kP = kP;
         this.kI = kI;
@@ -19,6 +20,11 @@ public class PIDF_Controller {
 
     public void setTarget(double target) {
         this.target = target;
+    }
+
+    public void setTarget(double target, double targetVel){
+        this.target = target;
+        this.targetVel = 0.0;
     }
 
     public double calculate(double current) {

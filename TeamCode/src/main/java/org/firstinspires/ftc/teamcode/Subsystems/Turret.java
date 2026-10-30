@@ -76,6 +76,10 @@ public class Turret {
         }
     }
 
+    public void manual(double stickX){
+        turret.setPower(-stickX * 0.05);
+    }
+
     public void setTurretPower(double distance, double increment) {
         if (useRegression) {
             regression(distance);
@@ -195,6 +199,14 @@ public class Turret {
     public double getFlyPower() {
         return flyPower;
     }
+
+    public void aimPIDF(){
+        pid.setTarget(filteredTargetTicks, targetVelTicksPerSec);
+        double currentTicks = turret.getCurrentPosition();
+        double power = pid.calculate(currentTicks);
+        turret.setPower(power);
+    }
+
 
     public String getShooterMode(){
         return useRegression ? "Auto" : "Manual";
