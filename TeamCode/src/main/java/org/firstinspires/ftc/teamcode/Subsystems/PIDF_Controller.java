@@ -5,7 +5,8 @@ public class PIDF_Controller {
 
     private final double kP, kI, kD, kF;
     private double integral, derivative;
-    private double lastError, target, error, output;
+    private double target, lastTimeNano, lastError = 0;
+//    private double lastError = 0, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
     public PIDF_Controller (double kP, double kI, double kD, double kF) {
@@ -21,14 +22,21 @@ public class PIDF_Controller {
     }
 
     public double calculate(double current) {
-        timer.reset();
+        long now = System.nanoTime();
 
-        error = target - current;
-        derivative = (error - lastError) / timer.seconds();
-        integral += error * timer.seconds();
-        output = (kP * error) + (kI * integral) + (kD * derivative) + kF;
+        if(lastTimeNano == 0){
+            lastTimeNano = now;
+            return 0;
+        }
+        double dt = now-lastTimeNano;
+
+        double  error = target - current;
+        derivative = (error - lastError) / dt;
+        integral += error * dt;
         lastError = error;
 
-        return output;
+        lastTimeNano  = timer.seconds();
+
+        return (kP * error) + (kI * integral) + (kD * derivative) + kF;
     }
 }
