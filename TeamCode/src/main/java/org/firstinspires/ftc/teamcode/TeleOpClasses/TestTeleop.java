@@ -90,6 +90,7 @@ public class TestTeleop extends OpMode {
             turret.setTurretPower(botDistanceToGoal, -100);
         }
 
+        //Gamepad 2 controls
         if(gamepad2.leftBumperWasPressed()){
             odomLimelightTurret.setTurretMode(OdomLimelightTurret.Mode.LIMELIGHT_BASIC_MODE);
         }
@@ -105,6 +106,8 @@ public class TestTeleop extends OpMode {
         if (gamepad2.xWasReleased()){
             odomLimelightTurret.setManualResetHeld(false);
         }
+        telemetry.addData("turret mode", odomLimelightTurret.getTurretMode());
+
         turret.setTurretPower(botDistanceToGoal);
 
         telemetry.addData("flyPower", turret.getFlyPower());
