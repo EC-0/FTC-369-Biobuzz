@@ -25,8 +25,7 @@ public class TestTeleop extends OpMode {
     Turret turret;
     RobotLocalizer localizer;
 
-    private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(10, -10), Rotation2d.exp(0)
-    );
+    private Pose2d GOAL_TARGET;
     private boolean turretLockEnabled = false;
     @Override
     public void init() {
@@ -36,6 +35,8 @@ public class TestTeleop extends OpMode {
         limelight = new Limelight(hardwareMap);
         localizer = new RobotLocalizer(hardwareMap, new Pose2d(-72, -72, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
         limelight.switchPipeline(0);
+
+        GOAL_TARGET = new Pose2d(new Vector2d(localizer.GOAL_X, localizer.GOAL_Y), Rotation2d.exp(0));
     }
     @Override
     public void loop() {
@@ -50,21 +51,21 @@ public class TestTeleop extends OpMode {
             turretLockEnabled = !turretLockEnabled;
         }
         if (turretLockEnabled && currentRobotPose != null) {
-            double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
-            double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
-            double targetFieldAngle = Math.atan2(dy, dx);
-            double robotHeading = currentRobotPose.heading.log();
-            double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
-            double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
+//            double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
+//            double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
+//            double targetFieldAngle = Math.atan2(dy, dx);
+//            double robotHeading = currentRobotPose.heading.log();
+//            double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
+//            double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
 //            botErrorDeg = ((botErrorDeg + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
-            turret.update(botErrorDeg);
+            turret.update(localizer.angleToGoal());
 
             telemetry.addData("Turret Lock", "ENABLED");
-            telemetry.addData("Hive Target X", GOAL_TARGET.position.x);
-            telemetry.addData("Hive Target Y", GOAL_TARGET.position.y);
-            telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
-            telemetry.addData("Robot Heading", Math.toDegrees(robotHeading));
-            telemetry.addData("Target Relative Angle", botErrorDeg);
+            telemetry.addData("Hive Target X", localizer.GOAL_X);
+            telemetry.addData("Hive Target Y", localizer.GOAL_Y);
+//            telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
+//            telemetry.addData("Robot Heading", Math.toDegrees(robotHeading));
+            telemetry.addData("Target Relative Angle", localizer.angleToGoal());
         } else {
             telemetry.addData("Turret Lock", "DISABLED");
             turret.setPowerRaw(0);
