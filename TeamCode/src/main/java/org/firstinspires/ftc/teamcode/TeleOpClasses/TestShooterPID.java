@@ -24,6 +24,7 @@ public class TestShooterPID extends OpMode {
             fly1.setVelocity(shooterPID.calculate(fly1.getVelocity()));
             fly2.setVelocity(shooterPID.calculate(fly2.getVelocity()));
         }
+        // i like bread
         else{
             fly1.setVelocity(0);
             fly2.setVelocity(0);
