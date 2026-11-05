@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Turret {
 
     DcMotorEx fly1;
-    DcMotorEx fly2;
+    //DcMotorEx fly2;
     DcMotorEx turret;
 
     PIDF_Controller pid;
@@ -47,8 +47,8 @@ public class Turret {
     public Turret(HardwareMap hardwareMap) {
 
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
-        fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
-        fly2.setDirection(DcMotorSimple.Direction.REVERSE);
+        //fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
+        //fly2.setDirection(DcMotorSimple.Direction.REVERSE);
         flyPower = 0;
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
@@ -72,7 +72,7 @@ public class Turret {
             regression(distance);
         } else {
             fly1.setVelocity(flyPower);
-            fly2.setVelocity(flyPower);
+           // fly2.setVelocity(flyPower);
         }
     }
 
@@ -82,7 +82,7 @@ public class Turret {
         } else {
             flyPower += increment;
             fly1.setVelocity(flyPower);
-            fly2.setVelocity(flyPower);
+           // fly2.setVelocity(flyPower);
         }
     }
 
@@ -91,7 +91,7 @@ public class Turret {
         double targetVelocity = (0.544791 * Math.pow(distanceToHive,2)) - (59.41912*distanceToHive) + 3204.17206;
         pid.setTarget(targetVelocity);
         fly1.setVelocity(pid.calculate(fly1.getVelocity()));
-        fly2.setVelocity(pid.calculate(fly2.getVelocity()));
+       // fly2.setVelocity(pid.calculate(fly2.getVelocity()));
     }
 
     public void setPowerRaw(double power) {
