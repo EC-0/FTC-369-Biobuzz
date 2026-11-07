@@ -108,7 +108,6 @@ public class TestTeleop extends OpMode {
             odomLimelightTurret.setTurretMode(OdomLimelightTurret.Mode.MANUAL_RESET_MODE);
         }
 
-        // Manual Reset Logic State Propagation
         if (gamepad2.x) {
             odomLimelightTurret.setManualResetHeld(true);
         }
@@ -116,13 +115,10 @@ public class TestTeleop extends OpMode {
             odomLimelightTurret.setManualResetHeld(false);
         }
 
-        // 6. RUN THE SUBSYSTEM ENGINE (CRITICAL FIX)
         odomLimelightTurret.update();
 
-        // 7. Manage Shooter Flywheel Power separately
         odomLimelightTurret.turret.setTurretPower(botDistanceToGoal);
 
-        // 8. Diagnostics Telemetry
         telemetry.addData("Turret Lock Status", turretLockEnabled ? "ENABLED" : "DISABLED");
         telemetry.addData("Active Turret Mode", odomLimelightTurret.getTurretMode());
         telemetry.addData("Flywheel Power", odomLimelightTurret.turret.getFlyPower());
