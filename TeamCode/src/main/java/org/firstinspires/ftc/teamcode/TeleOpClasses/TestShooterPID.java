@@ -14,7 +14,7 @@ public class TestShooterPID extends OpMode {
     @Override
     public void init() {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
-        fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
+        //fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         shooterPID = new PIDF_Controller(1,0,0,0);
     }
 
@@ -22,11 +22,11 @@ public class TestShooterPID extends OpMode {
     public void loop() {
         if(gamepad1.a){
             fly1.setVelocity(shooterPID.calculate(fly1.getVelocity()));
-            fly2.setVelocity(shooterPID.calculate(fly2.getVelocity()));
+            //fly2.setVelocity(shooterPID.calculate(fly2.getVelocity()));
         }
         else{
             fly1.setVelocity(0);
-            fly2.setVelocity(0);
+            //fly2.setVelocity(0);
         }
         telemetry.addData("current velocity", fly1.getVelocity());
         telemetry.addData("current velocity", fly2.getVelocity());
