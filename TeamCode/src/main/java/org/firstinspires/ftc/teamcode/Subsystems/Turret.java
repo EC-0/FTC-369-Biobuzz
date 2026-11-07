@@ -59,7 +59,7 @@ public class Turret {
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         pid = new PIDF_Controller(1, 0, 0, 0);
-        turretPid = new PIDF_Controller(0.011, 0, 0.0004, .06);
+        turretPid = new PIDF_Controller(0.01, 0, 0.0001, 0);
     }
 
 

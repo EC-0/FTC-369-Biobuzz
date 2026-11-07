@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class PIDF_Controller {
 
     private final double kP, kI, kD, kF;
-    private double integral, derivative;
-    private double target, lastTimeNano, lastError = 0;
+    private double integral = 0, derivative;
+    private double target = 0, lastTimeNano = 0, lastError = 0;
 //    private double lastError = 0, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
@@ -26,9 +26,10 @@ public class PIDF_Controller {
 
         if(lastTimeNano == 0){
             lastTimeNano = now;
+            lastError = target-current ;
             return 0;
         }
-        double dt = (now-lastTimeNano/1e9);
+        double dt = (now-lastTimeNano)/1e9;
 
         double  error = target - current;
         derivative = (error - lastError) / dt;
