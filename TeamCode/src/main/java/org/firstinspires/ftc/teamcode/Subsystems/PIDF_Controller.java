@@ -7,7 +7,7 @@ public class PIDF_Controller {
 
 
     private double integral = 0, derivative;
-    private double target = 0, lastTimeNano = 0, lastError = 0;
+    private double target = 0, targetVel = 0, lastTimeNano = 0, lastError = 0;
 //    private double lastError = 0, target, error, output;
     private ElapsedTime timer = new ElapsedTime();
 
@@ -26,9 +26,11 @@ public class PIDF_Controller {
         this.target = target;
     }
 
+    public void setTarget(double target, double targetVel) {
+        this.target = target;
+        this.targetVel = targetVel;
+    }
     public double calculate(double current) {
-        double feedForward;
-        double targetVelocity;
         long now = System.nanoTime();
 
         if(lastTimeNano == 0){
@@ -45,6 +47,21 @@ public class PIDF_Controller {
 
         lastTimeNano  = now;
 
-        return (kP * error) + (kI * integral) + (kD * derivative) + kF;
+        double ff =0;
+
+        // If target is still changing, use target velocity direction
+        if (Math.abs(targetVel) > 1e-6) {
+            ff += kS * Math.signum(targetVel);
+        }
+        // Otherwise, if we are still not at the target, push in error direction
+        else if (Math.abs(error) > 1.0) {  // 1 tick deadband
+            ff += kS * Math.signum(error);
+        }
+
+        // Velocity feedforward
+        ff += kV * targetVel;
+
+
+        return (kP * error) + (kI * integral) + (kD * derivative) + ff;
     }
 }

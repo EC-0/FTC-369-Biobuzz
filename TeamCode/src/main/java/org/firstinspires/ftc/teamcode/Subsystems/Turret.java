@@ -128,6 +128,7 @@ public class Turret {
         }
 
         updateTargetVelocity();
+        turretPid.setTarget(filteredTargetTicks, targetVelTicksPerSec);
         turretPid.setTarget(filteredTargetTicks);
         double outputPower = turretPid.calculate(currentPositionTicks);
         outputPower = clamp(outputPower, -0.6, 0.6);
