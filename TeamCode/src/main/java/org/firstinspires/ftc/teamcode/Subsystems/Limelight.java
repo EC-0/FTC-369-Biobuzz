@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.List;
 
 public class Limelight {
-    Limelight3A limelighter;
+    public Limelight3A limelighter;
     double targetHeight = 65.6, cameraHeight = 13.0, cameraAngle = 49.021;
     double deltaHeight = targetHeight - cameraHeight;
     double pitchAngle;
