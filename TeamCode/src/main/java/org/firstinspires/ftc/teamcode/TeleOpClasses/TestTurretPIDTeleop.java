@@ -18,17 +18,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.PIDF_Controller;
 @TeleOp(name = "TestTurretPID")
 public class TestTurretPIDTeleop extends OpMode {
 
-    public static double kp = 0.01;
-    public static double ki =0;
-    public static double kd =0.0000;
-    public static double kf =540;
+    public static double kp = 0.02;
+    public static double kd =0;
     DcMotorEx turret;
     PIDF_Controller turretPID;
     FtcDashboard dash;
     @Override
     public void init() {
-        turret = hardwareMap.get(DcMotorEx.class, "fly1");
-        turretPID = new PIDF_Controller(kp,ki,kd,kf);
+        turret = hardwareMap.get(DcMotorEx.class, "turret");
+        turretPID = new PIDF_Controller(kp,0,kd,0);
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -41,35 +39,17 @@ public class TestTurretPIDTeleop extends OpMode {
     public void loop() {
         TelemetryPacket packet = new TelemetryPacket();
 
-        packet.put("Turret pos", turret.getVelocity());
-        packet.put("Turret error", 1300-turret.getVelocity());
+        packet.put("Turret pos", turret.getCurrentPosition());
+        packet.put("Turret error", 450-turret.getCurrentPosition());
 
         // Send the packet to the dashboard browser
         dash.sendTelemetryPacket(packet);
-
-        /*if(gamepad1.dpad_left)turret .setPower(-.3);
-        else if(gamepad1.dpad_right)turret.setPower(.3);
-        else*/  if(gamepad1.a){
-            turretPID.setTarget(1300);
-            turret.setVelocity(turretPID.calculate(turret.getVelocity()));
+        if(gamepad1.a){
+            turret.setPower(turretPID.calculate(turret.getCurrentPosition()));
+            turretPID.setTarget(450);
         }
         else{
             turret.setPower(0);
-        }
-
-        if(gamepad1.dpadUpWasPressed())kp+=.1;
-        if(gamepad1.dpadDownWasPressed())kp-=.1;
-
-//        else turret.setPower(0);
-
-        if(gamepad1.leftBumperWasPressed())kd-=.001;
-        if(gamepad1.rightBumperWasPressed())kd+=.001;
-
-        telemetry.addData("kp", kp);
-        telemetry.addData("kd", kd);
-        telemetry.update();
-        if(gamepad1.x) {
-            turretPID = new PIDF_Controller(kp, ki, kd, kf);
         }
     }
     
