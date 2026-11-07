@@ -15,7 +15,7 @@ public class TestShooterPID extends OpMode {
     public void init() {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         //fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
-        shooterPID = new PIDF_Controller(1,0,0,0);
+        shooterPID = new PIDF_Controller(1,0,0,0,0);
     }
 
     @Override
