@@ -88,12 +88,28 @@ public class TestTeleop extends OpMode {
         }
         turret.setTurretPower(botDistanceToGoal);
 
+        // gamepad 2 stuff
+        if (gamepad2.aWasPressed()) {
+            intake.intakePower(0.0);
+        }
+        if (gamepad2.bWasPressed()) {
+            intake.changeDirection();
+        }
+        if (gamepad2.xWasPressed()) {
+            turret.setTurretPower(0);
+        }
+        if (gamepad2.yWasPressed()) {
+            currentRobotPose = new Pose2d(-68,-68,90);
+        }
+
+
         telemetry.addData("flyPower", turret.getFlyPower());
         if (currentRobotPose != null) {
             telemetry.addData("Robot X", currentRobotPose.position.x);
             telemetry.addData("Robot Y", currentRobotPose.position.y);
             telemetry.addData("Robot Heading", Math.toDegrees(currentRobotPose.heading.log()));
         }
+
         telemetry.addData("distance from goal", botDistanceToGoal);
         telemetry.addData("Distance from April Tag", limelight.getDistance());
 
