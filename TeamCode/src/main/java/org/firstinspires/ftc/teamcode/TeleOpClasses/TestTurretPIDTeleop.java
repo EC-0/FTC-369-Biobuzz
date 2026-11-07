@@ -75,8 +75,8 @@ public class TestTurretPIDTeleop extends OpMode {
             kV+=.0001;
         }
 
-        telemetry.addData("kp", kp);
-        telemetry.addData("kd", kd);
+        telemetry.addData("kS", kS);
+        telemetry.addData("kV", kV);
         telemetry.update();
         if(gamepad1.x) {
             turretPID = new PIDF_Controller(kp, 0, kd,0,0);
