@@ -28,14 +28,14 @@ public class PIDF_Controller {
             lastTimeNano = now;
             return 0;
         }
-        double dt = now-lastTimeNano;
+        double dt = (now-lastTimeNano/1e9);
 
         double  error = target - current;
         derivative = (error - lastError) / dt;
         integral += error * dt;
         lastError = error;
 
-        lastTimeNano  = timer.seconds();
+        lastTimeNano  = now;
 
         return (kP * error) + (kI * integral) + (kD * derivative) + kF;
     }

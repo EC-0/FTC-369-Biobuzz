@@ -38,11 +38,9 @@ public class TestTurretPIDTeleop extends OpMode {
     @Override
     public void loop() {
         TelemetryPacket packet = new TelemetryPacket();
-
         packet.put("Turret pos", turret.getCurrentPosition());
         packet.put("Turret error", 450-turret.getCurrentPosition());
 
-        // Send the packet to the dashboard browser
         dash.sendTelemetryPacket(packet);
         if(gamepad1.a){
             turret.setPower(turretPID.calculate(turret.getCurrentPosition()));
