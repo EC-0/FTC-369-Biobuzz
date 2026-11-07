@@ -18,8 +18,11 @@ import org.firstinspires.ftc.teamcode.Subsystems.PIDF_Controller;
 @TeleOp(name = "TestTurretPID")
 public class TestTurretPIDTeleop extends OpMode {
 
-    public static double kp = 0.01;
-    public static double kd =0;
+    public static double kp = 0.0;
+    public static double kI;
+    public static double kS;
+    public static double kV;
+    public static double kd = 0.0;
     DcMotorEx turret;
     PIDF_Controller turretPID;
     FtcDashboard dash;
@@ -42,8 +45,12 @@ public class TestTurretPIDTeleop extends OpMode {
         packet.put("Turret error", 1000-turret.getCurrentPosition());
 
         dash.sendTelemetryPacket(packet);
-        if(gamepad1.dpad_left)turret.setPower(-.3);
-        else if(gamepad1.dpad_right)turret.setPower(.3);
+        if(gamepad1.dpad_left){
+            turret.setPower(-.3);
+        }
+        else if(gamepad1.dpad_right){
+            turret.setPower(.3);
+        }
         else if(gamepad1.a){
             turretPID.setTarget(1000);
             turret.setPower(turretPID.calculate(turret.getCurrentPosition()));
@@ -52,13 +59,21 @@ public class TestTurretPIDTeleop extends OpMode {
             turret.setPower(0);
         }
 
-        if(gamepad1.dpadUpWasPressed())kp+=.01;
-        if(gamepad1.dpadDownWasPressed())kp-=.01;
+        if(gamepad1.dpadUpWasPressed()){
+            kS+=.01;
+        }
+        if(gamepad1.dpadDownWasPressed()){
+            kS-=.01;
+        }
 
 //        else turret.setPower(0);
 
-        if(gamepad1.leftBumperWasPressed())kd-=.0001;
-        if(gamepad1.rightBumperWasPressed())kd+=.0001;
+        if(gamepad1.leftBumperWasPressed()){
+            kV-=.0001;
+        }
+        if(gamepad1.rightBumperWasPressed()){
+            kV+=.0001;
+        }
 
         telemetry.addData("kp", kp);
         telemetry.addData("kd", kd);

@@ -60,8 +60,6 @@ public class PIDF_Controller {
 
         // Velocity feedforward
         ff += kV * targetVel;
-
-
         return (kP * error) + (kI * integral) + (kD * derivative) + ff;
     }
 }
