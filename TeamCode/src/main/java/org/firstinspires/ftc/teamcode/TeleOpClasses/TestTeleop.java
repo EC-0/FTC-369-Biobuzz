@@ -25,7 +25,7 @@ public class TestTeleop extends OpMode {
     Turret turret;
     RobotLocalizer localizer;
 
-    private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(10, -10), Rotation2d.exp(0)
+    private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(5, -10), Rotation2d.exp(0)
     );
     private boolean turretLockEnabled = false;
     @Override
