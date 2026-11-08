@@ -42,9 +42,7 @@ public class TestShooterPID extends OpMode {
         packet.put("Turret error", 1000-fly1.getVelocity());
 
         dash.sendTelemetryPacket(packet);
-        if(gamepad1.a){
-            intake.setPower(0.8);
-        }
+        intake.setPower(gamepad1.right_stick_x);
         if(gamepad1.dpad_left){
             fly1.setPower(-.3);
         }
