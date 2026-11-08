@@ -18,9 +18,9 @@ public class TestShooterPID extends OpMode {
     DcMotor intake;
     PIDF_Controller shooterPID;
     FtcDashboard dash;
-    public static double kp = 13.5;
-    public static double kI = 0.05;
-    public static double kd = 0.01;
+    public static double kp = 0;//13.5;
+    public static double kI = 0;//0.05;
+    public static double kd = 0;//0.01;
     public static double kV = 0;
     public static double kS = 0;
     @Override
