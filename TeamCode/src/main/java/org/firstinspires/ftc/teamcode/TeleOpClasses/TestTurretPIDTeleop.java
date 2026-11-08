@@ -66,10 +66,10 @@ public class TestTurretPIDTeleop extends OpMode {
 //        else turret.setPower(0);
 
         if(gamepad1.leftBumperWasPressed()){
-            kV-=.0001;
+            kI-=.001;
         }
         if(gamepad1.rightBumperWasPressed()){
-            kV+=.0001;
+            kI+=.001;
         }
 
         telemetry.addData("kS", kS);

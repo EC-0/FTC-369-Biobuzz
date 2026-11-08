@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PIDF_Controller {
 
-    private final double kP, kI, kD, kS, kV;
+    private double kP, kI, kD, kS, kV;
 
 
     private double integral = 0, derivative;
@@ -61,5 +61,12 @@ public class PIDF_Controller {
         // Velocity feedforward
         ff += kV * targetVel;
         return (kP * error) + (kI * integral) + (kD * derivative) + ff;
+    }
+    public void setCoefficients(double kp, double ki, double kd, double ks, double kv){
+        this.kP = kp;
+        this.kI = ki;
+        this.kD = kd;
+        this.kS = ks;
+        this.kV = kv;
     }
 }
