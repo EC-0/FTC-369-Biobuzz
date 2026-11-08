@@ -18,11 +18,11 @@ public class TestShooterPID extends OpMode {
     DcMotor intake;
     PIDF_Controller shooterPID;
     FtcDashboard dash;
-    public static double kp = 0;//13.5;
-    public static double kI = 0;//0.05;
-    public static double kd = 0;//0.01;
-    public static double kV = 0;
-    public static double kS = 0;
+    public static double kp = 13.5;//13.5;
+    public static double kI = .05;//0.05;
+    public static double kd = 0.01;//0.01;
+    public static double kV = -.009625;
+    public static double kS = 20;
     @Override
     public void init() {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
@@ -49,6 +49,9 @@ public class TestShooterPID extends OpMode {
         else if(gamepad1.dpad_right){
             fly1.setPower(.3);
         }
+        else if(gamepad1.bWasPressed()){
+            fly1.setPower(.75);
+        }
         else if(gamepad1.a){
             shooterPID.setTarget(1000);
             fly1.setVelocity(shooterPID.calculate(fly1.getVelocity()));
@@ -59,10 +62,10 @@ public class TestShooterPID extends OpMode {
 //        }
 
         if(gamepad1.dpadUpWasPressed()){
-            kS+=.01;
+            kS+=.2;
         }
         if(gamepad1.dpadDownWasPressed()){
-            kS-=.01;
+            kS-=.2;
         }
 
 //        else turret.setPower(0);
@@ -81,6 +84,8 @@ public class TestShooterPID extends OpMode {
 //        }
         telemetry.addData("kS", kS);
         telemetry.addData("kV", kV);
+
+        telemetry.addData("velocity", fly1.getVelocity());
 //        telemetry.addData("ki", kI);
         telemetry.update();
 //        if(gamepad1.x) {
