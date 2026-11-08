@@ -18,16 +18,16 @@ public class TestShooterPID extends OpMode {
     DcMotor intake;
     PIDF_Controller shooterPID;
     FtcDashboard dash;
-    public static double kp = 1;
-    public static double kI = 0;
-    public static double kd = 0;
+    public static double kp = 13.5;
+    public static double kI = 0.05;
+    public static double kd = 0.01;
     public static double kV = 0;
     public static double kS = 0;
     @Override
     public void init() {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
         //fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
-        shooterPID = new PIDF_Controller(.1,0,0,0,0);
+        shooterPID = new PIDF_Controller(kp,kI,kd,kV,kS);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         dash = FtcDashboard.getInstance();
         intake = hardwareMap.get(DcMotor.class, "intake");
@@ -59,29 +59,29 @@ public class TestShooterPID extends OpMode {
 //        }
 
         if(gamepad1.dpadUpWasPressed()){
-            kp+=.5;
+            kS+=.01;
         }
         if(gamepad1.dpadDownWasPressed()){
-            kp-=.5;
+            kS-=.01;
         }
 
 //        else turret.setPower(0);
 
         if(gamepad1.leftBumperWasPressed()){
-            kd-=.01;
+            kV-=.01;
         }
         if(gamepad1.rightBumperWasPressed()){
-            kd+=.01;
+            kV+=.01;
         }
-        if(gamepad1.bWasPressed()){
-            kI-=.01;
-        }
-        if(gamepad1.yWasPressed()){
-            kI+=.01;
-        }
-        telemetry.addData("kp", kp);
-        telemetry.addData("kd", kd);
-        telemetry.addData("ki", kI);
+//        if(gamepad1.bWasPressed()){
+//            kI-=.01;
+//        }
+//        if(gamepad1.yWasPressed()){
+//            kI+=.01;
+//        }
+        telemetry.addData("kS", kS);
+        telemetry.addData("kV", kV);
+//        telemetry.addData("ki", kI);
         telemetry.update();
 //        if(gamepad1.x) {
             shooterPID.setCoefficients(kp, kI, kd, kS, kV);
