@@ -25,4 +25,13 @@ public class Intake {
         intake.setPower(power);
     }
 
+    public void changeDirection() {
+        if (intake.getDirection() == DcMotorSimple.Direction.FORWARD) {
+            intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
+        else {
+            intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        }
+    }
+
 }
