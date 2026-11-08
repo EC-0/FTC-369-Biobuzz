@@ -13,6 +13,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.teamcode.Subsystems.PIDF_Controller;
+import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 @Config
 @TeleOp(name = "TestTurretPID")
@@ -23,17 +24,13 @@ public class TestTurretPIDTeleop extends OpMode {
     public static double kS;
     public static double kV;
     public static double kd = 0.0;
-    DcMotorEx turret;
+    Turret turret;
     PIDF_Controller turretPID;
     FtcDashboard dash;
     @Override
     public void init() {
-        turret = hardwareMap.get(DcMotorEx.class, "turret");
+        turret = new Turret(hardwareMap);
         turretPID = new PIDF_Controller(kp,0,kd,0,0);
-        turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        turret.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         dash = FtcDashboard.getInstance();
     }
@@ -41,22 +38,22 @@ public class TestTurretPIDTeleop extends OpMode {
     @Override
     public void loop() {
         TelemetryPacket packet = new TelemetryPacket();
-        packet.put("Turret pos", turret.getCurrentPosition());
-        packet.put("Turret error", 1000-turret.getCurrentPosition());
+//        packet.put("Turret pos", turret.getCurrentPosition());
+//        packet.put("Turret error", 570-turret.getCurrentPosition());
 
         dash.sendTelemetryPacket(packet);
         if(gamepad1.dpad_left){
-            turret.setPower(-.3);
+            turret.setPowerRaw(-.3);
         }
         else if(gamepad1.dpad_right){
-            turret.setPower(.3);
+            turret.setPowerRaw(.3);
         }
         else if(gamepad1.a){
-            turretPID.setTarget(1000);
-            turret.setPower(turretPID.calculate(turret.getCurrentPosition()));
+//            turretPID.setTarget(1000);
+            turret.update(90);
         }
         else{
-            turret.setPower(0);
+            turret.setPowerRaw(0);
         }
 
         if(gamepad1.dpadUpWasPressed()){
@@ -78,9 +75,9 @@ public class TestTurretPIDTeleop extends OpMode {
         telemetry.addData("kS", kS);
         telemetry.addData("kV", kV);
         telemetry.update();
-        if(gamepad1.x) {
-            turretPID = new PIDF_Controller(kp, 0, kd,0,0);
-        }
+//        if(gamepad1.x) {
+            turret.setPIDCoefficients(kp, kI, kd, kS, kV);
+//        }
     }
     
 }

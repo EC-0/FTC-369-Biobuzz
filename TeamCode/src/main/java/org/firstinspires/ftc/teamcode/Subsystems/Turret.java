@@ -209,4 +209,12 @@ public class Turret {
         telemetry.addData("Filtered Target Ticks", filteredTargetTicks);
         telemetry.addData("Target Velocity Ticks/Sec", targetVelTicksPerSec);
     }
+
+    public int getCurrentPosition() {
+        return turret.getCurrentPosition();
+    }
+
+    public void setPIDCoefficients(double kp, double ki, double kd, double ks, double kv){
+        turretPid = new PIDF_Controller(kp, ki, kd, ks, kv);
+    }
 }

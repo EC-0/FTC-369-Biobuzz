@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOpClasses;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -9,8 +11,14 @@ import org.firstinspires.ftc.teamcode.Subsystems.PIDF_Controller;
 @TeleOp (name = "turretPID")
 public class TestShooterPID extends OpMode {
     DcMotorEx fly1;
-    DcMotorEx fly2;
+//    DcMotorEx fly2;
     PIDF_Controller shooterPID;
+    FtcDashboard dash;
+    public static double kp;
+    public static double kI;
+    public static double kd;
+    public static double kV;
+    public static double kS;
     @Override
     public void init() {
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
@@ -20,16 +28,47 @@ public class TestShooterPID extends OpMode {
 
     @Override
     public void loop() {
-        if(gamepad1.a){
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("Turret pos", fly1.getVelocity());
+        packet.put("Turret error", 1000-fly1.getVelocity());
+
+        dash.sendTelemetryPacket(packet);
+        if(gamepad1.dpad_left){
+            fly1.setPower(-.3);
+        }
+        else if(gamepad1.dpad_right){
+            fly1.setPower(.3);
+        }
+        else if(gamepad1.a){
+            shooterPID.setTarget(1000);
             fly1.setVelocity(shooterPID.calculate(fly1.getVelocity()));
-            //fly2.setVelocity(shooterPID.calculate(fly2.getVelocity()));
         }
         else{
-            fly1.setVelocity(0);
-            //fly2.setVelocity(0);
+            fly1.setPower(0);
         }
-        telemetry.addData("current velocity", fly1.getVelocity());
-//        telemetry.addData("current velocity", fly2.getVelocity());
-        telemetry.addData("target velocity",                                                                                                        700);
+
+        if(gamepad1.dpadUpWasPressed()){
+            kS+=.01;
+        }
+        if(gamepad1.dpadDownWasPressed()){
+            kS-=.01;
+        }
+
+//        else turret.setPower(0);
+
+        if(gamepad1.leftBumperWasPressed()){
+            kV-=.0001;
+        }
+        if(gamepad1.rightBumperWasPressed()){
+            kV+=.0001;
+        }
+
+        telemetry.addData("kS", kS);
+        telemetry.addData("kV", kV);
+        telemetry.update();
+//        if(gamepad1.x) {
+            shooterPID = new PIDF_Controller(kp, kI, kd, kS, kV);
+//        }
     }
+
 }
