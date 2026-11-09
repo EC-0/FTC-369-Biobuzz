@@ -49,22 +49,29 @@ public class TestTeleop extends OpMode {
         if (gamepad1.rightBumperWasPressed()) {
             turretLockEnabled = !turretLockEnabled;
         }
-        if (turretLockEnabled && currentRobotPose != null) {
-            double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
-            double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
-            double targetFieldAngle = Math.atan2(dy, dx);
-            double robotHeading = currentRobotPose.heading.log();
-            double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
-            double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
-//            botErrorDeg = ((botErrorDeg + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
-            turret.update(botErrorDeg);
+        if (turretLockEnabled) {
+            if(limelight.getTag() != null){
+                double tx = limelight.getTx();
+                turret.updateLimelight(tx);
+                telemetry.addData("Turret Lock", "LIMELIGHT ACTIVE");
+            }
+            else if(currentRobotPose != null){
+                double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
+                double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
+                double targetFieldAngle = Math.atan2(dy, dx);
+                double robotHeading = currentRobotPose.heading.log();
+                double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
+                double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
+                turret.update(botErrorDeg);
 
-            telemetry.addData("Turret Lock", "ENABLED");
-            telemetry.addData("Hive Target X", GOAL_TARGET.position.x);
-            telemetry.addData("Hive Target Y", GOAL_TARGET.position.y);
-            telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
-            telemetry.addData("Robot Heading", Math.toDegrees(robotHeading));
-            telemetry.addData("Target Relative Angle", botErrorDeg);
+                telemetry.addData("Turret Lock", "ENABLED");
+                telemetry.addData("Hive Target X", GOAL_TARGET.position.x);
+                telemetry.addData("Hive Target Y", GOAL_TARGET.position.y);
+                telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
+                telemetry.addData("Robot Heading", Math.toDegrees(robotHeading));
+                telemetry.addData("Target Relative Angle", botErrorDeg);
+            }
+
         } else {
             telemetry.addData("Turret Lock", "DISABLED");
             turret.setPowerRaw(0);

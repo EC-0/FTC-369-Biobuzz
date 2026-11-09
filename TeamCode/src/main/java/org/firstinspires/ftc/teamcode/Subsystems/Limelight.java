@@ -75,7 +75,22 @@ public class Limelight {
         return dh / Math.tan(Math.toRadians(angle));
     }
 
+
     public void switchPipeline(int pipeline) {
         limelighter.pipelineSwitch(pipeline);
     }
+    //Move method later
+    public Double getTx() {
+        LLResult result = limelighter.getLatestResult();
+        if (result != null && result.isValid() && bestId != null) {
+            List<LLResultTypes.FiducialResult> tagList = result.getFiducialResults();
+            for (LLResultTypes.FiducialResult tag : tagList) {
+                if (tag.getFiducialId() == bestId) {
+                    return tag.getTargetXDegrees();
+                }
+            }
+        }
+        return null;
+    }
+
 }

@@ -114,7 +114,34 @@ public class Turret {
         filterInitialized = false;
         filteredTargetTicks = 0.0;
     }
+    public void updateLimelight(double tx){
+        currentPositionTicks = turret.getCurrentPosition();
+        currentPositionDegrees = normalize360(minDegrees + currentPositionTicks/ticksPerDegree);
+        double desiredDegrees = normalize360(currentPositionDegrees + tx);
+        targetPositionTurretDegrees = clamp(desiredDegrees,safeMinDegrees,safeMaxDegrees);
+        targetPositionTurretTicks = (targetPositionTurretDegrees-minDegrees) * ticksPerDegree;
 
+        if(!filterInitialized){
+            filteredTargetTicks = targetPositionTurretTicks;
+            filterInitialized = true;
+        }
+        else{
+            filteredTargetTicks += TARGET_ALPHA * (targetPositionTurretTicks - filteredTargetTicks);
+        }
+
+        updateTargetVelocity();
+        turretPid.setTarget(filteredTargetTicks);
+        double outputPower = turretPid.calculate(currentPositionTicks);
+        outputPower = clamp(outputPower, -0.6, 0.6);
+
+        if(currentPositionTicks >= maxSafeTicks && outputPower > 0){
+            outputPower = 0;
+        }
+        if(currentPositionTicks <= minSafeTicks && outputPower < 0){
+            outputPower = 0;
+        }
+        turret.setPower(outputPower);
+    }
     public void update(double botErrorDeg) {
         currentPositionTicks = turret.getCurrentPosition();
         currentPositionDegrees = normalize360(minDegrees + currentPositionTicks / ticksPerDegree);
