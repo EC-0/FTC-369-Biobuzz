@@ -114,7 +114,9 @@ public class Turret {
         filterInitialized = false;
         filteredTargetTicks = 0.0;
     }
-    public void updateLimelight(double tx){
+
+    //Limelight Tracking with Turret, based on Target TX Degrees
+    public void limelightTracking(double tx){
         currentPositionTicks = turret.getCurrentPosition();
         currentPositionDegrees = normalize360(minDegrees + currentPositionTicks/ticksPerDegree);
         double desiredDegrees = normalize360(currentPositionDegrees + tx);
@@ -142,7 +144,9 @@ public class Turret {
         }
         turret.setPower(outputPower);
     }
-    public void update(double botErrorDeg) {
+
+    //Odometry tracking using turret and botError Degrees
+    public void odometryTracking(double botErrorDeg) {
         currentPositionTicks = turret.getCurrentPosition();
         currentPositionDegrees = normalize360(minDegrees + currentPositionTicks / ticksPerDegree);
 

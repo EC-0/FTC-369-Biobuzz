@@ -52,7 +52,7 @@ public class TestTeleop extends OpMode {
         if (turretLockEnabled) {
             if(limelight.getTag() != null){
                 double tx = limelight.getTx();
-                turret.updateLimelight(tx);
+                turret.limelightTracking(tx);
                 telemetry.addData("Turret Lock", "LIMELIGHT ACTIVE");
             }
             else if(currentRobotPose != null){
@@ -62,7 +62,7 @@ public class TestTeleop extends OpMode {
                 double robotHeading = currentRobotPose.heading.log();
                 double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
                 double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
-                turret.update(botErrorDeg);
+                turret.odometryTracking(botErrorDeg);
 
                 telemetry.addData("Turret Lock", "ENABLED");
                 telemetry.addData("Hive Target X", GOAL_TARGET.position.x);
