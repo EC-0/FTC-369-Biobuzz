@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Limelight {
     public Limelight3A limelighter;
-    double targetHeight = 65.6, cameraHeight = 13.0, cameraAngle = 49.021;
+    double targetHeight = 65.6, cameraHeight = 11.6929, cameraAngle = 49.021;
     double deltaHeight = targetHeight - cameraHeight;
     double pitchAngle;
     Integer bestId = null;
@@ -79,7 +79,6 @@ public class Limelight {
     public void switchPipeline(int pipeline) {
         limelighter.pipelineSwitch(pipeline);
     }
-    //Move method later
     public Double getTx() {
         LLResult result = limelighter.getLatestResult();
         if (result != null && result.isValid() && bestId != null) {
