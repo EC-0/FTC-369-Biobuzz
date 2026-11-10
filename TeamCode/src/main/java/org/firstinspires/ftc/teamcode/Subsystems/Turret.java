@@ -31,8 +31,8 @@ public class Turret {
     private double targetPositionTurretDegrees;
 
     private final double minDegrees = 20.0;
-    private final double safeMinDegrees = 25.0;
-    private final double safeMaxDegrees = 335.0;
+    private final double safeMinDegrees = 20.0;
+    private final double safeMaxDegrees = 330.0;
 
     private double targetVelTicksPerSec = 0.0;
     private double lastTargetTicks = 0.0;
