@@ -19,7 +19,7 @@ public class Turret {
     private double flyPower;
     private boolean useRegression;
 
-    private final double totalTurnTicks = 2883;
+    private final double totalTurnTicks = 2933;
     private final double totalDegrees = 320.0;
     private final double maxSafeTicks = 2870;
     private final double minSafeTicks = 15.0;
@@ -58,7 +58,7 @@ public class Turret {
         turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        pid = new PIDF_Controller(1, 0, 0, 0,0);
+        pid = new PIDF_Controller(13.5, 0.05 , 0.01, 20,-.009625  );
         turretPid = new PIDF_Controller(0.01, 0, 0.0001, 0, 0);
     }
 
@@ -88,7 +88,7 @@ public class Turret {
 
     public void regression(double distanceToHive) {
         //double targetVelocity = 10.31616 * distanceToHive + 945.07026;
-        double targetVelocity = (0.544791 * Math.pow(distanceToHive,2)) - (59.41912*distanceToHive) + 3204.17206;
+        double targetVelocity = (-2.78251 * distanceToHive) + 1720.39128;
         pid.setTarget(targetVelocity);
         fly1.setVelocity(pid.calculate(fly1.getVelocity()));
        // fly2.setVelocity(pid.calculate(fly2.getVelocity()));
