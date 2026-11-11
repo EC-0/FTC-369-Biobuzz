@@ -12,14 +12,15 @@ import javax.imageio.ImageIO;
 
 public class meepmeep {
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(800);
+        MeepMeep meepMeep = new MeepMeep(650);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(62, -57, Math.toRadians(270)))
-                .strafeToLinearHeading(new Vector2d(-25,-40), Math.toRadians(270))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(45, -35, Math.toRadians(270)))
+                .strafeToLinearHeading(new Vector2d(-50, -35), Math.toRadians(270))
+                        .strafeToLinearHeading(new Vector2d(-50,-60), Math.toRadians(270))
                 .build());
 
         BufferedImage img = null;
