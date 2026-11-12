@@ -3,62 +3,51 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.List;
 
 public class Limelight {
-    Limelight3A limelighter;
-    double targetHeight = 65.6, cameraHeight = 11.38279528, cameraAngle = 45;
+    public Limelight3A limelighter;
+    double targetHeight = 65.6, cameraHeight = 11.6929, cameraAngle = 49.021;
     double deltaHeight = targetHeight - cameraHeight;
     double pitchAngle;
+
     Integer bestId = null;
     Double lowestDistance = null;
-    public Limelight(HardwareMap hardwareMap) {
+    double bestTx = 0.0;
 
+    public Limelight(HardwareMap hardwareMap) {
         limelighter = hardwareMap.get(Limelight3A.class, "limelight");
         limelighter.pipelineSwitch(0);
         limelighter.setPollRateHz(100);
         limelighter.start();
-
     }
 
     public void getClosest() {
-
         bestId = null;
         lowestDistance = null;
+        bestTx = 0.0;
 
         LLResult result = limelighter.getLatestResult();
         if (result != null && result.isValid()) {
             List<LLResultTypes.FiducialResult> tagList = result.getFiducialResults();
 
-            if (!tagList.isEmpty()) {
-
+            if (tagList != null && !tagList.isEmpty()) {
                 for (LLResultTypes.FiducialResult tag : tagList) {
-                    if (lowestDistance != null) {
+                    pitchAngle = cameraAngle + tag.getTargetYDegrees();
+                    double dist = returnDistance(deltaHeight, pitchAngle);
 
-                        pitchAngle = cameraAngle + tag.getTargetYDegrees();
-
-                        if ((returnDistance(deltaHeight, pitchAngle)) < lowestDistance && returnDistance(deltaHeight,pitchAngle) < 120) {
-                            bestId = tag.getFiducialId();
-                            lowestDistance = returnDistance(deltaHeight, pitchAngle);
-                        }
-                    }
-                    else {
-                        pitchAngle = cameraAngle + tag.getTargetYDegrees();
-
+                    if (lowestDistance == null) {
                         bestId = tag.getFiducialId();
-                        lowestDistance = returnDistance(deltaHeight, pitchAngle);
+                        lowestDistance = dist;
+                        bestTx = tag.getTargetXDegrees();
+                    } else if (dist < lowestDistance && dist < 120) {
+                        bestId = tag.getFiducialId();
+                        lowestDistance = dist;
+                        bestTx = tag.getTargetXDegrees();
                     }
                 }
-            }
-            else {
-                lowestDistance = null;
-                bestId = null;
             }
         }
     }
@@ -69,6 +58,10 @@ public class Limelight {
 
     public Double getDistance() {
         return lowestDistance;
+    }
+
+    public double getTx() {
+        return bestTx;
     }
 
     public static double returnDistance(double dh, double angle) {

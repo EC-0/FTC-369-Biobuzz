@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Turret {
-
     DcMotorEx fly1;
     //DcMotorEx fly2;
     DcMotorEx turret;
@@ -109,6 +108,32 @@ public class Turret {
         filterInitialized = false;
         filteredTargetTicks = 0.0;
     }
+    public void limelightTracking(double tx) {
+        currentPositionTicks = turret.getCurrentPosition();
+        currentPositionDegrees = normalize360(minDegrees + currentPositionTicks / ticksPerDegree);
+
+        filteredTargetTicks = currentPositionTicks;
+        filterInitialized = true;
+
+        if (Math.abs(tx) < 1.5) {
+            turret.setPower(0);
+            return;
+        }
+
+        double kP_limelight = 0.015; // Flip to -tx if it turns away from the tag
+        double outputPower = tx * kP_limelight;
+        outputPower = clamp(outputPower, -0.35, 0.35);
+
+        if (currentPositionTicks >= maxSafeTicks && outputPower > 0) {
+            outputPower = 0;
+        }
+        if (currentPositionTicks <= minSafeTicks && outputPower < 0) {
+            outputPower = 0;
+        }
+        turret.setPower(outputPower);
+    }
+
+
 
     public void update(double botErrorDeg) {
         currentPositionTicks = turret.getCurrentPosition();
