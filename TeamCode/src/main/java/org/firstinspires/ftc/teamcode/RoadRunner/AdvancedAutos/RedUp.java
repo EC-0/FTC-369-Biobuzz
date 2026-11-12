@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.RoadRunner.AdvancedAutos;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.RaceAction;
@@ -12,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
+import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 @Autonomous (name = "Red Up Autonomous")
 public class RedUp extends LinearOpMode {
@@ -27,11 +31,14 @@ public class RedUp extends LinearOpMode {
     Pose2d park = new Pose2d(-20,-55, Math.toRadians(270));
     MecanumDrive drivetrain;
     Limelight limelighter;
+    Turret turret;
 
     @Override
     public void runOpMode() throws InterruptedException {
         drivetrain = new MecanumDrive(hardwareMap, initialPose);
         limelighter = new Limelight(hardwareMap);
+        turret = new Turret(hardwareMap);
+
         limelighter.switchPipeline(1);
 
         Action startToGarden = drivetrain.actionBuilder(initialPose)
@@ -147,5 +154,15 @@ public class RedUp extends LinearOpMode {
     }
     public static void runWithTurret(Action path) {
 
+    }
+
+    public Action shoot(double distance, double increment) {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                turret.setTurretPower(distance, increment);
+                return false;
+            }
+        };
     }
 }
