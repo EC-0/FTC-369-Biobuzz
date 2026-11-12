@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 
 @Autonomous (name = "Red Up Autonomous")
 public class RedUp extends LinearOpMode {
@@ -25,10 +26,13 @@ public class RedUp extends LinearOpMode {
     Pose2d flower = new Pose2d(24,-56, Math.toRadians(270));
     Pose2d park = new Pose2d(-20,-55, Math.toRadians(270));
     MecanumDrive drivetrain;
+    Limelight limelighter;
 
     @Override
     public void runOpMode() throws InterruptedException {
         drivetrain = new MecanumDrive(hardwareMap, initialPose);
+        limelighter = new Limelight(hardwareMap);
+        limelighter.switchPipeline(1);
 
         Action startToGarden = drivetrain.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(62,-57), Math.toRadians(270))
@@ -74,11 +78,17 @@ public class RedUp extends LinearOpMode {
 
         // shoots preloads
         new SleepAction(tiptime); // waits for potential tip
-        if (iseetags) {
+
+        limelighter.getClosest(); // refreshes limelight stat
+
+        if (limelighter.getTag() != null) {
             Actions.runBlocking(startToGarden); // intakes garden pollen
             // shoots garden pollen
             new SleepAction(tiptime); // waits for potential tip
-            if (iseetags) {
+
+            limelighter.getClosest(); // refreshes limelight stat
+
+            if (limelighter.getTag() != null) {
                 Actions.runBlocking(gardenToFlower); // intakes flower pollen
                 Actions.runBlocking(flowerToGarden);
                 // shoots flower pollen
@@ -87,7 +97,10 @@ public class RedUp extends LinearOpMode {
             else {
                 Actions.runBlocking(gardenToFlower); // intakes flower pollen
                 Actions.runBlocking(flowerToShoot);
-                if (iseetags) {
+
+                limelighter.getClosest(); // refreshes limelight stat
+
+                if (limelighter.getTag() != null) {
                     // shoots flower pollen
                     Actions.runBlocking(shootToPark);
                 }
@@ -101,12 +114,18 @@ public class RedUp extends LinearOpMode {
         else {
             Actions.runBlocking(startToGarden); // intakes garden pollen
             Actions.runBlocking(gardenToShoot);
-            if (iseetags) {
+
+            limelighter.getClosest(); // refreshes limelight stat
+
+            if (limelighter.getTag() != null) {
                 // shoots garden pollen
                 new SleepAction(tiptime); // waits for potential tips
                 Actions.runBlocking(shootToFlower); // intakes flower pollen
                 Actions.runBlocking(flowerToShoot);
-                if (iseetags) {
+
+                limelighter.getClosest(); // refreshes limelight stat
+
+                if (limelighter.getTag() != null) {
                     // shoots flower pollen
                     Actions.runBlocking(shootToPark);
                 }

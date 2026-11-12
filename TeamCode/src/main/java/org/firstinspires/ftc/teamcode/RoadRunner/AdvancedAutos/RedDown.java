@@ -11,12 +11,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 
 @Autonomous (name = "Red Down Autonomous")
 public class RedDown extends LinearOpMode {
     boolean iseetags = true;
     double tiptime = 5.0;
     MecanumDrive drivetrain;
+    Limelight limelighter;
     Pose2d initialPose = new Pose2d(-60, -10, Math.toRadians(270));
     Pose2d park = new Pose2d(-50, -60, Math.toRadians(270));
     Pose2d shoot = new Pose2d(45,-35, Math.toRadians(270));
@@ -25,6 +27,7 @@ public class RedDown extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         drivetrain = new MecanumDrive(hardwareMap, initialPose);
+        limelighter = new Limelight(hardwareMap);
 
         Action startToPark = drivetrain.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(-50, -10), Math.toRadians(270))
@@ -49,7 +52,10 @@ public class RedDown extends LinearOpMode {
         waitForStart();
 
         new SleepAction(tiptime);
-        if (iseetags) {
+
+        limelighter.getClosest(); // refreshes limelight stat
+
+        if (limelighter.getTag() != null) {
             // shoot preloads
             // intake flower pollen
             // shoot preloads
@@ -57,16 +63,25 @@ public class RedDown extends LinearOpMode {
         }
         else {
             Actions.runBlocking(startToShoot);
-            if (iseetags) {
+
+            limelighter.getClosest(); // refreshes limelight stat
+
+            if (limelighter.getTag() != null) {
                 // shoots preloads
                 Actions.runBlocking(shootToStart); // intakes flower pollen
-                if (iseetags) {
+
+                limelighter.getClosest(); // refreshes limelight stat
+
+                if (limelighter.getTag() != null) {
                     // shoots flower pollen
                     Actions.runBlocking(startToPark);
                 }
                 else {
                     Actions.runBlocking(startToShoot);
-                    if (iseetags) {
+
+                    limelighter.getClosest(); // refreshes limelight stat
+
+                    if (limelighter.getTag() != null) {
                         // shoots flower pollen
                         Actions.runBlocking(shootToPark);
                     }
