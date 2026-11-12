@@ -1,4 +1,3 @@
-
 package org.firstinspires.ftc.teamcode.TeleOpClasses;
 
 import com.acmerobotics.roadrunner.Pose2d;
@@ -7,6 +6,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -18,6 +18,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 
 @TeleOp(name = "Test TeleOp")
 public class TestTeleop extends OpMode {
+    private ElapsedTime tagLostTimer = new ElapsedTime();
+    private boolean usingLimelight = false;
+
     MecanumDrive drive;
     Limelight limelight;
     Drivetrain drivetrain;
@@ -25,9 +28,9 @@ public class TestTeleop extends OpMode {
     Turret turret;
     RobotLocalizer localizer;
 
-    private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(10, -10), Rotation2d.exp(0)
-    );
+    private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(5, -10), Rotation2d.exp(0));
     private boolean turretLockEnabled = false;
+
     @Override
     public void init() {
         drivetrain = new Drivetrain(hardwareMap);
@@ -37,9 +40,12 @@ public class TestTeleop extends OpMode {
         localizer = new RobotLocalizer(hardwareMap, new Pose2d(-72, -72, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
         limelight.switchPipeline(0);
     }
+
     @Override
     public void loop() {
         localizer.updateBotPosition();
+        limelight.getClosest();
+
         Pose2d currentRobotPose = localizer.getBotPose();
         double botDistanceToGoal = localizer.getDistanceToGoal();
 
@@ -49,26 +55,42 @@ public class TestTeleop extends OpMode {
         if (gamepad1.rightBumperWasPressed()) {
             turretLockEnabled = !turretLockEnabled;
         }
-        if (turretLockEnabled && currentRobotPose != null) {
-            double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
-            double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
-            double targetFieldAngle = Math.atan2(dy, dx);
-            double robotHeading = currentRobotPose.heading.log();
-            double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
-            double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
-//            botErrorDeg = ((botErrorDeg + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
-            turret.update(botErrorDeg);
 
-            telemetry.addData("Turret Lock", "ENABLED");
-            telemetry.addData("Hive Target X", GOAL_TARGET.position.x);
-            telemetry.addData("Hive Target Y", GOAL_TARGET.position.y);
-            telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
-            telemetry.addData("Robot Heading", Math.toDegrees(robotHeading));
-            telemetry.addData("Target Relative Angle", botErrorDeg);
+        if (turretLockEnabled) {
+            if (limelight.getTag() != null) {
+                tagLostTimer.reset();
+                usingLimelight = true;
+            } else if (tagLostTimer.seconds() > 0.25) {
+                usingLimelight = false;
+            }
+
+            if (usingLimelight) {
+                double tx = limelight.getTx();
+                turret.limelightTracking(tx);
+                telemetry.addData("Turret locked", "Limelight Active");
+            } else if (currentRobotPose != null) {
+                double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
+                double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
+                double targetFieldAngle = Math.atan2(dy, dx);
+                double robotHeading = currentRobotPose.heading.log();
+                double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
+                double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
+
+                turret.update(botErrorDeg);
+
+                telemetry.addData("Turret Lock", "ODOMETRY ACTIVE");
+                telemetry.addData("Hive Target X", GOAL_TARGET.position.x);
+                telemetry.addData("Hive Target Y", GOAL_TARGET.position.y);
+                telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
+                telemetry.addData("Robot Heading", Math.toDegrees(robotHeading));
+                telemetry.addData("Target Relative Angle", botErrorDeg);
+            }
         } else {
+            usingLimelight = false;
             telemetry.addData("Turret Lock", "DISABLED");
             turret.setPowerRaw(0);
         }
+
         if (gamepad1.leftBumperWasPressed()) {
             turret.setShooterMode();
         }
@@ -99,9 +121,8 @@ public class TestTeleop extends OpMode {
             turret.setTurretPower(0);
         }
         if (gamepad2.yWasPressed()) {
-            currentRobotPose = new Pose2d(-68,-68,90);
+            currentRobotPose = new Pose2d(-68, -68, 90);
         }
-
 
         telemetry.addData("flyPower", turret.getFlyPower());
         if (currentRobotPose != null) {
@@ -112,18 +133,8 @@ public class TestTeleop extends OpMode {
 
         telemetry.addData("distance from goal", botDistanceToGoal);
         telemetry.addData("Distance from April Tag", limelight.getDistance());
-
         telemetry.addData("LIMELIGHT", limelight.getTag());
-
         telemetry.addData("Shooter Mode", turret.getShooterMode());
         telemetry.update();
-
-        limelight.getClosest();
-
-        /*
-        else if(gamepad1.bWasPressed()){
-            turret.regression(limelight.distanceFromTag());
-        }*/
-
     }
 }
