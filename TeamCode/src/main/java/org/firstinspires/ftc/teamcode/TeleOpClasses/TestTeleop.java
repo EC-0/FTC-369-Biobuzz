@@ -83,11 +83,12 @@ public class TestTeleop extends OpMode {
                 turret.update(localizer.angleToGoal());
 
                 telemetry.addData("Turret Lock", "ODOMETRY ACTIVE");
-                telemetry.addData("Hive Target X", GOAL_TARGET.position.x);
-                telemetry.addData("Hive Target Y", GOAL_TARGET.position.y);
+                telemetry.addData("Hive Target X", localizer.GOAL_X);
+                telemetry.addData("Hive Target Y", localizer.GOAL_Y);
 //                telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
-//                telemetry.addData("Robot Heading", Math.toDegrees(robotHeading));
-                telemetry.addData("Target Relative Angle", localizer.angleToGoal());
+//                telemetry.addData("Robot Heading", Math.toDegrees(currentRobotPose.heading.toDouble()));
+                localizer.printTelem(telemetry);
+//                telemetry.addData("Target Relative Angle", localizer.angleToGoal());
             }
         } else {
             usingLimelight = false;
@@ -136,9 +137,9 @@ public class TestTeleop extends OpMode {
         }
 
         telemetry.addData("distance from goal", botDistanceToGoal);
-        telemetry.addData("Distance from April Tag", limelight.getDistance());
+//        telemetry.addData("Distance from April Tag", limelight.getDistance());
         telemetry.addData("LIMELIGHT", limelight.getTag());
-        telemetry.addData("Shooter Mode", turret.getShooterMode());
+//        telemetry.addData("Shooter Mode", turret.getShooterMode());
         telemetry.update();
     }
 }

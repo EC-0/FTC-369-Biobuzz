@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
@@ -12,6 +13,8 @@ public class RobotLocalizer {
     allianceColor alliance;
     public double GOAL_X;
     public double GOAL_Y = 10;
+    double targetFieldAngle;
+    double targetRelativeAngle;
 
     public RobotLocalizer(HardwareMap hardwareMap, Pose2d startPose, allianceColor alliance){
         drive = new MecanumDrive(hardwareMap, startPose);
@@ -39,8 +42,8 @@ public class RobotLocalizer {
         Pose2d currentPose = getBotPose();
         goalTarget();
 
-        double targetFieldAngle = Math.atan2(GOAL_X - currentPose.position.x, GOAL_Y - currentPose.position.y);
-        double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - currentPose.heading.real);
+        targetFieldAngle = Math.atan2(GOAL_Y - currentPose.position.y, GOAL_X - currentPose.position.x);
+        targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - currentPose.heading.log());
         return Math.toDegrees(targetRelativeAngle) % 360;
     }
     public void goalTarget(){
@@ -51,6 +54,10 @@ public class RobotLocalizer {
         else{
             GOAL_Y = 10;
         }
+    }
+    public void printTelem(Telemetry t){
+        t.addData("relative angle:", targetRelativeAngle);
+        t.addData("field angle", targetFieldAngle);
     }
     public void setBotPosition(Pose2d pose){
         drive.localizer.setPose(pose);
