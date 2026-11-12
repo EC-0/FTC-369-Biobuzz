@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
 public class Background {
 
-    Turret turret;
-    Intake intake;
+    static Turret turret;
+    static Intake intake;
 
     public Background(Turret turret, Intake intake) {
         this.turret = turret;
@@ -19,11 +19,11 @@ public class Background {
     }
 
 
-    public static Action runWithTurret(Action path, Action flywheeler, Action aim, Action intake) {
-        return new RaceAction(path, flywheeler, aim, intake);
+    public static Action runWithTurret(Action path, Action flywheeler, Action aim) {
+        return new RaceAction(path, flywheeler, aim);
     }
 
-    public Action runFlywheel(double distance) {
+    public static Action runFlywheel(double distance) {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -33,7 +33,7 @@ public class Background {
         };
     }
 
-    public Action aim(double botErrorDeg) {
+    public static Action aim(double botErrorDeg) {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -42,15 +42,4 @@ public class Background {
             }
         };
     }
-
-    public Action intake() {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                intake.intakePower(0.5);
-                return false;
-            }
-        };
-    }
-
 }

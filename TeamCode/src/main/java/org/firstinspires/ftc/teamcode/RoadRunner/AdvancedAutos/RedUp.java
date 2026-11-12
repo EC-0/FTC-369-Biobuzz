@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.RoadRunner.AdvancedAutos.Background;
 
 @Autonomous (name = "Red Up Autonomous")
 public class RedUp extends LinearOpMode {
@@ -38,6 +39,7 @@ public class RedUp extends LinearOpMode {
     Turret turret;
     Intake intake;
     RobotLocalizer robotlocalizer;
+    Background background;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,8 +47,9 @@ public class RedUp extends LinearOpMode {
         limelighter = new Limelight(hardwareMap);
         turret = new Turret(hardwareMap);
         intake = new Intake(hardwareMap);
-        robotlocalizer = new RobotLocalizer(hardwareMap, initialPose, RobotLocalizer.allianceColor.RED);
+        background = new Background(turret, intake);
 
+        robotlocalizer = new RobotLocalizer(hardwareMap, initialPose, RobotLocalizer.allianceColor.RED);
         limelighter.switchPipeline(1);
 
         Action startToGarden = drivetrain.actionBuilder(initialPose)
@@ -94,103 +97,73 @@ public class RedUp extends LinearOpMode {
         // shoots preloads
         new SleepAction(tiptime); // waits for potential tip
 
+        intake.intakePower(0.5);
+
         limelighter.getClosest(); // refreshes limelight stat
 
         if (limelighter.getTag() != null) {
-            Actions.runBlocking(runWithTurret(startToGarden, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake())); // intakes garden pollen
+            Actions.runBlocking(Background.runWithTurret(startToGarden, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal()))); // intakes garden pollen
             // shoots garden pollen
             new SleepAction(tiptime); // waits for potential tip
 
             limelighter.getClosest(); // refreshes limelight stat
 
             if (limelighter.getTag() != null) {
-                Actions.runBlocking(runWithTurret(gardenToFlower, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake())); // intakes flower pollen
-                Actions.runBlocking(runWithTurret(flowerToGarden, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                Actions.runBlocking(Background.runWithTurret(gardenToFlower, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal()))); // intakes flower pollen
+                Actions.runBlocking(Background.runWithTurret(flowerToGarden, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
                 // shoots flower pollen
-                Actions.runBlocking(runWithTurret(gardenToPark, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                Actions.runBlocking(Background.runWithTurret(gardenToPark, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
             }
             else {
-                Actions.runBlocking(runWithTurret(gardenToFlower, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake())); // intakes flower pollen
-                Actions.runBlocking(runWithTurret(flowerToShoot, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                Actions.runBlocking(Background.runWithTurret(gardenToFlower, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal()))); // intakes flower pollen
+                Actions.runBlocking(Background.runWithTurret(flowerToShoot, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
 
                 limelighter.getClosest(); // refreshes limelight stat
 
                 if (limelighter.getTag() != null) {
                     // shoots flower pollen
-                    Actions.runBlocking(runWithTurret(shootToPark, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                    Actions.runBlocking(Background.runWithTurret(shootToPark, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
                 }
                 else {
-                    Actions.runBlocking(runWithTurret(shootToGarden, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                    Actions.runBlocking(Background.runWithTurret(shootToGarden, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
                     // shoots flower pollen
-                    Actions.runBlocking(runWithTurret(gardenToPark, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                    Actions.runBlocking(Background.runWithTurret(gardenToPark, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
                 }
             }
         }
         else {
-            Actions.runBlocking(runWithTurret(startToGarden, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake())); // intakes garden pollen
-            Actions.runBlocking(runWithTurret(gardenToShoot, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+            Actions.runBlocking(Background.runWithTurret(startToGarden, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal()))); // intakes garden pollen
+            Actions.runBlocking(Background.runWithTurret(gardenToShoot, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
 
             limelighter.getClosest(); // refreshes limelight stat
 
             if (limelighter.getTag() != null) {
                 // shoots garden pollen
                 new SleepAction(tiptime); // waits for potential tips
-                Actions.runBlocking(runWithTurret(shootToFlower, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake())); // intakes flower pollen
-                Actions.runBlocking(runWithTurret(flowerToShoot, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                Actions.runBlocking(Background.runWithTurret(shootToFlower, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal()))); // intakes flower pollen
+                Actions.runBlocking(Background.runWithTurret(flowerToShoot, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
 
                 limelighter.getClosest(); // refreshes limelight stat
 
                 if (limelighter.getTag() != null) {
                     // shoots flower pollen
-                    Actions.runBlocking(runWithTurret(shootToPark, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                    Actions.runBlocking(Background.runWithTurret(shootToPark, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
                 }
                 else {
-                    Actions.runBlocking(runWithTurret(shootToGarden, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));;
+                    Actions.runBlocking(Background.runWithTurret(shootToGarden, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));;
                     // shoots flower pollen
-                    Actions.runBlocking(runWithTurret(gardenToPark, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));;
+                    Actions.runBlocking(Background.runWithTurret(gardenToPark, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));;
                 }
             }
             else {
-                Actions.runBlocking(runWithTurret(shootToGarden, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));;
+                Actions.runBlocking(Background.runWithTurret(shootToGarden, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));;
                 // shoots pollen from garden
-                Actions.runBlocking(runWithTurret(gardenToFlower, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));; // intakes flower pollen
-                Actions.runBlocking(runWithTurret(flowerToGarden, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));
+                Actions.runBlocking(Background.runWithTurret(gardenToFlower, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));; // intakes flower pollen
+                Actions.runBlocking(Background.runWithTurret(flowerToGarden, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));
                 // shoots pollen from flower
-                Actions.runBlocking(runWithTurret(gardenToPark, runFlywheel(robotlocalizer.getDistanceToGoal()), aim(robotlocalizer.angleToGoal()), intake()));;
+                Actions.runBlocking(Background.runWithTurret(gardenToPark, Background.runFlywheel(robotlocalizer.getDistanceToGoal()), Background.aim(robotlocalizer.angleToGoal())));;
             }
         }
     }
-    public static Action runWithTurret(Action path, Action flywheeler, Action aim, Action intake) {
-        return new RaceAction(path, flywheeler, aim, intake);
-    }
 
-    public Action runFlywheel(double distance) {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                turret.setTurretPower(distance);
-                return false;
-            }
-        };
-    }
-
-    public Action aim(double botErrorDeg) {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                turret.update(botErrorDeg);
-                return false;
-            }
-        };
-    }
-
-    public Action intake() {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                intake.intakePower(0.5);
-                return false;
-            }
-        };
-    }
 }
