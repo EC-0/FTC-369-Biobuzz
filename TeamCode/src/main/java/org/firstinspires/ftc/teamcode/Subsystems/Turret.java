@@ -8,9 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Turret {
-
     DcMotorEx fly1;
-    DcMotorEx fly2;
+    //DcMotorEx fly2;
     DcMotorEx turret;
 
     PIDF_Controller pid;
@@ -19,9 +18,9 @@ public class Turret {
     private double flyPower;
     private boolean useRegression;
 
-    private final double totalTurnTicks = 853.0;
+    private final double totalTurnTicks = 2933;
     private final double totalDegrees = 320.0;
-    private final double maxSafeTicks = 840.0;
+    private final double maxSafeTicks = 2870;
     private final double minSafeTicks = 15.0;
     private final double ticksPerDegree = totalTurnTicks / totalDegrees;
 
@@ -31,8 +30,8 @@ public class Turret {
     private double targetPositionTurretDegrees;
 
     private final double minDegrees = 20.0;
-    private final double safeMinDegrees = 25.0;
-    private final double safeMaxDegrees = 335.0;
+    private final double safeMinDegrees = 20.0;
+    private final double safeMaxDegrees = 330.0;
 
     private double targetVelTicksPerSec = 0.0;
     private double lastTargetTicks = 0.0;
@@ -47,8 +46,8 @@ public class Turret {
     public Turret(HardwareMap hardwareMap) {
 
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
-        fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
-        fly2.setDirection(DcMotorSimple.Direction.REVERSE);
+        //fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
+        //fly2.setDirection(DcMotorSimple.Direction.REVERSE);
         flyPower = 0;
 
         turret = hardwareMap.get(DcMotorEx.class, "turret");
@@ -58,8 +57,8 @@ public class Turret {
         turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        pid = new PIDF_Controller(1, 0, 0, 0);
-        turretPid = new PIDF_Controller(0.011, 0, 0.0004, .06);
+        pid = new PIDF_Controller(13.5, 0.05 , 0.01, 20,-.009625  );
+        turretPid = new PIDF_Controller(0.01, 0, 0.0001, 0, 0);
     }
 
 
@@ -72,7 +71,7 @@ public class Turret {
             regression(distance);
         } else {
             fly1.setVelocity(flyPower);
-            fly2.setVelocity(flyPower);
+           // fly2.setVelocity(flyPower);
         }
     }
 
@@ -82,16 +81,16 @@ public class Turret {
         } else {
             flyPower += increment;
             fly1.setVelocity(flyPower);
-            fly2.setVelocity(flyPower);
+           // fly2.setVelocity(flyPower);
         }
     }
 
     public void regression(double distanceToHive) {
         //double targetVelocity = 10.31616 * distanceToHive + 945.07026;
-        double targetVelocity = (0.544791 * Math.pow(distanceToHive,2)) - (59.41912*distanceToHive) + 3204.17206;
+        double targetVelocity = (-2.78251 * distanceToHive) + 1720.39128;
         pid.setTarget(targetVelocity);
         fly1.setVelocity(pid.calculate(fly1.getVelocity()));
-        fly2.setVelocity(pid.calculate(fly2.getVelocity()));
+       // fly2.setVelocity(pid.calculate(fly2.getVelocity()));
     }
 
     public void setPowerRaw(double power) {
@@ -109,6 +108,32 @@ public class Turret {
         filterInitialized = false;
         filteredTargetTicks = 0.0;
     }
+    public void limelightTracking(double tx) {
+        currentPositionTicks = turret.getCurrentPosition();
+        currentPositionDegrees = normalize360(minDegrees + currentPositionTicks / ticksPerDegree);
+
+        filteredTargetTicks = currentPositionTicks;
+        filterInitialized = true;
+
+        if (Math.abs(tx) < 1.5) {
+            turret.setPower(0);
+            return;
+        }
+
+        double kP_limelight = 0.015; // Flip to -tx if it turns away from the tag
+        double outputPower = tx * kP_limelight;
+        outputPower = clamp(outputPower, -0.35, 0.35);
+
+        if (currentPositionTicks >= maxSafeTicks && outputPower > 0) {
+            outputPower = 0;
+        }
+        if (currentPositionTicks <= minSafeTicks && outputPower < 0) {
+            outputPower = 0;
+        }
+        turret.setPower(outputPower);
+    }
+
+
 
     public void update(double botErrorDeg) {
         currentPositionTicks = turret.getCurrentPosition();
@@ -128,6 +153,7 @@ public class Turret {
         }
 
         updateTargetVelocity();
+        turretPid.setTarget(filteredTargetTicks, targetVelTicksPerSec);
         turretPid.setTarget(filteredTargetTicks);
         double outputPower = turretPid.calculate(currentPositionTicks);
         outputPower = clamp(outputPower, -0.6, 0.6);
