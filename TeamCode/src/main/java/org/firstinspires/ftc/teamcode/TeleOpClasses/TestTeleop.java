@@ -38,7 +38,8 @@ public class TestTeleop extends OpMode {
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap);
-        localizer = new RobotLocalizer(hardwareMap, new Pose2d(-72, -72, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
+        //START POSE IS SET FOR RIGHT SIDE RED SIDE
+        localizer = new RobotLocalizer(hardwareMap, new Pose2d(68, -68, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
         limelight.switchPipeline(0);
 
         GOAL_TARGET = new Pose2d(new Vector2d(localizer.GOAL_X, localizer.GOAL_Y), Rotation2d.exp(0));
@@ -126,7 +127,7 @@ public class TestTeleop extends OpMode {
             turret.setTurretPower(0);
         }
         if (gamepad2.yWasPressed()) {
-            currentRobotPose = new Pose2d(-68, -68, 90);
+            currentRobotPose = new Pose2d(68, -68, 90);
         }
 
         telemetry.addData("flyPower", turret.getFlyPower());

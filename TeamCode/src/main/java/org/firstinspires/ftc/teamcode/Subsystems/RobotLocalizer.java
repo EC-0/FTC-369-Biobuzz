@@ -11,8 +11,8 @@ public class RobotLocalizer {
     MecanumDrive drive;
     public enum allianceColor {BLUE, RED}
     allianceColor alliance;
-    public double GOAL_X;
-    public double GOAL_Y = 10;
+    public double GOAL_X = 10;
+    public double GOAL_Y;
     double targetFieldAngle;
     double targetRelativeAngle;
 
@@ -21,10 +21,10 @@ public class RobotLocalizer {
         this.alliance = alliance;
 
         if(alliance == allianceColor.BLUE){//FIND THE ACTUAL VALUES FOR THESE
-            GOAL_X = 10;
+            GOAL_Y = 10;
         }
         else{
-            GOAL_X = -10;
+            GOAL_Y = -10;
         }
     }
     public void updateBotPosition(){
@@ -48,11 +48,11 @@ public class RobotLocalizer {
     }
     public void goalTarget(){
         Pose2d currentPose = getBotPose();
-        if(currentPose.position.y <0){
-            GOAL_Y = -10;
+        if(currentPose.position.x <0){
+            GOAL_X = -10;
         }
         else{
-            GOAL_Y = 10;
+            GOAL_X = 10;
         }
     }
     public void printTelem(Telemetry t){
