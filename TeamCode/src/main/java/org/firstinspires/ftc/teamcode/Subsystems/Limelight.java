@@ -33,19 +33,41 @@ public class Limelight {
         if (result != null && result.isValid()) {
             List<LLResultTypes.FiducialResult> tagList = result.getFiducialResults();
 
+
+
             if (tagList != null && !tagList.isEmpty()) {
+
+
                 for (LLResultTypes.FiducialResult tag : tagList) {
+
                     pitchAngle = cameraAngle + tag.getTargetYDegrees();
                     double dist = returnDistance(deltaHeight, pitchAngle);
 
-                    if (lowestDistance == null) {
-                        bestId = tag.getFiducialId();
-                        lowestDistance = dist;
-                        bestTx = tag.getTargetXDegrees();
-                    } else if (dist < lowestDistance && dist < 120) {
-                        bestId = tag.getFiducialId();
-                        lowestDistance = dist;
-                        bestTx = tag.getTargetXDegrees();
+                    if (tag.getFiducialId() == 43 || tag.getFiducialId() == 44 || tag.getFiducialId() == 39 || tag.getFiducialId() == 40) {
+
+                        if (bestId != 43 || bestId != 44 || bestId != 39 || bestId != 40) {
+                            bestId = tag.getFiducialId();
+                            bestTx = tag.getTargetXDegrees();
+                            lowestDistance = dist;
+                        }
+                        else {
+                            if (dist < lowestDistance) {
+                                bestId = tag.getFiducialId();
+                                bestTx = tag.getTargetXDegrees();
+                                lowestDistance = dist;
+                            }
+                        }
+                    }
+                    else {
+                        if (lowestDistance == null) {
+                            bestId = tag.getFiducialId();
+                            lowestDistance = dist;
+                            bestTx = tag.getTargetXDegrees();
+                        } else if (dist < lowestDistance && dist < 120) {
+                            bestId = tag.getFiducialId();
+                            lowestDistance = dist;
+                            bestTx = tag.getTargetXDegrees();
+                        }
                     }
                 }
             }
