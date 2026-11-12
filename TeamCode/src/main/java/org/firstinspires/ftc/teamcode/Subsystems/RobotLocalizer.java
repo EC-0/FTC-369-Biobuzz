@@ -14,8 +14,15 @@ public class RobotLocalizer {
         drive = new MecanumDrive(hardwareMap, startPose);
         this.alliance = alliance;
     }
+    public void updateBotPosition(){
+        drive.updatePoseEstimate();
+    }
     public Pose2d getBotPose(){
         return drive.localizer.getPose();
+    }
+    public double getDistanceToGoal(){
+        Pose2d currentPose = getBotPose();
+        return Math.hypot((Math.abs(10 - currentPose.position.x)), (Math.abs(-10 - currentPose.position.y)));
     }
     public void setBotPosition(Pose2d pose){
         drive.localizer.setPose(pose);
