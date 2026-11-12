@@ -39,7 +39,7 @@ public class TestTeleop extends OpMode {
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap);
         //START POSE IS SET FOR RIGHT SIDE RED SIDE
-        localizer = new RobotLocalizer(hardwareMap, new Pose2d(68, -68, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
+        localizer = new RobotLocalizer(hardwareMap, new Pose2d(68, -68, Math.toRadians(90)), RobotLocalizer.allianceColor.BLUE);
         limelight.switchPipeline(0);
 
         GOAL_TARGET = new Pose2d(new Vector2d(localizer.GOAL_X, localizer.GOAL_Y), Rotation2d.exp(0));
