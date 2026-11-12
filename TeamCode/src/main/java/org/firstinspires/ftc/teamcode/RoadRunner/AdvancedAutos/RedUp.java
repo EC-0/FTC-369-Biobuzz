@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
+import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 @Autonomous (name = "Red Up Autonomous")
@@ -32,12 +33,14 @@ public class RedUp extends LinearOpMode {
     MecanumDrive drivetrain;
     Limelight limelighter;
     Turret turret;
+    RobotLocalizer robotlocalizer;
 
     @Override
     public void runOpMode() throws InterruptedException {
         drivetrain = new MecanumDrive(hardwareMap, initialPose);
         limelighter = new Limelight(hardwareMap);
         turret = new Turret(hardwareMap);
+        robotlocalizer = new RobotLocalizer(hardwareMap, initialPose, RobotLocalizer.allianceColor.RED);
 
         limelighter.switchPipeline(1);
 
@@ -152,15 +155,25 @@ public class RedUp extends LinearOpMode {
             }
         }
     }
-    public static void runWithTurret(Action path) {
-
+    public static Action runWithTurret(Action path, Action flywheeler, Action aim) {
+        return new RaceAction(path, flywheeler, aim);
     }
 
-    public Action shoot(double distance, double increment) {
+    public Action runFlywheel(double distance, double increment) {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 turret.setTurretPower(distance, increment);
+                return false;
+            }
+        };
+    }
+
+    public Action aim(double botErrorDeg) {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                turret.update(botErrorDeg);
                 return false;
             }
         };
