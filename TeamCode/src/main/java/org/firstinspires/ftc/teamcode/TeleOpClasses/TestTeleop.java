@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 
@@ -26,6 +27,7 @@ public class TestTeleop extends OpMode {
     Drivetrain drivetrain;
     Intake intake;
     Turret turret;
+    Shooter shooter;
     RobotLocalizer localizer;
 
     private final Pose2d GOAL_TARGET = new Pose2d(new Vector2d(5, -10), Rotation2d.exp(0));
@@ -36,6 +38,7 @@ public class TestTeleop extends OpMode {
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
+        shooter = new Shooter(hardwareMap);
         limelight = new Limelight(hardwareMap);
         localizer = new RobotLocalizer(hardwareMap, new Pose2d(-72, -72, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
         limelight.switchPipeline(0);
@@ -92,7 +95,7 @@ public class TestTeleop extends OpMode {
         }
 
         if (gamepad1.leftBumperWasPressed()) {
-            turret.setShooterMode();
+            shooter.setShooterMode();
         }
         if (gamepad1.y) {
             drivetrain.resetHeading();
@@ -103,12 +106,12 @@ public class TestTeleop extends OpMode {
             intake.intakePower(0);
         }
         if (gamepad1.bWasPressed()) {
-            turret.setTurretPower(botDistanceToGoal, 100);
+            shooter.setShooterPower(botDistanceToGoal, 100);
         }
         if (gamepad1.xWasPressed()) {
-            turret.setTurretPower(botDistanceToGoal, -100);
+            shooter.setShooterPower(botDistanceToGoal, -100);
         }
-        turret.setTurretPower(botDistanceToGoal);
+        shooter.setShooterPower(botDistanceToGoal);
 
         // gamepad 2 stuff
         if (gamepad2.aWasPressed()) {
@@ -118,13 +121,13 @@ public class TestTeleop extends OpMode {
             intake.changeDirection();
         }
         if (gamepad2.xWasPressed()) {
-            turret.setTurretPower(0);
+            shooter.setShooterPower(0);
         }
         if (gamepad2.yWasPressed()) {
             currentRobotPose = new Pose2d(-68, -68, 90);
         }
 
-        telemetry.addData("flyPower", turret.getFlyPower());
+        telemetry.addData("flyPower", shooter.getFlyPower());
         if (currentRobotPose != null) {
             telemetry.addData("Robot X", currentRobotPose.position.x);
             telemetry.addData("Robot Y", currentRobotPose.position.y);
@@ -134,7 +137,7 @@ public class TestTeleop extends OpMode {
         telemetry.addData("distance from goal", botDistanceToGoal);
         telemetry.addData("Distance from April Tag", limelight.getDistance());
         telemetry.addData("LIMELIGHT", limelight.getTag());
-        telemetry.addData("Shooter Mode", turret.getShooterMode());
+        telemetry.addData("Shooter Mode", shooter.getShooterMode());
         telemetry.update();
     }
 }
