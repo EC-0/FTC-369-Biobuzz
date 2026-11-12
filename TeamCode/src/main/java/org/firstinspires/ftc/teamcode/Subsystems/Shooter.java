@@ -81,6 +81,10 @@ public class Shooter{
         return flyPower;
     }
 
+    public double getShooterVelocity(){
+        return fly1.getVelocity();
+    }
+
     public String getShooterMode(){
         return useRegression ? "Auto" : "Manual";
     }

@@ -8,13 +8,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import
 
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.PIDF_Controller;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+
 @Config
 @TeleOp (name = "shooterPID")
 public class TestShooterPID extends OpMode {
-    DcMotorEx fly1;
+    Shooter shooter;
     DcMotor intake;
     PIDF_Controller shooterPID;
     FtcDashboard dash;
@@ -25,21 +28,19 @@ public class TestShooterPID extends OpMode {
     public static double kS = 20;
     @Override
     public void init() {
-        fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
+        shooter = new Shooter(hardwareMap);
         //fly2 = hardwareMap.get(DcMotorEx.class, "fly2");
         shooterPID = new PIDF_Controller(kp,kI,kd,kV,kS);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         dash = FtcDashboard.getInstance();
         intake = hardwareMap.get(DcMotor.class, "intake");
-
-
     }
 
     @Override
     public void loop() {
         TelemetryPacket packet = new TelemetryPacket();
-        packet.put("Turret pos", fly1.getVelocity());
-        packet.put("Turret error", 1000-fly1.getVelocity());
+        packet.put("Turret pos", shooter.getShooterVelocity());
+        packet.put("Turret error", 1000-shooter.getShooterVelocity());
 
         dash.sendTelemetryPacket(packet);
         intake.setPower(gamepad1.right_stick_x);
