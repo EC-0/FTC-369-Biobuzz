@@ -39,7 +39,7 @@ public class BlueRightTele extends OpMode {
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap);
         stopper = new Stopper(hardwareMap);
-        //START POSE IS SET FOR RIGHT SIDE RED SIDE
+        //START POSE IS SET FOR RIGHT SIDE BLUE SIDE
         localizer = new RobotLocalizer(hardwareMap, new Pose2d(-68, 68, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
         limelight.switchPipeline(0);
 
@@ -70,23 +70,12 @@ public class BlueRightTele extends OpMode {
                 turret.limelightTracking(tx);
                 telemetry.addData("Turret locked", "Limelight Active");
             } else if (currentRobotPose != null) {
-//                double dx = GOAL_TARGET.position.x - currentRobotPose.position.x;
-//                double dy = GOAL_TARGET.position.y - currentRobotPose.position.y;
-//                double targetFieldAngle = Math.atan2(dy, dx);
-//                double robotHeading = currentRobotPose.heading.log();
-//                double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - robotHeading);
-//                double botErrorDeg = Math.toDegrees(targetRelativeAngle) % 360;
-//
-//                turret.update(botErrorDeg);
                 turret.update(localizer.angleToGoal());
 
                 telemetry.addData("Turret Lock", "ODOMETRY ACTIVE");
                 telemetry.addData("Hive Target X", localizer.GOAL_X);
                 telemetry.addData("Hive Target Y", localizer.GOAL_Y);
-//                telemetry.addData("Target Field Angle", Math.toDegrees(targetFieldAngle));
-//                telemetry.addData("Robot Heading", Math.toDegrees(currentRobotPose.heading.toDouble()));
                 localizer.printTelem(telemetry);
-//                telemetry.addData("Target Relative Angle", localizer.angleToGoal());
             }
         } else {
             usingLimelight = false;
@@ -131,7 +120,7 @@ public class BlueRightTele extends OpMode {
             turret.setPowerRaw(0);
         }
         if (gamepad2.yWasPressed()) {
-            currentRobotPose = new Pose2d(68, -68, 90);
+            currentRobotPose = new Pose2d(-68, 68, 90);
         }
 
         telemetry.addData("flyPower", turret.getFlyPower());
