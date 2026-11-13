@@ -8,16 +8,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
+import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 
-@TeleOp(name = "Test TeleOp")
-public class TestTeleop extends OpMode {
+@TeleOp(name = "Red Right Teleop")
+public class RedRightTele extends OpMode {
     private ElapsedTime tagLostTimer = new ElapsedTime();
     private boolean usingLimelight = false;
 
@@ -26,6 +26,7 @@ public class TestTeleop extends OpMode {
     Drivetrain drivetrain;
     Intake intake;
     Turret turret;
+    Stopper stopper;
     RobotLocalizer localizer;
 
     private Pose2d GOAL_TARGET;
@@ -38,9 +39,10 @@ public class TestTeleop extends OpMode {
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
         limelight = new Limelight(hardwareMap);
+        stopper = new Stopper(hardwareMap);
         //START POSE IS SET FOR RIGHT SIDE RED SIDE
-        localizer = new RobotLocalizer(hardwareMap, new Pose2d(68, -68, Math.toRadians(0)), RobotLocalizer.allianceColor.BLUE);
-        limelight.switchPipeline(0);
+        localizer = new RobotLocalizer(hardwareMap, new Pose2d(68, -68, Math.toRadians(0)), RobotLocalizer.allianceColor.RED);
+        limelight.switchPipeline(1);
 
         GOAL_TARGET = new Pose2d(new Vector2d(localizer.GOAL_X, localizer.GOAL_Y), Rotation2d.exp(0));
     }
@@ -55,10 +57,6 @@ public class TestTeleop extends OpMode {
 
         drivetrain.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.left_trigger,
                 gamepad1.right_trigger);
-
-        if (gamepad1.rightBumperWasPressed()) {
-            turretLockEnabled = !turretLockEnabled;
-        }
 
         if (turretLockEnabled) {
             if (limelight.getTag() != null) {
@@ -100,19 +98,26 @@ public class TestTeleop extends OpMode {
         if (gamepad1.leftBumperWasPressed()) {
             turret.setShooterMode();
         }
-        if (gamepad1.y) {
+        if (gamepad1.rightBumperWasPressed()) {
+            turretLockEnabled = !turretLockEnabled;
+        }
+        if (gamepad1.x) {
             drivetrain.resetHeading();
         }
         if (gamepad1.a) {
             intake.intakePower(0.9);
+            stopper.setStopper(.1);
         } else {
-            intake.intakePower(0);
+            intake.intakePower(0.5);
+            stopper.setStopper(.8);
         }
-        if (gamepad1.bWasPressed()) {
-            turret.setTurretPower(botDistanceToGoal, 100);
+
+
+        if (gamepad2.bWasPressed()) {
+            turret.setTurretPower(botDistanceToGoal, 50);
         }
-        if (gamepad1.xWasPressed()) {
-            turret.setTurretPower(botDistanceToGoal, -100);
+        if (gamepad2.xWasPressed()) {
+            turret.setTurretPower(botDistanceToGoal, -50);
         }
         turret.setTurretPower(botDistanceToGoal);
 
@@ -124,7 +129,7 @@ public class TestTeleop extends OpMode {
             intake.changeDirection();
         }
         if (gamepad2.xWasPressed()) {
-            turret.setTurretPower(0);
+            turret.setPowerRaw(0);
         }
         if (gamepad2.yWasPressed()) {
             currentRobotPose = new Pose2d(68, -68, 90);

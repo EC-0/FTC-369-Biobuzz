@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Stopper {
     Servo stopper;
-    Stopper(HardwareMap hardwareMap){
+    public Stopper(HardwareMap hardwareMap){
         stopper = hardwareMap.get(Servo.class, "stopper");
     }
 
