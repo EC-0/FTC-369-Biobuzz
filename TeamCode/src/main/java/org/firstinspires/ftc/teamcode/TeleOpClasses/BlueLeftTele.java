@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
-@TeleOp(name = "Blue Right Teleop")
+@TeleOp(name = "Blue Left Teleop")
 public class BlueLeftTele extends OpMode {
     private ElapsedTime tagLostTimer = new ElapsedTime();
     private boolean usingLimelight = false;
@@ -83,10 +83,10 @@ public class BlueLeftTele extends OpMode {
             turret.setPowerRaw(0);
         }
 
-        if (gamepad1.leftBumperWasPressed()) {
+        if (gamepad2.leftBumperWasPressed()) {
             turret.setShooterMode();
         }
-        if (gamepad1.rightBumperWasPressed()) {
+        if (gamepad2.rightBumperWasPressed()) {
             turretLockEnabled = !turretLockEnabled;
         }
         if (gamepad1.x) {

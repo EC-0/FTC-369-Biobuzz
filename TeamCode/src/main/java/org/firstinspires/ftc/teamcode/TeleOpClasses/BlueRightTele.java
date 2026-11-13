@@ -83,10 +83,10 @@ public class BlueRightTele extends OpMode {
             turret.setPowerRaw(0);
         }
 
-        if (gamepad1.leftBumperWasPressed()) {
+        if (gamepad2.leftBumperWasPressed()) {
             turret.setShooterMode();
         }
-        if (gamepad1.rightBumperWasPressed()) {
+        if (gamepad2.rightBumperWasPressed()) {
             turretLockEnabled = !turretLockEnabled;
         }
         if (gamepad1.x) {

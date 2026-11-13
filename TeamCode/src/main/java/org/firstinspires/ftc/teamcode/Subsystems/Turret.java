@@ -16,7 +16,7 @@ public class Turret {
     PIDF_Controller turretPid;
 
     private double flyPower;
-    private boolean useRegression;
+    private boolean useRegression = true;
 
     private final double totalTurnTicks = 2933;
     private final double totalDegrees = 320.0;
