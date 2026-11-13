@@ -95,6 +95,10 @@ public class RedLeftTele extends OpMode {
         if (gamepad1.a) {
             intake.intakePower(0.9);
             stopper.setStopper(.1);
+        } else if (gamepad2.a) {
+            intake.intakePower(0.0);
+        } else if (gamepad2.b) {
+            intake.intakePower(-.8);
         } else {
             intake.intakePower(0.5);
             stopper.setStopper(.8);
@@ -110,12 +114,6 @@ public class RedLeftTele extends OpMode {
         turret.setTurretPower(botDistanceToGoal);
 
         // gamepad 2 stuff
-        if (gamepad2.aWasPressed()) {
-            intake.intakePower(0.0);
-        }
-        if (gamepad2.bWasPressed()) {
-            intake.changeDirection();
-        }
         if (gamepad2.xWasPressed()) {
             turret.setPowerRaw(0);
         }
