@@ -41,15 +41,15 @@ public class Limelight {
                     pitchAngle = cameraAngle + tag.getTargetYDegrees();
                     double dist = returnDistance(deltaHeight, pitchAngle);
 
-                    if (tag.getFiducialId() == 43 || tag.getFiducialId() == 44 || tag.getFiducialId() == 39 || tag.getFiducialId() == 40) {
+                    if (tag.getFiducialId() == 43 || tag.getFiducialId() == 44 || tag.getFiducialId() == 39 || tag.getFiducialId() == 40 || tag.getFiducialId() == 31 || tag.getFiducialId() == 32 || tag.getFiducialId() == 35 || tag.getFiducialId() == 36) {
 
-                        if (bestId != null && (bestId != 43 || bestId != 44 || bestId != 39 || bestId != 40)) {
+                        if (bestId == null || (bestId != 43 || bestId != 44 || bestId != 39 || bestId != 40 || bestId != 31 || bestId != 32 || bestId != 35 || bestId != 36)) {
                             bestId = tag.getFiducialId();
                             bestTx = tag.getTargetXDegrees();
                             lowestDistance = dist;
                         }
                         else {
-                            if (dist < lowestDistance) {
+                            if (lowestDistance == null || dist < lowestDistance) {
                                 bestId = tag.getFiducialId();
                                 bestTx = tag.getTargetXDegrees();
                                 lowestDistance = dist;
