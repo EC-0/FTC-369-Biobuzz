@@ -1,3 +1,5 @@
+/*
+
 package org.firstinspires.ftc.teamcode.pedro.AutoClasses;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.pedro.Paths.RedPaths;
@@ -39,3 +41,5 @@ public class RedAutoUp extends OpMode {
         execute();
     }
 }
+
+ */

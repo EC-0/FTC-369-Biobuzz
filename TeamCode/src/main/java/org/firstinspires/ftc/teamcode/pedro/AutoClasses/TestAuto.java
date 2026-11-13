@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.pedro.AutoClasses;
 
 import com.pedropathing.follower.Follower;
@@ -58,3 +59,6 @@ public class TestAuto extends OpMode {
         Scheduler.execute();
     }
 }
+
+
+ */

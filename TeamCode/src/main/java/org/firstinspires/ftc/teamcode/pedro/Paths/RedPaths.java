@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.pedro.Paths;
 
 import com.pedropathing.follower.Follower;
@@ -239,3 +240,5 @@ public class RedPaths {
         );
     }
 }
+
+ */
