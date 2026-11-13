@@ -43,7 +43,6 @@ public class RedRightTele extends OpMode {
         //START POSE IS SET FOR RIGHT SIDE RED SIDE
         localizer = new RobotLocalizer(hardwareMap, new Pose2d(68, -68, Math.toRadians(0)), RobotLocalizer.allianceColor.RED);
         limelight.switchPipeline(1);
-
         GOAL_TARGET = new Pose2d(new Vector2d(localizer.GOAL_X, localizer.GOAL_Y), Rotation2d.exp(0));
     }
 
