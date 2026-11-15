@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
@@ -10,18 +11,20 @@ public class RobotLocalizer {
     MecanumDrive drive;
     public enum allianceColor {BLUE, RED}
     allianceColor alliance;
-    public double GOAL_X;
-    public double GOAL_Y = 10;
+    public double GOAL_X = 10;
+    public double GOAL_Y;
+    double targetFieldAngle;
+    double targetRelativeAngle;
 
     public RobotLocalizer(HardwareMap hardwareMap, Pose2d startPose, allianceColor alliance){
         drive = new MecanumDrive(hardwareMap, startPose);
         this.alliance = alliance;
 
         if(alliance == allianceColor.BLUE){//FIND THE ACTUAL VALUES FOR THESE
-            GOAL_X = 10;
+            GOAL_Y = 10;
         }
         else{
-            GOAL_X = -10;
+            GOAL_Y = -10;
         }
     }
     public void updateBotPosition(){
@@ -39,18 +42,22 @@ public class RobotLocalizer {
         Pose2d currentPose = getBotPose();
         goalTarget();
 
-        double targetFieldAngle = Math.atan2(GOAL_X - currentPose.position.x, GOAL_Y - currentPose.position.y);
-        double targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - currentPose.heading.real);
+        targetFieldAngle = Math.atan2(GOAL_Y - currentPose.position.y, GOAL_X - currentPose.position.x);
+        targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - currentPose.heading.log());
         return Math.toDegrees(targetRelativeAngle) % 360;
     }
     public void goalTarget(){
         Pose2d currentPose = getBotPose();
-        if(currentPose.position.y <0){
-            GOAL_Y = -10;
+        if(currentPose.position.x <0){
+            GOAL_X = -10;
         }
         else{
-            GOAL_Y = 10;
+            GOAL_X = 10;
         }
+    }
+    public void printTelem(Telemetry t){
+        t.addData("relative angle:", targetRelativeAngle);
+        t.addData("field angle", targetFieldAngle);
     }
     public void setBotPosition(Pose2d pose){
         drive.localizer.setPose(pose);
