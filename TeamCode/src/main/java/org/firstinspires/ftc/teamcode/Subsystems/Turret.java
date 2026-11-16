@@ -234,4 +234,8 @@ public class Turret {
         telemetry.addData("Filtered Target Ticks", filteredTargetTicks);
         telemetry.addData("Target Velocity Ticks/Sec", targetVelTicksPerSec);
     }
+
+    public double getVelocity() {
+        return fly1.getVelocity();
+    }
 }
