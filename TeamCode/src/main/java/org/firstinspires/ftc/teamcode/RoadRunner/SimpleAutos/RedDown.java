@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 @Autonomous (name = "RedDown")
 public class RedDown extends LinearOpMode {
 
-    double shootTime = 6, tipTime = 6, lenience = 50;
+    double shootTime = 6, tipTime = 5, lenience = 50;
 
     Limelight limelight;
     MecanumDrive drivetrain;
