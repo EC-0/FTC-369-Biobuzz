@@ -19,6 +19,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 public class RedDown extends LinearOpMode {
 
+    double shootTime = 6, tipTime = 6, lenience = 50;
+
     Limelight limelight;
     MecanumDrive drivetrain;
     Turret turret;
@@ -52,18 +54,74 @@ public class RedDown extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(50,-50), Math.toRadians(270))
                 .build();
 
+        Action shootToStart = drivetrain.actionBuilder(shoot)
+                .strafeToLinearHeading(new Vector2d(-50,-50), Math.toRadians(270))
+                .strafeToLinearHeading(new Vector2d(-50,-10), Math.toRadians(270))
+                .strafeToLinearHeading(new Vector2d(50,-50), Math.toRadians(270))
+                .build();
+
+        Action shootToPark = drivetrain.actionBuilder(shoot)
+                .strafeToLinearHeading(new Vector2d(-50,-50), Math.toRadians(270))
+                .strafeToLinearHeading(new Vector2d(-50,-62), Math.toRadians(270))
+                .build();
+
         RaceAction getReady = new RaceAction(
                 new SleepAction(5.5),
+                ba.combinedActions()
+        );
+
+        RaceAction waitForTags = new RaceAction(
+                new SleepAction(tipTime + shootTime),
+                ba.getTag()
+        );
+
+        RaceAction starttoshoot = new RaceAction(
+                startToShoot,
+                ba.combinedActions()
+        );
+
+        RaceAction shoottostart = new RaceAction(
+                shootToStart,
                 ba.combinedActions()
         );
 
         waitForStart();
 
         stopper.setStopper(0.8);
+        intake.intakePower(0.6);
 
         Actions.runBlocking(getReady);
 
+        Actions.runBlocking(waitForTags);
+
         Actions.runBlocking(ba.getClosest());
 
+        if (limelight.getTag() != null) {
+            Actions.runBlocking(ba.combinedActions());
+            stopper.setStopper(0.0);
+            Actions.runBlocking(new SleepAction(shootTime));
+            stopper.setStopper(0.8);
+            intake.intakePower(0.0);
+            Actions.runBlocking(startToPark);
+        }
+        else {
+            Actions.runBlocking(starttoshoot);
+            ba.getClosest();
+            if (limelight.getTag() != null) {
+                stopper.setStopper(0.0);
+                Actions.runBlocking(new SleepAction(shootTime));
+                stopper.setStopper(0.8);
+                intake.intakePower(0.0);
+                Actions.runBlocking(shoottostart);
+            }
+            else {
+                Actions.runBlocking(shoottostart);
+                stopper.setStopper(0.0);
+                Actions.runBlocking(new SleepAction(shootTime));
+                stopper.setStopper(0.8);
+                intake.intakePower(0.0);
+                Actions.runBlocking(startToPark);
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.pedropathing.math.Pose;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -18,7 +19,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
+@Autonomous (name = "RedUp")
 public class RedUp extends LinearOpMode {
+    double shootTime = 6, tipTime = 6, lenience = 50;
     Limelight limelight;
     MecanumDrive drivetrain;
     Turret turret;
@@ -94,21 +97,21 @@ public class RedUp extends LinearOpMode {
         Actions.runBlocking(getReady);
 
         turret.regression(localizer.getDistanceToGoal());
-        while (!(turret.getVelocity() >= (pid.calculate(turret.getVelocity())))) {}
+        while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
         intake.intakePower(0.6);
         stopper.setStopper(0.0);
 
-        Actions.runBlocking(new SleepAction(3.0));
+        Actions.runBlocking(new SleepAction(shootTime));
 
         stopper.setStopper(0.8);
 
         Actions.runBlocking(starttogarden);
 
-        Actions.runBlocking(new SleepAction(3.0));
+        Actions.runBlocking(new SleepAction(tipTime));
 
         if (limelight.getTag() != null) {
             stopper.setStopper(0.0);
-            Actions.runBlocking(new SleepAction(3.0));
+            Actions.runBlocking(new SleepAction(shootTime));
             stopper.setStopper(0.8);
             intake.intakePower(0.0);
             Actions.runBlocking(gardenToPark);
@@ -117,7 +120,7 @@ public class RedUp extends LinearOpMode {
             Actions.runBlocking(gardentoshoot);
             if (limelight.getTag() != null) {
                 stopper.setStopper(0.0);
-                Actions.runBlocking(new SleepAction(3.0));
+                Actions.runBlocking(new SleepAction(shootTime));
                 intake.intakePower(0.0);
                 stopper.setStopper(0.8);
                 Actions.runBlocking(shootToPark);
@@ -125,7 +128,7 @@ public class RedUp extends LinearOpMode {
             else {
                 Actions.runBlocking(shoottogarden);
                 stopper.setStopper(0.0);
-                Actions.runBlocking(new SleepAction(3.0));
+                Actions.runBlocking(new SleepAction(shootTime));
                 intake.intakePower(0.0);
                 stopper.setStopper(0.8);
                 Actions.runBlocking(gardenToPark);
