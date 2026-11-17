@@ -70,7 +70,6 @@ public class RedUp extends LinearOpMode {
                 .build();
 
         RaceAction starttogarden = new RaceAction(
-                startToGarden,
                 ba.combinedActions()
         );
 
@@ -90,47 +89,109 @@ public class RedUp extends LinearOpMode {
                 ba.setTurretPower()
         );
 
+        RaceAction waitForTip = new RaceAction(
+                new SleepAction(6),
+                ba.getClosest(),
+                ba.dontGetTag()
+        );
+
         waitForStart();
 
+        // turns on the stopper at the start
         stopper.setStopper(0.8);
 
+        // has 3 seconds of setting up, by running the motor and aiming the turret
         Actions.runBlocking(getReady);
 
+        // starts fine adjusting the flywheel power
         turret.regression(localizer.getDistanceToGoal());
+
+        // does not continue until the flywheel has reached in a certain threshold of power
         while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+
+        // begins shooting the balls out by not stopping and turning on the intake
         intake.intakePower(0.6);
         stopper.setStopper(0.0);
 
+        // stops for a certain amount of time to let all the balls shoot out
         Actions.runBlocking(new SleepAction(shootTime));
 
+        // turns on the stopper again
         stopper.setStopper(0.8);
 
+        // goes to intake more balls from the garden
         Actions.runBlocking(starttogarden);
 
-        Actions.runBlocking(new SleepAction(tipTime));
+        // either waits 6 seconds or until it stops detecting april tags
+        Actions.runBlocking(waitForTip);
 
+        // just updates the limelight again
+        limelight.getClosest();
+
+        // detects if the hive is still up
         if (limelight.getTag() != null) {
+
+            // just refreshes the aim and flywheel power
+            Actions.runBlocking(ba.combinedActions());
+
+            // waits until flywheel power is good enough
+            while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+
+            // shoots
             stopper.setStopper(0.0);
             Actions.runBlocking(new SleepAction(shootTime));
             stopper.setStopper(0.8);
+
             intake.intakePower(0.0);
+
+            // parks
             Actions.runBlocking(gardenToPark);
         }
         else {
+
+            // goes over to the other side
             Actions.runBlocking(gardentoshoot);
+
+            // updates limelight again
+            limelight.getClosest();
+
+            // checks if hive is up or down
             if (limelight.getTag() != null) {
+
+                // refreshes the aim and flywheel power
+                Actions.runBlocking(ba.combinedActions());
+
+                // waits until flywheel power is good enough
+                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+
+                // shoots
                 stopper.setStopper(0.0);
                 Actions.runBlocking(new SleepAction(shootTime));
-                intake.intakePower(0.0);
                 stopper.setStopper(0.8);
+
+                intake.intakePower(0.0);
+
+                // parks
                 Actions.runBlocking(shootToPark);
             }
             else {
+                // goes back to the garden
                 Actions.runBlocking(shoottogarden);
+
+                // refreshes the aim and flywheel power
+                Actions.runBlocking(ba.combinedActions());
+
+                // waits until flywheel power is good enough
+                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+
+                // shoots
                 stopper.setStopper(0.0);
                 Actions.runBlocking(new SleepAction(shootTime));
-                intake.intakePower(0.0);
                 stopper.setStopper(0.8);
+
+                intake.intakePower(0.0);
+
+                // parks
                 Actions.runBlocking(gardenToPark);
             }
         }

@@ -66,12 +66,13 @@ public class RedDown extends LinearOpMode {
                 .build();
 
         RaceAction getReady = new RaceAction(
-                new SleepAction(5.5),
+                new SleepAction(3.0),
                 ba.combinedActions()
         );
 
-        RaceAction waitForTags = new RaceAction(
+        RaceAction waitForTip = new RaceAction(
                 new SleepAction(tipTime + shootTime),
+                ba.getClosest(),
                 ba.getTag()
         );
 
@@ -87,39 +88,82 @@ public class RedDown extends LinearOpMode {
 
         waitForStart();
 
+        // starts intaking and starts up the stopper
         stopper.setStopper(0.8);
         intake.intakePower(0.6);
 
+        // has 3 seconds of setting up, by running the motor and aiming the turret
         Actions.runBlocking(getReady);
 
-        Actions.runBlocking(waitForTags);
+        // waits until either a certain amount of time passes or the robot spots the april tags
+        Actions.runBlocking(waitForTip);
 
+        // refreshes the limelight
         Actions.runBlocking(ba.getClosest());
 
+        // checks if the hive is tipped or not
         if (limelight.getTag() != null) {
+
+            // refreshes aim and flywheel power
             Actions.runBlocking(ba.combinedActions());
+
+            // waits until the flywheel power is correct
+            while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+
+            // shoots
             stopper.setStopper(0.0);
             Actions.runBlocking(new SleepAction(shootTime));
             stopper.setStopper(0.8);
+
             intake.intakePower(0.0);
+
+            // parks
             Actions.runBlocking(startToPark);
         }
         else {
+            // goes to the shooting position
             Actions.runBlocking(starttoshoot);
+
+            // refreshes the limelight
             ba.getClosest();
+
+            // checks if the hive is tipped or not
             if (limelight.getTag() != null) {
+
+                // updates flywheel power and aim
+                Actions.runBlocking(ba.combinedActions());
+
+                // waits until flywheel power is good
+                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+
+                // shoots
                 stopper.setStopper(0.0);
                 Actions.runBlocking(new SleepAction(shootTime));
                 stopper.setStopper(0.8);
+
                 intake.intakePower(0.0);
+
+                // parks
                 Actions.runBlocking(shoottostart);
             }
             else {
+                // goes back to start to shoot
                 Actions.runBlocking(shoottostart);
+
+                // updates flywheel power and aim
+                Actions.runBlocking(ba.combinedActions());
+
+                // waits until flywheel power is good
+                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+
+                // shoots
                 stopper.setStopper(0.0);
                 Actions.runBlocking(new SleepAction(shootTime));
                 stopper.setStopper(0.8);
+
                 intake.intakePower(0.0);
+
+                // parks
                 Actions.runBlocking(startToPark);
             }
         }

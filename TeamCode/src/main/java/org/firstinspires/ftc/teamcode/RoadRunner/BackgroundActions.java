@@ -88,4 +88,14 @@ public class BackgroundActions {
             }
         };
     }
+
+    // only returns and ends the action when it doesn't spot a tag
+     public Action dontGetTag() {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                return (limelight.getTag() != null);
+            }
+        };
+     }
 }
