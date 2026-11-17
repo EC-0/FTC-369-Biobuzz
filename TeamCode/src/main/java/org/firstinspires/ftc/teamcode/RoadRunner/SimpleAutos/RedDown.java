@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.RaceAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
+@Autonomous (name = "RedDown")
 public class RedDown extends LinearOpMode {
 
     double shootTime = 6, tipTime = 6, lenience = 50;
