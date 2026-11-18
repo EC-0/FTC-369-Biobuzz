@@ -57,7 +57,7 @@ public class TestShooterPID extends OpMode {
             telemetry.addLine("its doin the velocity thing");
         }
         else{
-            shooter.setVelocity(1000);
+            shooter.setVelocity(0);
         }
 
         if(gamepad1.dpadUpWasPressed()){
