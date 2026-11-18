@@ -51,7 +51,8 @@ public class TestShooterPID extends OpMode {
         else if(gamepad1.bWasPressed()){
             shooter.setShooterPower(-.3);
         }
-        else*/ if(gamepad1.a){
+        else*/
+        if(gamepad1.a){
             shooter.setPIDTarget(1000);
             shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
             telemetry.addLine("its doin the velocity thing");
