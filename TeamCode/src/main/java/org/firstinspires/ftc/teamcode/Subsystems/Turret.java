@@ -18,9 +18,9 @@ public class Turret {
     private double flyPower;
     private boolean useRegression = true;
 
-    private final double totalTurnTicks = 2933;
+    private final double totalTurnTicks = 1544;
     private final double totalDegrees = 320.0;
-    private final double maxSafeTicks = 2870;
+    private final double maxSafeTicks = 1530;
     private final double minSafeTicks = 15.0;
     private final double ticksPerDegree = totalTurnTicks / totalDegrees;
 
