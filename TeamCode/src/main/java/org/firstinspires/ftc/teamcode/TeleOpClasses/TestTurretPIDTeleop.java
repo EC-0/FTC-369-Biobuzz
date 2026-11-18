@@ -20,9 +20,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 public class TestTurretPIDTeleop extends OpMode {
 
     public static double kp = 0.0;
-    public static double kI;
-    public static double kS;
-    public static double kV;
+    public static double kI = 0.0;
+    public static double kS = 0.0;
+    public static double kV = 0.0;
     public static double kd = 0.0;
     Turret turret;
     PIDF_Controller turretPID;
@@ -30,7 +30,7 @@ public class TestTurretPIDTeleop extends OpMode {
     @Override
     public void init() {
         turret = new Turret(hardwareMap);
-        turretPID = new PIDF_Controller(kp,0,kd,0,0);
+        turretPID = new PIDF_Controller(kp,kI,kd,kV,kS);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         dash = FtcDashboard.getInstance();
     }
