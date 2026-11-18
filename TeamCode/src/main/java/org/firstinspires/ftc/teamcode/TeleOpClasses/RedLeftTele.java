@@ -97,12 +97,12 @@ public class RedLeftTele extends OpMode {
             stopper.setStopper(.1);
         } else if (gamepad2.a) {
             intake.intakePower(0.6);
-            stopper.setStopper(.8);
+            stopper.setStopper(.4);
         } else if (gamepad2.b) {
             intake.intakePower(-.8);
         } else {
             intake.intakePower(0.0);
-            stopper.setStopper(.8);
+            stopper.setStopper(.4);
         }
 
 
