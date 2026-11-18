@@ -33,6 +33,9 @@ public class Shooter{
             // fly2.setVelocity(flyPower);
         }
     }
+    public void setVelocity(double velocity){
+        fly1.setPower(velocity);
+    }
     public void setShooterPower(double distance, double increment) {
         if (useRegression) {
             regression(distance);
@@ -76,6 +79,13 @@ public class Shooter{
             return max;
         }
         return value;
+    }
+
+    public void setCoefficients(double kp, double ki, double kd, double ks, double kv){
+        this.kP = kp;
+        this.kD = kd;
+        this.kS = ks;
+        this.kV = kv;
     }
     public double getFlyPower() {
         return flyPower;

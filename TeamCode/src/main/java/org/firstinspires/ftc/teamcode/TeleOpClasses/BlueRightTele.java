@@ -107,7 +107,7 @@ public class BlueRightTele extends OpMode {
         } else {
             intake.intakePower(0.0);
             stopper.setStopper(.4);
-
+        }
 
         if (gamepad2.bWasPressed()) {
             shooter.setShooterPower(botDistanceToGoal, 50);
@@ -120,7 +120,6 @@ public class BlueRightTele extends OpMode {
         // gamepad 2 stuff
         if (gamepad2.xWasPressed()) {
             shooter.setShooterPower(0);
-        }
         }
         if (gamepad2.yWasPressed()) {
             currentRobotPose = new Pose2d(-68, 68, 90);

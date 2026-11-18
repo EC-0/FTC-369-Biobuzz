@@ -53,7 +53,7 @@ public class Turret {
         turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        turretPid = new PIDF_Controller(0.01, 0, 0.0001, 0, 0);
+        turretPid = new PIDF_Controller(0.005, 0, 0.0001, 0, 0);
     }
 
     public void setPowerRaw(double power) {
@@ -187,6 +187,6 @@ public class Turret {
     }
 
     public void setPIDCoefficients(double kp, double ki, double kd, double ks, double kv){
-        turretPid = new PIDF_Controller(kp, ki, kd, ks, kv);
+        turretPid.setCoefficients(kp, ki, kd, ks, kv);
     }
 }

@@ -50,17 +50,17 @@ public class TestTurretPIDTeleop extends OpMode {
         }
         else if(gamepad1.a){
 //            turretPID.setTarget(1000);
-            turret.update(90);
+            turret.update(-90);
         }
         else{
             turret.setPowerRaw(0);
         }
 
         if(gamepad1.dpadUpWasPressed()){
-            kS+=.01;
+            kd+=.0001;
         }
         if(gamepad1.dpadDownWasPressed()){
-            kS-=.01;
+            kd-=.0001;
         }
 
 //        else turret.setPower(0);

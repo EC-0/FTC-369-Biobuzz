@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import
-
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.PIDF_Controller;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
@@ -21,11 +19,11 @@ public class TestShooterPID extends OpMode {
     DcMotor intake;
     PIDF_Controller shooterPID;
     FtcDashboard dash;
-    public static double kp = 13.5;//13.5;
-    public static double kI = .05;//0.05;
-    public static double kd = 0.01;//0.01;
-    public static double kV = -.009625;
-    public static double kS = 20;
+    public static double kp = 0.0;//13.5;
+    public static double kI = .0;//0.05;
+    public static double kd = 0.0;//0.01;
+    public static double kV = 0.0;
+    public static double kS = 0.0;
     @Override
     public void init() {
         shooter = new Shooter(hardwareMap);
@@ -44,38 +42,38 @@ public class TestShooterPID extends OpMode {
 
         dash.sendTelemetryPacket(packet);
         intake.setPower(gamepad1.right_stick_x);
-        if(gamepad1.dpad_left){
-            fly1.setPower(-.3);
+        /*if(gamepad1.dpad_left){
+            shooter.setShooterPower(-.3);
         }
         else if(gamepad1.dpad_right){
-            fly1.setPower(.3);
+            shooter.setShooterPower(-.3);
         }
         else if(gamepad1.bWasPressed()){
-            fly1.setPower(.75);
+            shooter.setShooterPower(-.3);
         }
-        else if(gamepad1.a){
-            shooterPID.setTarget(1000);
-            fly1.setVelocity(shooterPID.calculate(fly1.getVelocity()));
+        else*/ if(gamepad1.a){
+            shooter.setPIDTarget(1000);
+            shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
             telemetry.addLine("its doin the velocity thing");
         }
-//        else{
-//            fly1.setPower(0);
-//        }
+        else{
+            shooter.setVelocity(1000);
+        }
 
         if(gamepad1.dpadUpWasPressed()){
-            kS+=.2;
+            kp+=.2;
         }
         if(gamepad1.dpadDownWasPressed()){
-            kS-=.2;
+            kp-=.2;
         }
 
 //        else turret.setPower(0);
 
         if(gamepad1.leftBumperWasPressed()){
-            kV-=.01;
+            kd-=.01;
         }
         if(gamepad1.rightBumperWasPressed()){
-            kV+=.01;
+            kd+=.01;
         }
 //        if(gamepad1.bWasPressed()){
 //            kI-=.01;
@@ -83,14 +81,16 @@ public class TestShooterPID extends OpMode {
 //        if(gamepad1.yWasPressed()){
 //            kI+=.01;
 //        }
+        telemetry.addData("kP", kp);
+        telemetry.addData("kD ", kd);
         telemetry.addData("kS", kS);
         telemetry.addData("kV", kV);
 
-        telemetry.addData("velocity", fly1.getVelocity());
+        telemetry.addData("velocity", shooter.getShooterVelocity());
 //        telemetry.addData("ki", kI);
         telemetry.update();
 //        if(gamepad1.x) {
-            shooterPID.setCoefficients(kp, kI, kd, kS, kV);
+        shooter.setCoefficients(kp, kI, kd, kS, kV);
 //        }
     }
 

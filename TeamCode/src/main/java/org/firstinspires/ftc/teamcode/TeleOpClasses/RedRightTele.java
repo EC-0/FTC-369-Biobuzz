@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
@@ -26,6 +27,7 @@ public class RedRightTele extends OpMode {
     Drivetrain drivetrain;
     Intake intake;
     Turret turret;
+    Shooter shooter;
     Stopper stopper;
     RobotLocalizer localizer;
 
@@ -38,6 +40,7 @@ public class RedRightTele extends OpMode {
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
         turret = new Turret(hardwareMap);
+        shooter = new Shooter(hardwareMap);
         limelight = new Limelight(hardwareMap);
         stopper = new Stopper(hardwareMap);
         //START POSE IS SET FOR RIGHT SIDE RED SIDE
@@ -84,7 +87,7 @@ public class RedRightTele extends OpMode {
         }
 
         if (gamepad2.leftBumperWasPressed()) {
-            turret.setShooterMode();
+            shooter.setShooterMode();
         }
         if (gamepad2.rightBumperWasPressed()) {
             turretLockEnabled = !turretLockEnabled;
@@ -105,14 +108,13 @@ public class RedRightTele extends OpMode {
             stopper.setStopper(.4);
         }
 
-
         if (gamepad2.bWasPressed()) {
-            turret.setTurretPower(botDistanceToGoal, 50);
+            shooter.setShooterPower(botDistanceToGoal, 50);
         }
         if (gamepad2.xWasPressed()) {
-            turret.setTurretPower(botDistanceToGoal, -50);
+            shooter.setShooterPower(botDistanceToGoal, -50);
         }
-        turret.setTurretPower(botDistanceToGoal);
+        shooter.setShooterPower(botDistanceToGoal);
 
         // gamepad 2 stuff
         if (gamepad2.xWasPressed()) {
@@ -122,7 +124,7 @@ public class RedRightTele extends OpMode {
             currentRobotPose = new Pose2d(68, -68, 90);
         }
 
-        telemetry.addData("flyPower", turret.getFlyPower());
+        telemetry.addData("flyPower", shooter.getFlyPower());
         if (currentRobotPose != null) {
             telemetry.addData("Robot X", currentRobotPose.position.x);
             telemetry.addData("Robot Y", currentRobotPose.position.y);
