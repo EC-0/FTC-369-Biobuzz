@@ -45,6 +45,8 @@ public class RedDown extends LinearOpMode {
         ba = new BackgroundActions(turret, localizer, limelight);
         pid = new PIDF_Controller(13.5, 0.05 , 0.01, 20,-.009625);
 
+        limelight.switchPipeline(1);
+
         Action startToPark = drivetrain.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(-50,-10), Math.toRadians(270))
                 .strafeToLinearHeading(new Vector2d(-50,-62), Math.toRadians(270))
@@ -110,7 +112,7 @@ public class RedDown extends LinearOpMode {
             Actions.runBlocking(ba.combinedActions());
 
             // waits until the flywheel power is correct
-            while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+            while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
 
             // shoots
             stopper.setStopper(0.0);
@@ -136,7 +138,7 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(ba.combinedActions());
 
                 // waits until flywheel power is good
-                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
 
                 // shoots
                 stopper.setStopper(0.0);
@@ -156,7 +158,7 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(ba.combinedActions());
 
                 // waits until flywheel power is good
-                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience && turret.getVelocity() < (pid.calculate(turret.getVelocity())) + lenience)) {}
+                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
 
                 // shoots
                 stopper.setStopper(0.0);
