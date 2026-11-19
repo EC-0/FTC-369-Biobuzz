@@ -114,7 +114,7 @@ public class RedRightTele extends OpMode {
         if (gamepad2.xWasPressed()) {
             shooter.setShooterPower(botDistanceToGoal, -50);
         }
-        //shooter.setShooterPower(botDistanceToGoal);
+        shooter.setShooterPower(botDistanceToGoal);
 
         // gamepad 2 stuff
         if (gamepad2.xWasPressed()) {

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Shooter{
@@ -18,7 +19,7 @@ public class Shooter{
     private double kV = 0.0; // main feedforward for velocity
     private double kS = 0.0; //feedforward just for static friction
     private double kP = 0.008; //proportional
-    private double kI = 0.002; //integral
+    private final double kI = 0.002; //integral
     private double kD = 0; //derivative
 
 
