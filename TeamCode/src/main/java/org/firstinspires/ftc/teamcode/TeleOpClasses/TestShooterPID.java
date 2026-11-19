@@ -20,7 +20,7 @@ public class TestShooterPID extends OpMode {
     PIDF_Controller shooterPID;
     FtcDashboard dash;
     public static double kp = 0.0;//13.5;
-    public static double kI = .0;//0.05;
+    public static double kI = 0.0;//0.05;
     public static double kd = 0.0;//0.01;
     public static double kV = 0.0;
     public static double kS = 0.0;
@@ -62,10 +62,10 @@ public class TestShooterPID extends OpMode {
         }
 
         if(gamepad1.dpadUpWasPressed()){
-            kp+=.2;
+            kp+=.01;
         }
         if(gamepad1.dpadDownWasPressed()){
-            kp-=.2;
+            kp-=.01;
         }
 
 //        else turret.setPower(0);
