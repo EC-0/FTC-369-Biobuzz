@@ -140,7 +140,7 @@ public class RedUp extends LinearOpMode {
         if (limelight.getTag() != null) {
 
             // just refreshes the aim and flywheel power
-            Actions.runBlocking(ba.combinedActions());
+            Actions.runBlocking(refresh);
 
             // waits until flywheel power is good enough
             while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
