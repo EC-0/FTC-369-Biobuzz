@@ -9,17 +9,20 @@ import com.acmerobotics.roadrunner.Action;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 public class BackgroundActions {
     Turret turret;
     RobotLocalizer localizer;
     Limelight limelight;
+    Shooter shooter;
 
-    public BackgroundActions(Turret turret, RobotLocalizer localizer, Limelight limelight) {
+    public BackgroundActions(Turret turret, RobotLocalizer localizer, Limelight limelight, Shooter shooter) {
         this.turret = turret;
         this.localizer = localizer;
         this.limelight = limelight;
+        this.shooter = shooter;
     }
 
     // the aiming part of the turret
@@ -38,7 +41,7 @@ public class BackgroundActions {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                turret.regression(localizer.getDistanceToGoal());
+                shooter.regression(localizer.getDistanceToGoal());
                 return true;
             }
         };
@@ -73,7 +76,7 @@ public class BackgroundActions {
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 localizer.updateBotPosition();
                 limelight.getClosest();
-                turret.regression(localizer.getDistanceToGoal());
+                shooter.regression(localizer.getDistanceToGoal());
                 turret.update(localizer.angleToGoal());
                 return true;
             }

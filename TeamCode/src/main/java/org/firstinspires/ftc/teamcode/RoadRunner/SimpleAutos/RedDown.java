@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.PIDF_Controller;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
@@ -22,6 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 public class RedDown extends LinearOpMode {
 
     double shootTime = 6, tipTime = 5, lenience = 50, targetVelocity;
+    Shooter shooter;
 
     Limelight limelight;
     MecanumDrive drivetrain;
@@ -36,13 +38,14 @@ public class RedDown extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        shooter = new Shooter(hardwareMap);
         limelight = new Limelight(hardwareMap);
         drivetrain = new MecanumDrive(hardwareMap, initialPose);
         turret = new Turret(hardwareMap);
         stopper = new Stopper(hardwareMap);
         intake = new Intake(hardwareMap);
         localizer = new RobotLocalizer(hardwareMap ,initialPose, RobotLocalizer.allianceColor.RED);
-        ba = new BackgroundActions(turret, localizer, limelight);
+        ba = new BackgroundActions(turret, localizer, limelight, shooter);
         pid = new PIDF_Controller(13.5, 0.05 , 0.01, 20,-.009625);
 
         limelight.switchPipeline(1);
@@ -118,9 +121,9 @@ public class RedDown extends LinearOpMode {
 
             // waits until the flywheel power is correct
             targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-            while (opModeIsActive() && !(turret.getVelocity() > targetVelocity - lenience)) {
+            while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                turret.regression(localizer.getDistanceToGoal());
+                shooter.regression(localizer.getDistanceToGoal());
             }
 
             // shoots
@@ -148,9 +151,9 @@ public class RedDown extends LinearOpMode {
 
                 // waits until flywheel power is good
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                while (opModeIsActive() && !(turret.getVelocity() > targetVelocity - lenience)) {
+                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
                     targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                    turret.regression(localizer.getDistanceToGoal());
+                    shooter.regression(localizer.getDistanceToGoal());
                 }
 
                 // shoots
@@ -172,9 +175,9 @@ public class RedDown extends LinearOpMode {
 
                 // waits until flywheel power is good
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                while (opModeIsActive() && !(turret.getVelocity() > targetVelocity - lenience)) {
+                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
                     targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                    turret.regression(localizer.getDistanceToGoal());
+                    shooter.regression(localizer.getDistanceToGoal());
                 }
 
                 // shoots

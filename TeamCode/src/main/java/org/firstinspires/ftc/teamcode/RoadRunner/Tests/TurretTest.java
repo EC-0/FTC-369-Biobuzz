@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 import org.firstinspires.ftc.teamcode.RoadRunner.BackgroundActions;
@@ -29,6 +30,7 @@ public class TurretTest extends LinearOpMode {
     RobotLocalizer localizer;
     Limelight limelight;
     BackgroundActions ba;
+    Shooter shooter;
     Pose2d initialPose = new Pose2d(-62,-62,90);
 
     @Override
@@ -39,7 +41,7 @@ public class TurretTest extends LinearOpMode {
         localizer = new RobotLocalizer(hardwareMap, initialPose, RobotLocalizer.allianceColor.RED);
         stopper = new Stopper(hardwareMap);
         limelight = new Limelight(hardwareMap);
-        ba = new BackgroundActions(turret, localizer, limelight);
+        ba = new BackgroundActions(turret, localizer, limelight, shooter);
 
         Action path1 = drivetrain.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(55, 0), Math.toRadians(90))
@@ -79,7 +81,7 @@ public class TurretTest extends LinearOpMode {
 
         stopper.setStopper(0.8);
         Actions.runBlocking(test);
-        turret.regression(localizer.getDistanceToGoal());
+        shooter.regression(localizer.getDistanceToGoal());
         turret.update(localizer.angleToGoal());
         intake.intakePower(0.6);
         stopper.setStopper(0.0);
