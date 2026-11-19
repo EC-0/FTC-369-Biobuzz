@@ -44,7 +44,7 @@ public class RobotLocalizer {
 
         targetFieldAngle = Math.atan2(GOAL_Y - currentPose.position.y, GOAL_X - currentPose.position.x);
         targetRelativeAngle = AngleUnit.normalizeRadians(targetFieldAngle - currentPose.heading.log());
-        return Math.toDegrees(targetRelativeAngle) % 360;
+        return (Math.toDegrees(targetRelativeAngle) + 180) % 360; //TODO YO FIX TS BRO WE HAVE TO DELETE THE 180 ROTATIONAL TRANSLATION TWIN
     }
     public void goalTarget(){
         Pose2d currentPose = getBotPose();

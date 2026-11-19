@@ -62,19 +62,25 @@ public class TestShooterPID extends OpMode {
         }
 
         if(gamepad1.dpadUpWasPressed()){
-            kp+=.01;
+            kp+=.001;
         }
         if(gamepad1.dpadDownWasPressed()){
-            kp-=.01;
+            kp-=.001;
         }
 
 //        else turret.setPower(0);
 
+        if(gamepad1.dpadRightWasPressed()){
+            kI-=.0001;
+        }
+        if(gamepad1.dpadLeftWasPressed()){
+            kI+=.0001;
+        }
         if(gamepad1.leftBumperWasPressed()){
-            kd-=.01;
+            kd-=.00001;
         }
         if(gamepad1.rightBumperWasPressed()){
-            kd+=.01;
+            kd+=.00001;
         }
 //        if(gamepad1.bWasPressed()){
 //            kI-=.01;
@@ -83,6 +89,7 @@ public class TestShooterPID extends OpMode {
 //            kI+=.01;
 //        }
         telemetry.addData("kP", kp);
+        telemetry.addData("kI ", kI);
         telemetry.addData("kD ", kd);
         telemetry.addData("kS", kS);
         telemetry.addData("kV", kV);

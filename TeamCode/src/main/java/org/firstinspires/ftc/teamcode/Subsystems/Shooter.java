@@ -11,10 +11,14 @@ public class Shooter{
     private double targetVelocity = 0;
     private long lastLoopTimeNs = 0;
     private double lastError;
+    private double integral = 0.0;
 
-    private double kV = 0.00035; // main feedforward for velocity
-    private double kS = 0.044; //feedforward just for static friction
-    private double kP = 0.005; //proportional
+    public double integralMax = 2000.0;
+
+    private double kV = 0.0; // main feedforward for velocity
+    private double kS = 0.0; //feedforward just for static friction
+    private double kP = 0.008; //proportional
+    private double kI = 0.0001; //integral
     private double kD = 0; //derivative
 
 
@@ -62,6 +66,10 @@ public class Shooter{
         lastLoopTimeNs = nowNs;
         dt = Math.max(dt, 1e-6);
         double error = targetVelocity - currentVelocity;
+
+        integral += error * dt;
+        integral = clamp(integral, -integralMax, integralMax);
+
         double errorDerivative = (error - lastError) / dt;
         lastError = error;
 
@@ -69,7 +77,7 @@ public class Shooter{
         double proportional = kP * error;
         double derivative = kD * errorDerivative;
 
-        return clamp(feedforward + proportional + derivative, -1, 1);
+        return clamp(feedforward + proportional + kI * integral +  derivative, -1, 1);
     }
     private static double clamp(double value, double min, double max) {
         if (value < min) {
