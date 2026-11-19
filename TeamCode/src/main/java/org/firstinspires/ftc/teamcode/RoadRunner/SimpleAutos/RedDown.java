@@ -118,7 +118,7 @@ public class RedDown extends LinearOpMode {
 
             // waits until the flywheel power is correct
             targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-            while (!(turret.getVelocity() > targetVelocity - lenience)) {
+            while (opModeIsActive() && !(turret.getVelocity() > targetVelocity - lenience)) {
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
                 turret.regression(localizer.getDistanceToGoal());
             }
@@ -148,7 +148,7 @@ public class RedDown extends LinearOpMode {
 
                 // waits until flywheel power is good
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                while (!(turret.getVelocity() > targetVelocity - lenience)) {
+                while (opModeIsActive() && !(turret.getVelocity() > targetVelocity - lenience)) {
                     targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
                     turret.regression(localizer.getDistanceToGoal());
                 }
@@ -172,7 +172,7 @@ public class RedDown extends LinearOpMode {
 
                 // waits until flywheel power is good
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                while (!(turret.getVelocity() > targetVelocity - lenience)) {
+                while (opModeIsActive() && !(turret.getVelocity() > targetVelocity - lenience)) {
                     targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
                     turret.regression(localizer.getDistanceToGoal());
                 }
