@@ -18,7 +18,7 @@ public class Shooter{
     private double kV = 0.0; // main feedforward for velocity
     private double kS = 0.0; //feedforward just for static friction
     private double kP = 0.008; //proportional
-    private double kI = 0.0001; //integral
+    private double kI = 0.002; //integral
     private double kD = 0; //derivative
 
 
