@@ -12,20 +12,21 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @Autonomous (name = "Drive Test")
 public class DriveTest extends LinearOpMode {
     MecanumDrive drivetrain;
-    Pose2d initialPose = new Pose2d(-62,-62,90);
+    Pose2d initialPose = new Pose2d(-62,-62,Math.toRadians(90));
 
     @Override
     public void runOpMode() throws InterruptedException {
         drivetrain = new MecanumDrive(hardwareMap,initialPose);
 
         Action test = drivetrain.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-62, -32), Math.toRadians(180))
-                .strafeToLinearHeading(new Vector2d(-32, -32), Math.toRadians(270))
-                .strafeToLinearHeading(new Vector2d(-32, -62), Math.toRadians(0))
+
+                .strafeToLinearHeading(new Vector2d(-62, -32), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(-32, -32), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(-32, -62), Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(-62, -62), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(-32, -32), Math.toRadians(180))
-                .strafeToLinearHeading(new Vector2d(-62, -32), Math.toRadians(270))
-                .strafeToLinearHeading(new Vector2d(-32, -62), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(-32, -32), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(-62, -32), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(-32, -62), Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(-62, -62), Math.toRadians(90))
                 .build();
 

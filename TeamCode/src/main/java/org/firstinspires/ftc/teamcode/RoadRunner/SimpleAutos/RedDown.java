@@ -90,6 +90,11 @@ public class RedDown extends LinearOpMode {
                 ba.combinedActions()
         );
 
+        RaceAction refresh = new RaceAction(
+                new SleepAction(1.0),
+                ba.combinedActions()
+        );
+
         waitForStart();
 
         // starts intaking and starts up the stopper
@@ -109,7 +114,7 @@ public class RedDown extends LinearOpMode {
         if (limelight.getTag() != null) {
 
             // refreshes aim and flywheel power
-            Actions.runBlocking(ba.combinedActions());
+            Actions.runBlocking(refresh);
 
             // waits until the flywheel power is correct
             while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
@@ -135,7 +140,7 @@ public class RedDown extends LinearOpMode {
             if (limelight.getTag() != null) {
 
                 // updates flywheel power and aim
-                Actions.runBlocking(ba.combinedActions());
+                Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
                 while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
@@ -155,7 +160,7 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(shoottostart);
 
                 // updates flywheel power and aim
-                Actions.runBlocking(ba.combinedActions());
+                Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
                 while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}

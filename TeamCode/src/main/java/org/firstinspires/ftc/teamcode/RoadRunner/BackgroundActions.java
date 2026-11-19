@@ -71,6 +71,7 @@ public class BackgroundActions {
         return  new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                localizer.updateBotPosition();
                 limelight.getClosest();
                 turret.regression(localizer.getDistanceToGoal());
                 turret.update(localizer.angleToGoal());

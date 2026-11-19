@@ -72,6 +72,7 @@ public class RedUp extends LinearOpMode {
                 .build();
 
         RaceAction starttogarden = new RaceAction(
+                startToGarden,
                 ba.combinedActions()
         );
 
@@ -95,6 +96,11 @@ public class RedUp extends LinearOpMode {
                 new SleepAction(tipTime),
                 ba.getClosest(),
                 ba.dontGetTag()
+        );
+
+        RaceAction refresh = new RaceAction(
+                new SleepAction(1.0),
+                ba.combinedActions()
         );
 
         waitForStart();
@@ -161,7 +167,7 @@ public class RedUp extends LinearOpMode {
             if (limelight.getTag() != null) {
 
                 // refreshes the aim and flywheel power
-                Actions.runBlocking(ba.combinedActions());
+                Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good enough
                 while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
@@ -181,7 +187,7 @@ public class RedUp extends LinearOpMode {
                 Actions.runBlocking(shoottogarden);
 
                 // refreshes the aim and flywheel power
-                Actions.runBlocking(ba.combinedActions());
+                Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good enough
                 while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
