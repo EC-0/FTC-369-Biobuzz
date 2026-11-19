@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 @Autonomous (name = "RedDown")
 public class RedDown extends LinearOpMode {
 
-    double shootTime = 6, tipTime = 5, lenience = 50;
+    double shootTime = 6, tipTime = 5, lenience = 50, targetVelocity;
 
     Limelight limelight;
     MecanumDrive drivetrain;
@@ -117,7 +117,11 @@ public class RedDown extends LinearOpMode {
             Actions.runBlocking(refresh);
 
             // waits until the flywheel power is correct
-            while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
+            targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+            while (!(turret.getVelocity() > targetVelocity - lenience)) {
+                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                turret.regression(localizer.getDistanceToGoal());
+            }
 
             // shoots
             stopper.setStopper(0.0);
@@ -143,7 +147,11 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
+                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                while (!(turret.getVelocity() > targetVelocity - lenience)) {
+                    targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                    turret.regression(localizer.getDistanceToGoal());
+                }
 
                 // shoots
                 stopper.setStopper(0.0);
@@ -163,7 +171,11 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                while (!(turret.getVelocity() > (pid.calculate(turret.getVelocity())) - lenience)) {}
+                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                while (!(turret.getVelocity() > targetVelocity - lenience)) {
+                    targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                    turret.regression(localizer.getDistanceToGoal());
+                }
 
                 // shoots
                 stopper.setStopper(0.0);
