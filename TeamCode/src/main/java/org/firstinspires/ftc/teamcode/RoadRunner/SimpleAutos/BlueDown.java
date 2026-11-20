@@ -107,7 +107,7 @@ public class BlueDown extends LinearOpMode {
 
         // starts intaking and starts up the stopper
         stopper.setStopper(0.8);
-        intake.intakePower(0.6);
+        intake.intakePower(0.9);
 
         // has 3 seconds of setting up, by running the motor and aiming the turret
         Actions.runBlocking(getReady);

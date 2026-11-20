@@ -141,7 +141,7 @@ public class BlueUp extends LinearOpMode {
         }
 
         // begins shooting the balls out by not stopping and turning on the intake
-        intake.intakePower(0.6);
+        intake.intakePower(0.9);
         stopper.setStopper(0.0);
 
         // stops for a certain amount of time to let all the balls shoot out
