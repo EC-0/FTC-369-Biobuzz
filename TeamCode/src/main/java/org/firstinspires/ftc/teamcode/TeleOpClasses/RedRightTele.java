@@ -24,7 +24,7 @@ public class RedRightTele extends OpMode {
 
     @Override
     public void init() {
-        robot = new Robot(telemetry, hardwareMap, RobotLocalizer.allianceColor.BLUE, new Pose2d(68, -68, Math.toRadians(0)), gamepad1, gamepad2);
+        robot = new Robot(telemetry, hardwareMap, RobotLocalizer.allianceColor.RED, new Pose2d(68, -68, Math.toRadians(0)), gamepad1, gamepad2);
         robot.start();}
 
     @Override

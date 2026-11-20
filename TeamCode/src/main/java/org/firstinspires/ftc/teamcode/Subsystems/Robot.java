@@ -37,6 +37,7 @@ public class Robot {
         limelight = new Limelight(hardwareMap);
         stopper = new Stopper(hardwareMap);
         this.allianceColor = allianceColor;
+        dash = FtcDashboard.getInstance();
         localizer = new RobotLocalizer(hardwareMap, startPose, allianceColor);
 
         this.gamepad1 = gamepad1;
