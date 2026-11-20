@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.RoadRunner.SimpleAutos;
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.RaceAction;
@@ -10,6 +11,7 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.BackgroundActions;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
@@ -74,6 +76,10 @@ public class RedUp extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-20, -62), Math.toRadians(270))
                 .build();
 
+        Action gardenToStart = drivetrain.actionBuilder(garden)
+                .strafeToLinearHeading(new Vector2d(62,-12), Math.toRadians(270))
+                .build();
+
         RaceAction starttogarden = new RaceAction(
                 startToGarden,
                 ba.combinedActions()
@@ -106,6 +112,16 @@ public class RedUp extends LinearOpMode {
                 ba.combinedActions()
         );
 
+        RaceAction refreshAndWait = new RaceAction(
+                new SleepAction(shootTime),
+                ba.combinedActions()
+        );
+
+        RaceAction gardentostart = new RaceAction(
+                gardenToStart,
+                ba.combinedActions()
+        );
+
         waitForStart();
 
         // turns on the stopper at the start
@@ -129,13 +145,16 @@ public class RedUp extends LinearOpMode {
         stopper.setStopper(0.0);
 
         // stops for a certain amount of time to let all the balls shoot out
-        Actions.runBlocking(new SleepAction(shootTime));
+        Actions.runBlocking(refreshAndWait);
 
         // turns on the stopper again
         stopper.setStopper(0.8);
 
         // goes to intake more balls from the garden
         Actions.runBlocking(starttogarden);
+
+        // goes back to start
+        Actions.runBlocking(gardentostart);
 
         // either waits 6 seconds or until it stops detecting april tags
         Actions.runBlocking(waitForTip);
@@ -151,24 +170,25 @@ public class RedUp extends LinearOpMode {
 
             // waits until flywheel power is good enough
             targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-            while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
+            while (opModeIsActive() && !((shooter.getShooterVelocity() > targetVelocity - lenience ) && (shooter.getShooterVelocity() < targetVelocity + lenience ))) {
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
                 shooter.regression(localizer.getDistanceToGoal());
             }
 
             // shoots
             stopper.setStopper(0.0);
-            Actions.runBlocking(new SleepAction(shootTime));
+            Actions.runBlocking(refreshAndWait);
             stopper.setStopper(0.8);
 
             intake.intakePower(0.0);
 
             // parks
+            Actions.runBlocking(startToGarden);
             Actions.runBlocking(gardenToPark);
         }
         else {
-
             // goes over to the other side
+            Actions.runBlocking(starttogarden);
             Actions.runBlocking(gardentoshoot);
 
             // updates limelight again
@@ -182,14 +202,14 @@ public class RedUp extends LinearOpMode {
 
                 // waits until flywheel power is good enough
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
+                while (opModeIsActive() && !((shooter.getShooterVelocity() > targetVelocity - lenience ) && (shooter.getShooterVelocity() < targetVelocity + lenience ))) {
                     targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
                     shooter.regression(localizer.getDistanceToGoal());
                 }
 
                 // shoots
                 stopper.setStopper(0.0);
-                Actions.runBlocking(new SleepAction(shootTime));
+                Actions.runBlocking(refreshAndWait);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);
@@ -206,14 +226,14 @@ public class RedUp extends LinearOpMode {
 
                 // waits until flywheel power is good enough
                 targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
-                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
+                while (opModeIsActive() && !((shooter.getShooterVelocity() > targetVelocity - lenience) && (shooter.getShooterVelocity() < targetVelocity + lenience ))) {
                     targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
                     shooter.regression(localizer.getDistanceToGoal());
                 }
 
                 // shoots
                 stopper.setStopper(0.0);
-                Actions.runBlocking(new SleepAction(shootTime));
+                Actions.runBlocking(refreshAndWait);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);

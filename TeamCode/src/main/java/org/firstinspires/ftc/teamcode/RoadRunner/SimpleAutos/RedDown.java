@@ -98,6 +98,11 @@ public class RedDown extends LinearOpMode {
                 ba.combinedActions()
         );
 
+        RaceAction refreshAndWait = new RaceAction(
+                new SleepAction(shootTime),
+                ba.combinedActions()
+        );
+
         waitForStart();
 
         // starts intaking and starts up the stopper
@@ -128,7 +133,7 @@ public class RedDown extends LinearOpMode {
 
             // shoots
             stopper.setStopper(0.0);
-            Actions.runBlocking(new SleepAction(shootTime));
+            Actions.runBlocking(refreshAndWait);
             stopper.setStopper(0.8);
 
             intake.intakePower(0.0);
@@ -158,7 +163,7 @@ public class RedDown extends LinearOpMode {
 
                 // shoots
                 stopper.setStopper(0.0);
-                Actions.runBlocking(new SleepAction(shootTime));
+                Actions.runBlocking(refreshAndWait);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);
@@ -182,7 +187,7 @@ public class RedDown extends LinearOpMode {
 
                 // shoots
                 stopper.setStopper(0.0);
-                Actions.runBlocking(new SleepAction(shootTime));
+                Actions.runBlocking(refreshAndWait);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);

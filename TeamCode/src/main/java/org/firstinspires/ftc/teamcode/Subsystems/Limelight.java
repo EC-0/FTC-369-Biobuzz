@@ -19,7 +19,7 @@ public class Limelight {
 
     public Limelight(HardwareMap hardwareMap) {
         limelighter = hardwareMap.get(Limelight3A.class, "limelight");
-        limelighter.pipelineSwitch(0);
+        limelighter.pipelineSwitch(1);
         limelighter.setPollRateHz(100);
         limelighter.start();
     }
