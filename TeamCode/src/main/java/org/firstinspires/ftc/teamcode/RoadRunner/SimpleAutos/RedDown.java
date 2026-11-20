@@ -125,9 +125,9 @@ public class RedDown extends LinearOpMode {
             Actions.runBlocking(refresh);
 
             // waits until the flywheel power is correct
-            targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+            targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
             while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                 shooter.regression(localizer.getDistanceToGoal());
             }
 
@@ -155,9 +155,9 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                 while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                    targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                     shooter.regression(localizer.getDistanceToGoal());
                 }
 
@@ -179,9 +179,9 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                 while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                    targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                     shooter.regression(localizer.getDistanceToGoal());
                 }
 

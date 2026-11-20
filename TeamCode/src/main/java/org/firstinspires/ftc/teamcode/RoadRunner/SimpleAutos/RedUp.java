@@ -134,9 +134,9 @@ public class RedUp extends LinearOpMode {
         shooter.regression(localizer.getDistanceToGoal());
 
         // does not continue until the flywheel has reached in a certain threshold of power
-        targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+        targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
         while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-            targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+            targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
             shooter.regression(localizer.getDistanceToGoal());
         }
 
@@ -169,9 +169,9 @@ public class RedUp extends LinearOpMode {
             Actions.runBlocking(refresh);
 
             // waits until flywheel power is good enough
-            targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+            targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
             while (opModeIsActive() && !((shooter.getShooterVelocity() > targetVelocity - lenience ) && (shooter.getShooterVelocity() < targetVelocity + lenience ))) {
-                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                 shooter.regression(localizer.getDistanceToGoal());
             }
 
@@ -201,9 +201,9 @@ public class RedUp extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good enough
-                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                 while (opModeIsActive() && !((shooter.getShooterVelocity() > targetVelocity - lenience ) && (shooter.getShooterVelocity() < targetVelocity + lenience ))) {
-                    targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                     shooter.regression(localizer.getDistanceToGoal());
                 }
 
@@ -225,9 +225,9 @@ public class RedUp extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good enough
-                targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                 while (opModeIsActive() && !((shooter.getShooterVelocity() > targetVelocity - lenience) && (shooter.getShooterVelocity() < targetVelocity + lenience ))) {
-                    targetVelocity =(-2.78251 * localizer.getDistanceToGoal()) + 1720.39128;
+                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
                     shooter.regression(localizer.getDistanceToGoal());
                 }
 
