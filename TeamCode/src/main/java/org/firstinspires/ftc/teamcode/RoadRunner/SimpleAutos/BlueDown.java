@@ -32,7 +32,6 @@ public class BlueDown extends LinearOpMode {
     Intake intake;
     RobotLocalizer localizer;
     BackgroundActions ba;
-    PIDF_Controller pid;
     Pose2d initialPose = new Pose2d(62,10, Math.toRadians(270));
     Pose2d shoot = new Pose2d(-50, 50, Math.toRadians(270));
 
@@ -45,8 +44,7 @@ public class BlueDown extends LinearOpMode {
         stopper = new Stopper(hardwareMap);
         intake = new Intake(hardwareMap);
         localizer = new RobotLocalizer(hardwareMap ,initialPose, RobotLocalizer.allianceColor.RED);
-        ba = new BackgroundActions(turret, localizer, limelight, shooter);
-        pid = new PIDF_Controller(13.5, 0.05 , 0.01, 20,-.009625);
+        ba = new BackgroundActions(turret, localizer, limelight, shooter, stopper);
 
         limelight.switchPipeline(0);
 
@@ -103,6 +101,12 @@ public class BlueDown extends LinearOpMode {
                 ba.combinedActions()
         );
 
+        RaceAction shoot = new RaceAction(
+                ba.combinedActions(),
+                ba.stopperAction(0.1),
+                new SleepAction(shootTime)
+        );
+
         waitForStart();
 
         // starts intaking and starts up the stopper
@@ -132,8 +136,7 @@ public class BlueDown extends LinearOpMode {
             }
 
             // shoots
-            stopper.setStopper(0.0);
-            Actions.runBlocking(refreshAndWait);
+            Actions.runBlocking(shoot);
             stopper.setStopper(0.8);
 
             intake.intakePower(0.0);
@@ -162,8 +165,7 @@ public class BlueDown extends LinearOpMode {
                 }
 
                 // shoots
-                stopper.setStopper(0.0);
-                Actions.runBlocking(refreshAndWait);
+                Actions.runBlocking(shoot);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);
@@ -186,8 +188,7 @@ public class BlueDown extends LinearOpMode {
                 }
 
                 // shoots
-                stopper.setStopper(0.0);
-                Actions.runBlocking(refreshAndWait);
+                Actions.runBlocking(shoot);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);

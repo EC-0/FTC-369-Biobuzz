@@ -33,7 +33,6 @@ public class RedUp extends LinearOpMode {
     Intake intake;
     RobotLocalizer localizer;
     BackgroundActions ba;
-    PIDF_Controller pid;
     Pose2d initialPose = new Pose2d(62, -12, Math.toRadians(270));
     Pose2d garden = new Pose2d(62, -62, Math.toRadians(270));
     Pose2d shoot = new Pose2d(-62, -45, Math.toRadians(270));
@@ -47,8 +46,7 @@ public class RedUp extends LinearOpMode {
         stopper = new Stopper(hardwareMap);
         intake = new Intake(hardwareMap);
         localizer = new RobotLocalizer(hardwareMap ,initialPose, RobotLocalizer.allianceColor.RED);
-        ba = new BackgroundActions(turret, localizer, limelight, shooter);
-        pid = new PIDF_Controller(13.5, 0.05 , 0.01, 20,-.009625);
+        ba = new BackgroundActions(turret, localizer, limelight, shooter, stopper);
 
         limelight.switchPipeline(1);
 
@@ -104,7 +102,8 @@ public class RedUp extends LinearOpMode {
         RaceAction waitForTip = new RaceAction(
                 new SleepAction(tipTime),
                 ba.getClosest(),
-                ba.dontGetTag()
+                ba.dontGetTag(),
+                ba.combinedActions()
         );
 
         RaceAction refresh = new RaceAction(
@@ -120,6 +119,12 @@ public class RedUp extends LinearOpMode {
         RaceAction gardentostart = new RaceAction(
                 gardenToStart,
                 ba.combinedActions()
+        );
+
+        RaceAction shoot = new RaceAction(
+                ba.combinedActions(),
+                ba.stopperAction(0.1),
+                new SleepAction(shootTime)
         );
 
         waitForStart();
@@ -142,12 +147,9 @@ public class RedUp extends LinearOpMode {
 
         // begins shooting the balls out by not stopping and turning on the intake
         intake.intakePower(0.9);
-        stopper.setStopper(0.0);
 
-        // stops for a certain amount of time to let all the balls shoot out
-        Actions.runBlocking(refreshAndWait);
-
-        // turns on the stopper again
+        // shoots
+        Actions.runBlocking(shoot);
         stopper.setStopper(0.8);
 
         // goes to intake more balls from the garden
@@ -161,6 +163,9 @@ public class RedUp extends LinearOpMode {
 
         // just updates the limelight again
         limelight.getClosest();
+
+        telemetry.addData("currentagsisee", limelight.getTag());
+        telemetry.update();
 
         // detects if the hive is still up
         if (limelight.getTag() != null) {
@@ -176,8 +181,7 @@ public class RedUp extends LinearOpMode {
             }
 
             // shoots
-            stopper.setStopper(0.0);
-            Actions.runBlocking(refreshAndWait);
+            Actions.runBlocking(shoot);
             stopper.setStopper(0.8);
 
             intake.intakePower(0.0);
@@ -208,8 +212,7 @@ public class RedUp extends LinearOpMode {
                 }
 
                 // shoots
-                stopper.setStopper(0.0);
-                Actions.runBlocking(refreshAndWait);
+                Actions.runBlocking(shoot);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);
@@ -232,8 +235,7 @@ public class RedUp extends LinearOpMode {
                 }
 
                 // shoots
-                stopper.setStopper(0.0);
-                Actions.runBlocking(refreshAndWait);
+                Actions.runBlocking(shoot);
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);

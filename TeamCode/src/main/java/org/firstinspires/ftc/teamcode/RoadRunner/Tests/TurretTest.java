@@ -41,7 +41,7 @@ public class TurretTest extends LinearOpMode {
         localizer = new RobotLocalizer(hardwareMap, initialPose, RobotLocalizer.allianceColor.RED);
         stopper = new Stopper(hardwareMap);
         limelight = new Limelight(hardwareMap);
-        ba = new BackgroundActions(turret, localizer, limelight, shooter);
+        ba = new BackgroundActions(turret, localizer, limelight, shooter, stopper);
 
         Action path1 = drivetrain.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(55, 0), Math.toRadians(90))

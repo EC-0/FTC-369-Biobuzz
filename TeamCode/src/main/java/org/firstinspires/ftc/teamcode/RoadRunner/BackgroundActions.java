@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.Action;
 import org.firstinspires.ftc.teamcode.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotLocalizer;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.Stopper;
 import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 
 public class BackgroundActions {
@@ -17,12 +18,14 @@ public class BackgroundActions {
     RobotLocalizer localizer;
     Limelight limelight;
     Shooter shooter;
+    Stopper stopper;
 
-    public BackgroundActions(Turret turret, RobotLocalizer localizer, Limelight limelight, Shooter shooter) {
+    public BackgroundActions(Turret turret, RobotLocalizer localizer, Limelight limelight, Shooter shooter, Stopper stopper) {
         this.turret = turret;
         this.localizer = localizer;
         this.limelight = limelight;
         this.shooter = shooter;
+        this.stopper = stopper;
     }
 
     // the aiming part of the turret
@@ -102,4 +105,16 @@ public class BackgroundActions {
             }
         };
      }
+
+     // just sets the stopper
+     public Action stopperAction(double power) {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                stopper.setStopper(power);
+                return true;
+            }
+        };
+     }
+
 }
