@@ -50,11 +50,7 @@ public class Robot {
 
     }
     public void update(){
-
         TelemetryPacket packet = new TelemetryPacket();
-        packet.put("Turret pos", shooter.getShooterVelocity());
-
-        dash.sendTelemetryPacket(packet);
 
         localizer.updateBotPosition();
         limelight.getClosest();
@@ -135,6 +131,10 @@ public class Robot {
             telemetry.addData("Robot Heading", Math.toDegrees(currentBotPose.heading.log()));
         }
 
+        packet.put("Turret pos", shooter.getShooterVelocity());
+        packet.put("Turret pos", 3.36048 * distanceToGoal +1325.87065);
+
+        dash.sendTelemetryPacket(packet);
         telemetry.addData("distance from goal", distanceToGoal);
 //        telemetry.addData("Distance from April Tag", limelight.getDistance());
         telemetry.addData("LIMELIGHT", limelight.getTag());
