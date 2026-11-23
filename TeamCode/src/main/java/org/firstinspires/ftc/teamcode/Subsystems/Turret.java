@@ -10,11 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Turret {
     //DcMotorEx fly2;
     DcMotorEx turret;
-
     PIDF_Controller turretPid;
-
-    private double flyPower;
-    private boolean useRegression = true;
 
     private final double totalTurnTicks = 1544;
     private final double totalDegrees = 320.0;

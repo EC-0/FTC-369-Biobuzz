@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Shooter{
     DcMotorEx fly1;
     private double flyPower = 0;
-    private boolean useRegression = false;
+    private boolean useRegression = true;
     private double targetVelocity = 0;
     private long lastLoopTimeNs = 0;
     private double lastError;
