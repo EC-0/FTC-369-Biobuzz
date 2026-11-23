@@ -6,14 +6,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Shooter{
     DcMotorEx fly1;
-
     private double flyPower = 0;
     private boolean useRegression = false;
     private double targetVelocity = 0;
     private long lastLoopTimeNs = 0;
     private double lastError;
     private double integral = 0.0;
-
     public double integralMax = 2000.0;
 
     private double kV = 0.0; // main feedforward for velocity
