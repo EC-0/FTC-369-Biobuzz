@@ -132,13 +132,13 @@ public class Robot {
         }
 
         packet.put("Turret Actual Velocity", shooter.getShooterVelocity());
-        packet.put("Turret Desired Power", 3.36048 * distanceToGoal +m1325.87065);
+        packet.put("Turret Desired Power", 3.36048 * distanceToGoal +1325.87065);
 
-        dash.sendTelemetryPacket(packet);
         telemetry.addData("distance from goal", distanceToGoal);
 //        telemetry.addData("Distance from April Tag", limelight.getDistance());
         telemetry.addData("LIMELIGHT", limelight.getTag());
 //        telemetry.addData("Shooter Mode", turret.getShooterMode());
+        dash.sendTelemetryPacket(packet);
         telemetry.update();
 
     }
