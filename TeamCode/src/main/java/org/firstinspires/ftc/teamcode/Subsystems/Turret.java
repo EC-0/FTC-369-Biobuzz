@@ -38,7 +38,7 @@ public class Turret {
     private double filteredTargetTicks = 0.0;
     private boolean filterInitialized = false;
 
-    private static final double TARGET_ALPHA = 0.125;
+    private static final double TARGET_ALPHA = 0.12;
 
 
     public Turret(HardwareMap hardwareMap) {
