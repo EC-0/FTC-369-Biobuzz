@@ -131,8 +131,8 @@ public class Robot {
             telemetry.addData("Robot Heading", Math.toDegrees(currentBotPose.heading.log()));
         }
 
-        packet.put("Turret pos", shooter.getShooterVelocity());
-        packet.put("Turret pos", 3.36048 * distanceToGoal +1325.87065);
+        packet.put("Turret Actual Velocity", shooter.getShooterVelocity());
+        packet.put("Turret Desired Power", 3.36048 * distanceToGoal +m1325.87065);
 
         dash.sendTelemetryPacket(packet);
         telemetry.addData("distance from goal", distanceToGoal);
