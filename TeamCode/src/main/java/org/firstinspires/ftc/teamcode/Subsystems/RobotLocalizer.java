@@ -20,7 +20,7 @@ public class RobotLocalizer {
         drive = new MecanumDrive(hardwareMap, startPose);
         this.alliance = alliance;
 
-        if(alliance == allianceColor.BLUE){//FIND THE ACTUAL VALUES FOR THESE
+        if(alliance == allianceColor.BLUE){
             GOAL_Y = 10;
         }
         else{

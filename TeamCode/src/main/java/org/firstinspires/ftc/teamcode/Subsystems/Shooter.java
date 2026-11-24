@@ -55,6 +55,11 @@ public class Shooter{
         fly1.setPower(shooterPID(fly1.getVelocity()));
         // fly2.setVelocity(pid.calculate(fly2.getVelocity()));
     }
+
+    public void mobileShoot(){
+
+    }
+
     public void setPIDTarget(double targetVelocity){
         this.targetVelocity = targetVelocity;
     }
