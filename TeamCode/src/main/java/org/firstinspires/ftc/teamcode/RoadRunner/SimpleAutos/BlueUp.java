@@ -80,17 +80,17 @@ public class BlueUp extends LinearOpMode {
 
         RaceAction starttogarden = new RaceAction(
                 startToGarden,
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction gardentoshoot = new RaceAction(
                 gardenToShoot,
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction shoottogarden = new RaceAction(
                 shootToGarden,
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction getReady = new RaceAction(
@@ -103,26 +103,26 @@ public class BlueUp extends LinearOpMode {
                 new SleepAction(tipTime),
                 ba.getClosest(),
                 ba.dontGetTag(),
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction refresh = new RaceAction(
                 new SleepAction(1.0),
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction refreshAndWait = new RaceAction(
                 new SleepAction(shootTime),
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction gardentostart = new RaceAction(
                 gardenToStart,
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction shoot = new RaceAction(
-                ba.combinedActions(),
+                ba.combinedActions(1450),
                 ba.stopperAction(0.1),
                 new SleepAction(shootTime)
         );

@@ -73,13 +73,14 @@ public class BackgroundActions {
     }
 
     // combines update(), setTurretPower() and getClosest()
-    public Action combinedActions() {
+    public Action combinedActions(double vel) {
         return  new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                shooter.setPIDTarget(vel);
+                shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
                 localizer.updateBotPosition();
                 limelight.getClosest();
-                shooter.regression(localizer.getDistanceToGoal());
                 turret.update(localizer.angleToGoal());
                 return true;
             }

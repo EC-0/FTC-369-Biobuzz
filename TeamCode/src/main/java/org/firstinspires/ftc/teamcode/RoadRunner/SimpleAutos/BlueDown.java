@@ -72,7 +72,7 @@ public class BlueDown extends LinearOpMode {
 
         RaceAction getReady = new RaceAction(
                 new SleepAction(3.0),
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction waitForTip = new RaceAction(
@@ -83,26 +83,26 @@ public class BlueDown extends LinearOpMode {
 
         RaceAction starttoshoot = new RaceAction(
                 startToShoot,
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction shoottostart = new RaceAction(
                 shootToStart,
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction refresh = new RaceAction(
                 new SleepAction(1.0),
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction refreshAndWait = new RaceAction(
                 new SleepAction(shootTime),
-                ba.combinedActions()
+                ba.combinedActions(1450)
         );
 
         RaceAction shoot = new RaceAction(
-                ba.combinedActions(),
+                ba.combinedActions(1450),
                 ba.stopperAction(0.1),
                 new SleepAction(shootTime)
         );

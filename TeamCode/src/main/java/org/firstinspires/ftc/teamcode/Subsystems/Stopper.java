@@ -12,4 +12,8 @@ public class Stopper {
     public void setStopper(double stopperPos){
         stopper.setPosition(stopperPos);
     }
+
+    public double getPosition() {
+        return stopper.getPosition();
+    }
 }

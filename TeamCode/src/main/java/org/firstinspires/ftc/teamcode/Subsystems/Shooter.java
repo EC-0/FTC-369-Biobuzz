@@ -39,6 +39,9 @@ public class Shooter{
     public void setVelocity(double velocity){
         fly1.setPower(velocity);
     }
+    public void setVelocityAgain(double vel){
+        fly1.setVelocity(vel);
+    }
     public void setShooterPower(double distance, double increment) {
         if (useRegression) {
             regression(distance);

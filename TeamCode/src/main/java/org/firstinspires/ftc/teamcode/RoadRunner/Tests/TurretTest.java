@@ -72,7 +72,7 @@ public class TurretTest extends LinearOpMode {
         );
 
         RaceAction test = new RaceAction(
-                ba.combinedActions(),
+                ba.combinedActions(1650),
                 ba.updateLocalizer(),
                 drive
         );
