@@ -59,8 +59,11 @@ public class Posehold {
         double forward = fieldX * Math.cos(-botHeading) - fieldY * Math.sin(-botHeading);
         double strafe = fieldX * Math.sin(-botHeading) + fieldY * Math.cos(-botHeading);
 
-        drivetrain.drive(forward, strafe, turn);
+        double frontLeft = forward + strafe + turn;
+        double frontRight = forward - strafe - turn;
+        double backLeft = forward - strafe + turn;
+        double backRight = forward + strafe - turn;
 
-
+        drivetrain.drive(frontLeft, frontRight, backLeft, backRight);
     }
 }
