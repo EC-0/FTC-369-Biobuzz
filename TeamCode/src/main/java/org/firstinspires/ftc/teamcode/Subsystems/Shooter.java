@@ -50,7 +50,7 @@ public class Shooter{
     }
     public void regression(double distanceToHive) {
         //double targetVelocity = 10.31616 * distanceToHive + 945.07026;
-        double targetVelocity = 3.36048 * distanceToHive +1325.87065;
+        double targetVelocity = 3.36048 * distanceToHive + 1325.87065;
         setPIDTarget(targetVelocity);
         fly1.setPower(shooterPID(fly1.getVelocity()));
         // fly2.setVelocity(pid.calculate(fly2.getVelocity()));
