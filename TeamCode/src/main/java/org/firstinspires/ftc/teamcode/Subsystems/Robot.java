@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Robot {
     Drivetrain drive;
     RobotLocalizer localizer;
+    Posehold posehold;
     Limelight limelight;
     Intake intake;
     Shooter outtake;
@@ -27,6 +28,7 @@ public class Robot {
     private ElapsedTime tagLostTimer = new ElapsedTime();
     private boolean usingLimelight = false;
     private boolean turretLockEnabled = false;
+    private boolean isHolding = false;
 
     public Robot(Telemetry telemetry, HardwareMap hardwareMap, RobotLocalizer.allianceColor allianceColor, Pose2d startPose, Gamepad gamepad1, Gamepad gamepad2){
         drive = new Drivetrain(hardwareMap);
@@ -36,6 +38,7 @@ public class Robot {
         shooter = new Shooter(hardwareMap);
         limelight = new Limelight(hardwareMap);
         stopper = new Stopper(hardwareMap);
+        posehold = new Posehold(drive, localizer);
         this.allianceColor = allianceColor;
         dash = FtcDashboard.getInstance();
         localizer = new RobotLocalizer(hardwareMap, startPose, allianceColor);
@@ -85,6 +88,7 @@ public class Robot {
             telemetry.addData("Turret Lock", "DISABLED");
             turret.setPowerRaw(0);
         }
+
 
         if (gamepad2.leftBumperWasPressed()) {
             shooter.setShooterMode();

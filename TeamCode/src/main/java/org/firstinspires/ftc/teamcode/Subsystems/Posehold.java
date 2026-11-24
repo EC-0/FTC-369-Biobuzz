@@ -59,6 +59,7 @@ public class Posehold {
         double forward = fieldX * Math.cos(-botHeading) - fieldY * Math.sin(-botHeading);
         double strafe = fieldX * Math.sin(-botHeading) + fieldY * Math.cos(-botHeading);
 
+        //Motor current error values from theta, x, and y
         double frontLeft = forward + strafe + turn;
         double frontRight = forward - strafe - turn;
         double backLeft = forward - strafe + turn;
