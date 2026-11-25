@@ -23,6 +23,7 @@ public class Shooter{
 
     public Shooter(HardwareMap hardwareMap){
         fly1 = hardwareMap.get(DcMotorEx.class, "fly1");
+        fly1.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void setShooterMode() {

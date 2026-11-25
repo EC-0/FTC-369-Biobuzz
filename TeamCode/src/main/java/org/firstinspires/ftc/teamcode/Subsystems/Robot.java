@@ -18,6 +18,7 @@ public class Robot {
     Turret turret;
     Shooter shooter;
     Stopper stopper;
+    FlowerIntake flowerIntake;
     RobotLocalizer.allianceColor allianceColor;
     Telemetry telemetry;
     FtcDashboard dash;
@@ -27,6 +28,7 @@ public class Robot {
     private ElapsedTime tagLostTimer = new ElapsedTime();
     private boolean usingLimelight = false;
     private boolean turretLockEnabled = false;
+    private double holdFlowerPose = .7;
 
     public Robot(Telemetry telemetry, HardwareMap hardwareMap, RobotLocalizer.allianceColor allianceColor, Pose2d startPose, Gamepad gamepad1, Gamepad gamepad2){
         drive = new Drivetrain(hardwareMap);
@@ -34,6 +36,7 @@ public class Robot {
         outtake = new Shooter(hardwareMap);
         turret = new Turret(hardwareMap);
         shooter = new Shooter(hardwareMap);
+        flowerIntake = new FlowerIntake(hardwareMap);
         limelight = new Limelight(hardwareMap);
         stopper = new Stopper(hardwareMap);
         this.allianceColor = allianceColor;
@@ -47,7 +50,8 @@ public class Robot {
         this.telemetry = telemetry;
     }
     public void start(){
-
+        holdFlowerPose = .7;
+        flowerIntake.setFlowerIntake(holdFlowerPose);
     }
     public void update(){
         TelemetryPacket packet = new TelemetryPacket();
@@ -108,6 +112,16 @@ public class Robot {
             stopper.setStopper(.4);
         }
 
+        //Flower Intake find pos value if .1 or .9
+        if(gamepad2.dpadUpWasPressed()){
+            holdFlowerPose = .7;
+        }
+        if(gamepad2.dpadDownWasPressed()){
+            holdFlowerPose = .2;
+        }
+
+        flowerIntake.setFlowerIntake(holdFlowerPose);
+
         if (gamepad2.bWasPressed()) {
             shooter.setShooterPower(distanceToGoal, 50);
         }
@@ -117,7 +131,7 @@ public class Robot {
         shooter.setShooterPower(distanceToGoal);
 
         // gamepad 2 stuff
-        if (gamepad2.xWasPressed()) {
+        if (gamepad2.yWasPressed()) {
             turret.setPowerRaw(0);
         }
         if (gamepad2.yWasPressed()) {
