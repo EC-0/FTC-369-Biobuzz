@@ -111,6 +111,7 @@ public class RedDown extends LinearOpMode {
 
         // starts intaking and starts up the stopper
         stopper.setStopper(0.8);
+
         intake.intakePower(0.9);
 
         // has 3 seconds of setting up, by running the motor and aiming the turret
@@ -119,8 +120,14 @@ public class RedDown extends LinearOpMode {
         // waits until either a certain amount of time passes or the robot spots the april tags
         Actions.runBlocking(waitForTip);
 
+        telemetry.addData("ethans goober value", "9999");
+        telemetry.update();
+
         // refreshes the limelight
-        Actions.runBlocking(ba.getClosest());
+        limelight.getClosest();
+
+        telemetry.addData("currentagsisee", limelight.getTag());
+        telemetry.update();
 
         // checks if the hive is tipped or not
         if (limelight.getTag() != null) {
@@ -129,27 +136,39 @@ public class RedDown extends LinearOpMode {
             Actions.runBlocking(refresh);
 
             // waits until the flywheel power is correct
-            targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-            while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                shooter.regression(localizer.getDistanceToGoal());
-            }
 
             // shoots
-            Actions.runBlocking(shoot);
-            stopper.setStopper(0.8);
+            shooter.setPIDTarget(1900);
+            shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
+            Actions.runBlocking(new SleepAction(2.0));
 
+            intake.intakePower(0.9);
+
+            // shoots
+            Actions.runBlocking(new RaceAction(
+                    ba.combinedActions(1900),
+                    ba.stopperAction(0.1),
+                    new SleepAction(shootTime)
+            ));
+            stopper.setStopper(0.8);
             intake.intakePower(0.0);
 
             // parks
             Actions.runBlocking(startToPark);
         }
         else {
+
+            telemetry.addData("dfghjkdfghjk", "dfghjklsdfghjk");
+            telemetry.update();
+
             // goes to the shooting position
             Actions.runBlocking(starttoshoot);
 
+            telemetry.addData("skbidi skbidi", "WAAAAH");
+            telemetry.update();
+
             // refreshes the limelight
-            ba.getClosest();
+            limelight.getClosest();
 
             // checks if the hive is tipped or not
             if (limelight.getTag() != null) {
@@ -158,14 +177,18 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                    shooter.regression(localizer.getDistanceToGoal());
-                }
+                shooter.setPIDTarget(1900);
+                shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
+                Actions.runBlocking(new SleepAction(2.0));
+
+                intake.intakePower(0.9);
 
                 // shoots
-                Actions.runBlocking(shoot);
+                Actions.runBlocking(new RaceAction(
+                        ba.combinedActions(1900),
+                        ba.stopperAction(0.1),
+                        new SleepAction(shootTime)
+                ));
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);
@@ -181,14 +204,18 @@ public class RedDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                    shooter.regression(localizer.getDistanceToGoal());
-                }
+                shooter.setPIDTarget(1900);
+                shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
+                Actions.runBlocking(new SleepAction(2.0));
+
+                intake.intakePower(0.9);
 
                 // shoots
-                Actions.runBlocking(shoot);
+                Actions.runBlocking(new RaceAction(
+                        ba.combinedActions(1900),
+                        ba.stopperAction(0.1),
+                        new SleepAction(shootTime)
+                ));
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);

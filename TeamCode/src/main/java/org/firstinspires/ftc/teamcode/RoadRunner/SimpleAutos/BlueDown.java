@@ -129,14 +129,21 @@ public class BlueDown extends LinearOpMode {
             Actions.runBlocking(refresh);
 
             // waits until the flywheel power is correct
-            targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-            while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                shooter.regression(localizer.getDistanceToGoal());
-            }
 
             // shoots
-            Actions.runBlocking(shoot);
+            shooter.setPIDTarget(1900);
+            shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
+            Actions.runBlocking(new SleepAction(2.0));
+
+            intake.intakePower(0.9);
+
+            // shoots
+            Actions.runBlocking(new RaceAction(
+                    ba.combinedActions(1900),
+                    ba.stopperAction(0.1),
+                    new SleepAction(shootTime)
+            ));
+
             stopper.setStopper(0.8);
 
             intake.intakePower(0.0);
@@ -158,14 +165,20 @@ public class BlueDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                    shooter.regression(localizer.getDistanceToGoal());
-                }
 
                 // shoots
-                Actions.runBlocking(shoot);
+                shooter.setPIDTarget(1900);
+                shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
+                Actions.runBlocking(new SleepAction(2.0));
+
+                intake.intakePower(0.9);
+
+                // shoots
+                Actions.runBlocking(new RaceAction(
+                        ba.combinedActions(1900),
+                        ba.stopperAction(0.1),
+                        new SleepAction(shootTime)
+                ));
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);
@@ -181,14 +194,20 @@ public class BlueDown extends LinearOpMode {
                 Actions.runBlocking(refresh);
 
                 // waits until flywheel power is good
-                targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                while (opModeIsActive() && !(shooter.getShooterVelocity() > targetVelocity - lenience)) {
-                    targetVelocity =(3.36048 * localizer.getDistanceToGoal()) + 1325.87065;
-                    shooter.regression(localizer.getDistanceToGoal());
-                }
 
                 // shoots
-                Actions.runBlocking(shoot);
+                shooter.setPIDTarget(1900);
+                shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
+                Actions.runBlocking(new SleepAction(2.0));
+
+                intake.intakePower(0.9);
+
+                // shoots
+                Actions.runBlocking(new RaceAction(
+                        ba.combinedActions(1900),
+                        ba.stopperAction(0.1),
+                        new SleepAction(shootTime)
+                ));
                 stopper.setStopper(0.8);
 
                 intake.intakePower(0.0);
