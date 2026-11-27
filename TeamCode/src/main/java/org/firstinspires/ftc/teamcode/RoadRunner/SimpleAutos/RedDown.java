@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Turret;
 @Autonomous (name = "RedDown")
 public class RedDown extends LinearOpMode {
 
-    double shootTime = 6, tipTime = 5, lenience = 50, targetVelocity;
+    double shootTime = 3, tipTime = 3.5, lenience = 50, targetVelocity;
     Shooter shooter;
 
     Limelight limelight;
@@ -62,7 +62,7 @@ public class RedDown extends LinearOpMode {
         Action shootToStart = drivetrain.actionBuilder(shoot)
                 .strafeToLinearHeading(new Vector2d(-50,-50), Math.toRadians(270))
                 .strafeToLinearHeading(new Vector2d(-50,-10), Math.toRadians(270))
-                .strafeToLinearHeading(new Vector2d(50,-50), Math.toRadians(270))
+                .strafeToLinearHeading(new Vector2d(-62,-10), Math.toRadians(270))
                 .build();
 
         Action shootToPark = drivetrain.actionBuilder(shoot)
@@ -167,6 +167,8 @@ public class RedDown extends LinearOpMode {
             telemetry.addData("skbidi skbidi", "WAAAAH");
             telemetry.update();
 
+            Actions.runBlocking(new SleepAction(1.5));
+
             // refreshes the limelight
             limelight.getClosest();
 
@@ -194,7 +196,7 @@ public class RedDown extends LinearOpMode {
                 intake.intakePower(0.0);
 
                 // parks
-                Actions.runBlocking(shoottostart);
+                Actions.runBlocking(shootToPark);
             }
             else {
                 // goes back to start to shoot
@@ -206,7 +208,7 @@ public class RedDown extends LinearOpMode {
                 // waits until flywheel power is good
                 shooter.setPIDTarget(1900);
                 shooter.setVelocity(shooter.shooterPID(shooter.getShooterVelocity()));
-                Actions.runBlocking(new SleepAction(2.0));
+                Actions.runBlocking(new SleepAction(1.0));
 
                 intake.intakePower(0.9);
 

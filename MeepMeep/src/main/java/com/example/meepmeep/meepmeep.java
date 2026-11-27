@@ -18,7 +18,10 @@ public class meepmeep {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-62, -10, Math.toRadians(270)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(50, -50, Math.toRadians(270)))
+                        .strafeToLinearHeading(new Vector2d(-50,-50), Math.toRadians(270))
+                        .strafeToLinearHeading(new Vector2d(-50,-10), Math.toRadians(270))
+                        .strafeToLinearHeading(new Vector2d(-62,-10), Math.toRadians(270))
                 .build());
 
         BufferedImage img = null;
