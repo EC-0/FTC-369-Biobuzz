@@ -19,7 +19,6 @@ public class meepmeep {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-62, -10, Math.toRadians(270)))
-                .strafeToLinearHeading(new Vector2d(-62, 40), Math.toRadians(90))
                 .build());
 
         BufferedImage img = null;
