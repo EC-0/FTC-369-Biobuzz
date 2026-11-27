@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Limelight {
     public Limelight3A limelighter;
-    double targetHeight = 65.6, cameraHeight = 12.948819, cameraAngle = 35;
+    double targetHeight = 65.6, cameraHeight = 12.948819, cameraAngle = 145;
     double deltaHeight = targetHeight - cameraHeight;
     double pitchAngle;
 
